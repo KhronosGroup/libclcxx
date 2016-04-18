@@ -1,0 +1,102 @@
+//
+// Copyright (c) 2015-2016 The Khronos Group Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and/or associated documentation files (the
+// "Materials"), to deal in the Materials without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Materials, and to
+// permit persons to whom the Materials are furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Materials.
+//
+// THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
+//
+
+#pragma once
+
+#include <__ocl_config.h>
+#include <__ocl_memory.h>
+#include <__ocl_data.h>
+#include <__ocl_spirv_memory_opcodes.h>
+#include <__ocl_type_traits_type_generators.h>
+#include <__ocl_atomic_enum.h>
+
+namespace cl
+{
+namespace __details
+{
+/// \brief Helper trait to select the address space cast SPIR-V function.
+///
+template<class T>
+struct __choose_dynamic_as_cast
+{
+    static_assert(__always_false<T>::value, "Invalid T.");
+};
+
+/// \brief Helper trait to select the address space cast SPIR-V function.
+///
+template<class T>
+struct __choose_dynamic_as_cast<global_ptr<T>>
+{
+    static __global T * __ALWAYS_INLINE __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_OpGenericCastToPtrExplicit_ToGlobal_call(arg); }
+};
+
+/// \brief Helper trait to select the address space cast SPIR-V function.
+///
+template<class T>
+struct __choose_dynamic_as_cast<local_ptr<T>>
+{
+    static __local T * __ALWAYS_INLINE __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_OpGenericCastToPtrExplicit_ToLocal_call(arg); }
+};
+
+/// \brief Helper trait to select the address space cast SPIR-V function.
+///
+template<class T>
+struct __choose_dynamic_as_cast<private_ptr<T>>
+{
+    static __private T * __ALWAYS_INLINE __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_GenericCastToPtrExplicit_ToPrivate_call(arg); }
+};
+
+} // namespace __details
+
+/// \brief Dynamic address space cast function
+///
+/// The function can return nullptr if the given pointer cannot be casted to specified address space pointer.
+template<class To, class From>
+To dynamic_as_cast(From *ptr)
+{
+    static_assert(is_same<global_ptr<From>, To>::value || is_same<local_ptr<From>, To>::value || is_same<private_ptr<From>, To>::value, "Invalid dynamic address space cast.");
+
+    return To(__details::__choose_dynamic_as_cast<To>::__make_call(ptr));
+}
+
+/// \brief Local address space storage class
+///
+template<class T>
+using local = add_local_t<__details::__data<T>>;
+
+/// \brief Constant address space storage class
+///
+template<class T>
+using constant = add_constant_t<__details::__data_fundamental<T>>;
+
+/// \brief Global address space storage class
+///
+template<class T>
+using global = add_global_t<__details::__data<T>>;
+
+/// \brief Private address space storage class
+///
+template<class T>
+using priv = add_private_t<__details::__data<T>>;
+
+} // namespace cl
