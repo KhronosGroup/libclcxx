@@ -1,0 +1,536 @@
+//
+// Copyright (c) 2015-2016 The Khronos Group Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and/or associated documentation files (the
+// "Materials"), to deal in the Materials without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Materials, and to
+// permit persons to whom the Materials are furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Materials.
+//
+// THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
+//
+
+#pragma once
+
+#include <opencl_type_traits>
+#include <opencl_functional>
+
+
+namespace cl
+{
+
+/// \brief forward declaration of tuple standard class
+///
+template <typename... T>
+class tuple;
+
+/// \brief forward declaration of tuple_element standard class
+///
+/// Note: following C++14 standard tuple_element is in general unspecified (see specializations below)
+template <size_t I, typename T>
+class tuple_element;
+
+/// \brief specialization of tuple_element, as in C++14 standard
+///
+template <size_t I, typename T>
+class tuple_element<I, const T> { public: typedef add_const_t<typename tuple_element<I,T>::type> type; };
+
+/// \brief specialization of tuple_element, as in C++14 standard
+///
+template <size_t I, typename T>
+class tuple_element<I, volatile T> { public: typedef add_volatile_t<typename tuple_element<I,T>::type> type; };
+
+/// \brief specialization of tuple_element, as in C++14 standard
+///
+template <size_t I, typename T>
+class tuple_element<I, const volatile T> { public: typedef add_cv_t<typename tuple_element<I,T>::type> type; };
+
+/// \brief specialization of tuple_element, as in C++14 standard
+///       this specialization, unlike previous ones, actually takes tuple<T...> and returns it's I-th type
+///
+template <size_t I, typename... T>
+class tuple_element<I, tuple<T...>> { static_assert(I < sizeof...(T), "Requested element is out of tuples's boundaries!"); public: typedef typename __details::__ithElement<I, T...>::type type; };
+
+/// \brief alias for tuple_element::type
+///
+template <size_t I, typename T>
+using tuple_element_t = typename tuple_element<I,T>::type;
+
+/// \brief forward declaration of tuple_size standard class
+///
+/// Note: general definition is unspecified
+template <class T>
+struct tuple_size;
+
+/// \brief specialization of tuple_size, as in C++14 standard
+///
+template <class T>
+struct tuple_size<const T> : public tuple_size<T> { };
+
+/// \brief specialization of tuple_size, as in C++14 standard
+///
+template <class T>
+struct tuple_size<volatile T> : public tuple_size<T> { };
+
+/// \brief specialization of tuple_size, as in C++14 standard
+///
+template <class T>
+struct tuple_size<const volatile T> : public tuple_size<T> { };
+
+/// \brief specialization of tuple_size, as in C++14 standard
+///
+template <class... T>
+struct tuple_size<tuple<T...>> : public integral_constant<size_t, sizeof...(T)> { };
+
+
+namespace __details
+{
+
+/// \brief this class provides storage for element of type T.
+///
+/// __tuple_impl (see below) derives from as many __tuple_element as many elements
+///  it's supposed to handle. Extra argument Idx is used to distinguish elements of the same type
+///  (since we cannot derive from two identical classes);
+/// it also comes in handy when dealing with implementation of get<Idx>
+template <size_t Idx, typename T>
+struct __tuple_element
+{
+    static constexpr size_t index = Idx;
+    typedef T type;
+
+    __ALWAYS_INLINE constexpr __tuple_element() : _data() { }
+
+    __ALWAYS_INLINE constexpr __tuple_element(T const& t) : _data(t) { }
+
+    template <typename U>
+    __ALWAYS_INLINE constexpr __tuple_element(U&& u) : _data(forward<U&&>(u)) { }
+
+    template <typename U>
+    __ALWAYS_INLINE constexpr __tuple_element(U const& other) : _data(other) { }
+
+    T _data; //note: tuple derives from __tuple_impl by private so no access to this field is granted to anyone outside __details and tuple class
+};
+
+/// \brief General __tuple_impl declaration (unspecified). Params is supposed to be __params<T...> (see specialization below)
+///
+template <typename Params>
+struct __tuple_impl;
+
+/// \brief this class implements storage for tuple
+///
+///  Elements... is pack containing __tuple_element types, one per each element stored in tuple.
+///  Each __tuple_element holds information of type it stores and index which is used for indexed access (i.e. get)
+///  Example: tuple<int,float,int,Foo> is supposed to store four elements (of three different types), so __tuple_impl will derive from:
+///     __tuple_element<0, int>
+///     __tuple_element<1, float>
+///     __tuple_element<2, int>     <- here 2 is also required to distinguish it from __tuple_element<0, int>
+///     __tuple_element<3, Foo>
+template <typename... Elements>
+struct __tuple_impl<__params<Elements...>> : public Elements...
+{
+    __ALWAYS_INLINE constexpr __tuple_impl() : Elements()...
+    {}
+
+    __ALWAYS_INLINE constexpr __tuple_impl(Elements const&... e) : Elements(e)...
+    {}
+
+    template <typename... U>
+    __ALWAYS_INLINE constexpr __tuple_impl(U&&... u) : Elements(forward<U&&>(u))...
+    {}
+
+    template <typename... Elements2>
+    __ALWAYS_INLINE constexpr __tuple_impl(__tuple_impl<__params<Elements2...>> const& other) : Elements(static_cast<Elements2 const&>(other)._data)...
+    {}
+
+    template <typename... Elements2>
+    __ALWAYS_INLINE constexpr __tuple_impl(__tuple_impl<__params<Elements2...>>&& other) : Elements(forward<typename Elements2::type&&>(static_cast<Elements2&&>(other)._data))...
+    {}
+
+    //dummy function, see __copy
+    template <typename... T>
+    __ALWAYS_INLINE void __dummy(T...) {}
+
+    template <typename... Elements2>
+    void __copy(__tuple_impl<__params<Elements2...>> const& other)
+    {
+        //why do we use __dummy here?
+        // since we'd like to expand expression 'get<Elements>() = get<Elements2>()' for each (Elements, Elements2) pair
+        // and parameter pack cannot be expanded in context of single expression (so: "(get<Element>() = get<Element2>())...;" is not allowed)
+        // we put it in function parameter scope by creating call to dummy:
+        //      __dummt((expr1, 0), (expr2, 0), ...., (exprn, 0));
+        // operator , is needed in case some overloaded operator = would return void (compiler error),
+        // also we cast result of assignment to void to avoid problems with overloaded operator ,
+        __dummy((((void)(static_cast<Elements&>(*this)._data = static_cast<Elements2 const&>(other)._data)), 0)...);
+    }
+
+    template <typename... Elements2>
+    void __move(__tuple_impl<__params<Elements2...>>&& other)
+    {
+        __dummy((((void)(static_cast<Elements&>(*this)._data = forward<typename Elements2::type&&>(static_cast<Elements2&&>(other)._data))), 0)...);
+    }
+
+    template <typename... Elements2>
+    void __swap(__tuple_impl<__params<Elements2...>>& other)
+    {
+        __dummy((((void)::cl::swap(static_cast<Elements&>(*this)._data, static_cast<Elements2&>(other)._data)), 0)...);
+    }
+};
+
+/// \brief structure used to generate __params type which holds list of __tuple_element types for all
+///    types in T, in form: __params< __tuple_element<Idx, T0>, __tuple_element<Idx + 1, T1>, ..., __tuple_element<Idx + sizeof...(T) - 1, Tn> >
+///
+/// This general definition handles recurrence termination case when T... is empty
+template <size_t Idx, typename... T>
+struct __gen_tuple_elements
+{
+    using type = __params<>;
+};
+
+/// \brief specialization of __gen_tuple_elements when at least one type T in present in parameter pack
+///
+/// this specialization creates __params with new __tuple_element at the beginning and another __params,
+/// obtained by recurrence usage of __gen_tuple_elements, as second type; then it flats result:
+///   __params<T, __params<U...>> ==> __params<T, U...>
+template <size_t Idx, typename T, typename... Rest>
+struct __gen_tuple_elements<Idx, T, Rest...>
+{
+    using type = typename __params<__tuple_element<Idx, T>, typename __gen_tuple_elements<Idx + 1, Rest...>::type>::flat;
+};
+
+/// \brief simple helper which provides typedef for 'tuple<T...>' when provided __params<T...>
+///
+/// Note: by default unspecified, T should match __params (see specialization)
+template <typename T>
+struct __tuple_t_from_params;
+
+/// \brief simple helper which provides typedef for 'tuple<T...>' when provided __params<T...>
+///
+template <typename... T>
+struct __tuple_t_from_params<__params<T...>> { using type = tuple<T...>; };
+
+} //end namespace __details
+
+/// \brief standard 'get<I>' method. Returns reference to I-th type in passed tuple
+///
+template <size_t I, class... Types>
+__ALWAYS_INLINE constexpr tuple_element_t<I, tuple<Types...>>& get(tuple<Types...>& t) __NOEXCEPT
+{
+    return static_cast<
+            __details::__tuple_element<I, typename __details::__ithElement<I, Types...>::type>&
+        >(t)._data;
+}
+
+/// \brief standard 'get<I>' method. Returns reference to I-th type in passed tuple
+///
+template <size_t I, class... Types>
+__ALWAYS_INLINE constexpr tuple_element_t<I, tuple<Types...>> const& get(tuple<Types...> const& t) __NOEXCEPT
+{
+    return static_cast<
+            __details::__tuple_element<I, typename __details::__ithElement<I, Types...>::type> const&
+        >(t)._data;
+}
+
+/// \brief standard 'get<I>' method. Returns I-th type in passed tuple
+///
+template <size_t I, class... Types>
+__ALWAYS_INLINE constexpr tuple_element_t<I, tuple<Types...>>&& get(tuple<Types...>&& t) __NOEXCEPT
+{
+    return move(static_cast<
+            __details::__tuple_element<I, typename __details::__ithElement<I, Types...>::type>&&
+        >(t)._data);
+}
+
+/// \brief standard 'get<T>' method. Returns reference to first element in passed tuple of type T
+///
+/// program is ill-formed if tuple does not contain element of type T
+template <class T, class... Types>
+__ALWAYS_INLINE constexpr enable_if_t<__details::__is_one_of<T, Types...>::value, T&> get(tuple<Types...>& t) __NOEXCEPT
+{
+    return get<__details::__find<0, T, Types...>::idx>(t);
+}
+
+/// \brief standard 'get<T>' method. Returns reference to first element in passed tuple of type T
+///
+/// program is ill-formed if tuple does not contain element of type T
+template <class T, class... Types>
+__ALWAYS_INLINE constexpr enable_if_t<!__details::__is_one_of<T, Types...>::value, void> get(tuple<Types...>& t) __NOEXCEPT
+{
+    static_assert(__details::__is_one_of<T, Types...>::value, "No element of type T is present in provided tuple!");
+}
+
+
+/// \brief standard 'get<T>' method. Returns reference to first element in passed tuple of type T
+///
+/// program is ill-formed if tuple does not contain element of type T
+template <class T, class... Types>
+__ALWAYS_INLINE constexpr enable_if_t<__details::__is_one_of<T, Types...>::value, T const&> get(tuple<Types...> const& t) __NOEXCEPT
+{
+    return get<__details::__find<0, T, Types...>::idx>(t);
+}
+
+/// \brief standard 'get<T>' method. Returns reference to first element in passed tuple of type T
+///
+/// program is ill-formed if tuple does not contain element of type T
+template <class T, class... Types>
+__ALWAYS_INLINE constexpr enable_if_t<!__details::__is_one_of<T, Types...>::value, void> get(tuple<Types...> const& t) __NOEXCEPT
+{
+    static_assert(__details::__is_one_of<T, Types...>::value, "No element of type T is present in provided tuple!");
+}
+
+/// \brief standard 'get<T>' method. Returns first element in passed tuple of type T
+///
+/// program is ill-formed if tuple does not contain element of type T
+template <class T, class... Types>
+__ALWAYS_INLINE constexpr enable_if_t<__details::__is_one_of<T, Types...>::value, T&&> get(tuple<Types...>&& t) __NOEXCEPT
+{
+    return get<__details::__find<0, T, Types...>::idx>(forward(t));
+}
+
+/// \brief standard 'get<T>' method. Returns first element in passed tuple of type T
+///
+/// program is ill-formed if tuple does not contain element of type T
+template <class T, class... Types>
+__ALWAYS_INLINE constexpr enable_if_t<!__details::__is_one_of<T, Types...>::value, void> get(tuple<Types...>&& t) __NOEXCEPT
+{
+    static_assert(__details::__is_one_of<T, Types...>::value, "No element of type T is present in provided tuple!");
+}
+
+/// \brief implementation of standard tuple class
+///
+template <typename... T>
+class tuple : private __details::__tuple_impl<typename __details::__gen_tuple_elements<0, T...>::type>
+{
+    typedef __details::__tuple_impl<typename __details::__gen_tuple_elements<0, T...>::type> Impl;
+    typedef __details::__params<T...> __params_t;
+
+    template <typename... U> friend class tuple;
+    
+    template <size_t I, typename... U> friend constexpr tuple_element_t<I, tuple<U...>>& get(tuple<U...>&) __NOEXCEPT;
+    template <size_t I, typename... U> friend constexpr tuple_element_t<I, tuple<U...>> const& get(tuple<U...> const&) __NOEXCEPT;
+    template <size_t I, typename... U> friend constexpr tuple_element_t<I, tuple<U...>>&& get(tuple<U...>&&) __NOEXCEPT;
+
+    template <class Ty, typename... U> friend constexpr Ty& get(tuple<U...>&) __NOEXCEPT;
+    template <class Ty, typename... U> friend constexpr Ty const& get(tuple<U...> const&) __NOEXCEPT;
+    template <class Ty, typename... U> friend constexpr Ty&& get(tuple<U...>&&) __NOEXCEPT;
+
+    template <typename... Tys> friend constexpr typename __details::__tuple_t_from_params<typename __details::__concat_params<typename Tys::__params_t...>::type>::type tuple_cat(Tys&&...);
+
+public:
+    //20.4.2.1 Construction [tuple.cnstr]
+    __ALWAYS_INLINE constexpr tuple() : Impl()
+    {
+        static_assert(__details::__all<is_default_constructible<T>::value...>::value, "At least one type in T... is not default constructible!");
+    }
+
+    __ALWAYS_INLINE constexpr explicit tuple(T const&... args) : Impl(args...)
+    {
+        static_assert(__details::__all<is_copy_constructible<T>::value...>::value, "At least one type in T... is not copy constructible!");
+    }
+
+    //About differences between Guard and static_assert (from C++ 14 spec):
+    //  Guard: the constructor shall not participate in overload resolution unless each type in U is implicitly convertible to its corresponding type in T
+    //  static_assert: the constructor requires: sizeof...(T) == sizeof...(U). is_constructible<Ti, Ui&&>::value is true for all i
+    // analogically for all other constructors with U...
+    template <typename... U, typename Guard = enable_if_t<__details::__all<is_convertible<U&&, T>::value...>::value>>
+    __ALWAYS_INLINE constexpr explicit tuple(U&&... args) : Impl(forward<U&&>(args)...)
+    {
+        static_assert(sizeof...(T) == sizeof...(U), "Arguments count doesn't match elements count in tuple!");
+        static_assert(__details::__all<is_constructible<T, U&&>::value...>::value, "At least one type in T... is not constructible from corresponding type in U...!");
+    }
+
+    tuple(tuple const&) = default;
+    tuple(tuple&&) = default;
+
+    template <typename... U, typename Guard = enable_if_t<__details::__all<is_convertible<U const&, T>::value...>::value>>
+    __ALWAYS_INLINE constexpr tuple(tuple<U...> const& other) : Impl(static_cast<typename tuple<U...>::Impl const&>(other))
+    {
+        static_assert(sizeof...(T) == sizeof...(U), "Arguments count doesn't match elements count in tuple!");
+        static_assert(__details::__all<is_constructible<T, U const&>::value...>::value, "At least one type in T... is not constructible from corresponding type in U...!");
+    }
+
+    template <typename... U, typename Guard = enable_if_t<__details::__all<is_convertible<U&&, T>::value...>::value>>
+    __ALWAYS_INLINE constexpr tuple(tuple<U...>&& other) : Impl(forward<typename tuple<U...>::Impl&&>(static_cast<typename tuple<U...>::Impl&&>(other)))
+    {
+        static_assert(sizeof...(T) == sizeof...(U), "Arguments count doesn't match elements count in tuple!");
+        static_assert(__details::__all<is_constructible<T, U&&>::value...>::value, "At least one type in T... is not constructible from corresponding type in U...!");
+    }
+
+    //20.4.2.2 Assignment [tuple.assign]
+    __ALWAYS_INLINE tuple& operator =(tuple const& u)
+    {
+        static_assert(__details::__all<is_copy_assignable<T>::value...>::value, "At least one type in T... is not copy assignable!");
+        Impl::__copy(u);
+        return *this;
+    }
+
+    __ALWAYS_INLINE tuple& operator =(tuple&& u) noexcept(__details::__all<is_nothrow_move_assignable<T>::value...>::value)
+    {
+        static_assert(__details::__all<is_move_assignable<T>::value...>::value, "At least one type in T... is not move assignable!");
+        Impl::__move(forward<tuple&&>(u));
+        return *this;
+    }
+
+    template <typename... U, typename Guard = enable_if_t<__details::__all<is_assignable<T&, U const&>::value...>::value>>
+    __ALWAYS_INLINE tuple& operator =(tuple<U...> const& u)
+    {
+        Impl::__copy(u);
+        return *this;
+    }
+
+    template <typename... U, typename Guard = enable_if_t<__details::__all<is_assignable<T&, U&&>::value...>::value>>
+    __ALWAYS_INLINE tuple& operator =(tuple<U...>&& u)
+    {
+        Impl::__move(forward<tuple<U...>&&>(u));
+        return *this;
+    }
+
+    //20.4.2.3 swap [tuple.swap]
+    void swap(tuple& rhs) noexcept(__details::__all<noexcept(::cl::swap(declval<T&>(), declval<T&>()))...>::value)
+    {
+        Impl::__swap(rhs);
+    }
+};
+ 
+/// \brief Empty tuple specialization
+///
+template <>
+class tuple<>
+{ };
+
+namespace __details
+{
+
+/// \brief helper class to handle reference_wrapper passed to make_tuple (as mentioned in C++ standard)
+///
+template <typename T>
+struct __handle_tuple_type   { typedef T type; };
+
+/// \brief helper class to handle reference_wrapper passed to make_tuple (as mentioned in C++ standard)
+///
+template <typename T>
+struct __handle_tuple_type<reference_wrapper<T>> { typedef T& type; };
+
+}
+
+//20.4.2.4 Tuple creation functions [tuple.creation]
+/// \brief C++ standard make_tuple function
+///
+template <class... Types>
+__ALWAYS_INLINE constexpr auto make_tuple(Types&&... t)
+{
+    return tuple<typename __details::__handle_tuple_type<decay_t<Types>>::type...>(forward<Types>(t)...);
+}
+
+/// \brief C++ standard forward_as_tuple function
+///
+template <class... T>
+__ALWAYS_INLINE constexpr tuple<T&&...> forward_as_tuple(T&&... t) noexcept
+{
+    return tuple<T&&...>(forward<T>(t)...);
+}
+
+namespace __details
+{
+/// \brief implementation of decltype(ignore)
+///
+struct __ignore_t
+{
+    __ignore_t() = default;
+    __ignore_t(__ignore_t const&) = delete;
+    __ignore_t(__ignore_t&&) = delete;
+
+    template <typename T>
+    __ignore_t const& operator =(T const&) const { return *this; }
+
+    __ignore_t& operator =(__ignore_t const&) = delete;
+    __ignore_t& operator =(__ignore_t&&) = delete;
+};
+}
+
+/// \brief standard global constant which ignores all assignments (used for tuple unpacking with 'tie' function)
+///
+const __details::__ignore_t ignore{};
+
+/// \brief function used to create tuple of references, assigment to such tuple would in fact unpack right hand operator (also tuple)
+///   into references contained in returned tuple (unpack tuple to arguments of this function)
+///
+/// example:
+///    int a;
+///    char c;
+///    tie(a, ignore, c) = make_tuple(12, 0.52, 'a'); //a == 12, ignored (see ignore), c == 'a'
+template <class... T>
+__ALWAYS_INLINE constexpr tuple<T&...> tie(T&... t) noexcept
+{
+    return tuple<T&...>(t...);
+}
+
+namespace __details
+{
+
+/// \brief analogically to get, this function is capable of retrieving Idx-th element from more than one tuple, assuming continuity of values in passed tuples
+///
+/// This definition handles case when required value lies within currently considered tuple (i.e. Idx < sizeof...(T)).
+/// In this scenario we fallback to simple get call
+template <size_t Idx, typename Ret, typename... T, typename... Tuples>
+__ALWAYS_INLINE enable_if_t< (Idx < sizeof...(T)), Ret&&> __multi_get(tuple<T...>&& t, Tuples&&... tuples)
+{
+    return get<Idx>(forward<tuple<T...>&&>(t));
+}
+
+/// \brief analogically to get, this function is capable of retrieving Idx-th element from more than one tuple, assuming continuity of values in passed tuples
+///
+/// This definition handles case when required value exceeds currently considered tuple (i.e. Idx >= sizeof...(T)).
+/// In this scenario we try to get value from next tuple by adjusting Idx and calling __multi_get recurrently
+template <size_t Idx, typename Ret, typename... T, typename... Tuples>
+__ALWAYS_INLINE enable_if_t< (Idx >= sizeof...(T)), Ret&&> __multi_get(tuple<T...>&& t, Tuples&&... tuples)
+{
+    return __multi_get<Idx - sizeof...(T), Ret>(forward<Tuples&&>(tuples)...);
+}
+
+/// \brief Helper struct for tuple_cat, it gathers required informations in form of __params, __seq and T... respectively
+///
+/// see specialization below for more
+template <typename TPack, typename TIdxSeq>
+struct __tuple_cat_helper;
+
+/// \brief Helper struct for tuple_cat
+///
+/// This struct wraps tuple creation via __multi_get into extra function __cat and also gathers
+///   all required informations, which is:
+///     __params<T...> list of combined types from all passed tuples, in particular it's the only parameter
+///          which determinates result type: __params<T...> ==> return tuple<T...>()
+///     __size_t_seq<TIdxs...> sequence of indexes related with T... (i.e. 0, 1, ..., sizeof...(T) - 1)
+template <typename... T, size_t... TIdxs>
+struct __tuple_cat_helper<__params<T...>, __size_t_seq<TIdxs...>>
+{
+    template <typename... Tuples>
+    static __ALWAYS_INLINE tuple<T...> __cat(Tuples&&... tuples)
+    {
+        return tuple<T...>(__multi_get<TIdxs, T>(forward<Tuples&&>(tuples)...)...);
+    }
+};
+
+} //end namespace __details
+
+/// \brief tuple_cat function
+///
+template <class... T>
+__ALWAYS_INLINE constexpr typename __details::__tuple_t_from_params<typename __details::__concat_params<typename T::__params_t...>::type>::type tuple_cat(T&&... tuples)
+{
+    using TotalParams = typename __details::__concat_params<typename T::__params_t...>::type;
+    using TotalParamsIdxs = __details::__make_index_t<TotalParams>;
+    return __details::__tuple_cat_helper<TotalParams, TotalParamsIdxs>::__cat(forward<T&&>(tuples)...);
+}
+
+} //end namespace cl

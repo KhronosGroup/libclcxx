@@ -1,0 +1,142 @@
+//
+// Copyright (c) 2015-2016 The Khronos Group Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and/or associated documentation files (the
+// "Materials"), to deal in the Materials without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Materials, and to
+// permit persons to whom the Materials are furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Materials.
+//
+// THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
+//
+
+#pragma once
+
+#include <__ocl_config.h>
+#include <opencl_type_traits>
+
+namespace cl
+{
+
+namespace __details
+{
+
+using __size_t_vec = conditional_t<sizeof(size_t) == sizeof(uint), uint3,
+                     conditional_t<sizeof(size_t) == sizeof(ulong), ulong3,
+                     __invalid_type>>;
+
+static_assert(!is_same<__size_t_vec, __invalid_type>::value, "Unsupported size_t size!");
+
+}
+
+namespace __spirv
+{
+extern uint VarWorkDim;
+extern __details::__size_t_vec VarGlobalSize;
+extern __details::__size_t_vec VarGlobalInvocationId;
+extern __details::__size_t_vec VarWorkgroupSize;
+extern __details::__size_t_vec VarEnqueuedWorkgroupSize;
+extern __details::__size_t_vec VarLocalInvocationId;
+extern __details::__size_t_vec VarNumWorkgroups;
+extern __details::__size_t_vec VarWorkgroupId;
+extern __details::__size_t_vec VarGlobalOffset;
+extern size_t VarGlobalLinearId;
+extern size_t VarLocalInvocationIndex;
+extern size_t VarSubgroupSize;
+extern size_t VarSubgroupMaxSize;
+extern size_t VarNumSubgroups;
+extern size_t VarNumEnqueuedSubgroups;
+extern size_t VarSubgroupId;
+extern size_t VarSubgroupLocalInvocationId;
+}
+
+#define __GET_VEC_BY_IDX(vec, idx, def) switch(idx){ \
+        case 0: return static_cast<size_t>(vec.x); \
+        case 1: return static_cast<size_t>(vec.y); \
+        case 2: return static_cast<size_t>(vec.z); \
+        default: return def; }
+
+/// \brief Returns number of dimensions passed as argument to clEnqueueNDRangeKernel
+///
+uint __ALWAYS_INLINE get_work_dim() { return __spirv::VarWorkDim; }
+
+/// \brief Returns number of work-items specified for given dimension or 1 if dimindx >= get_work_dim()
+///
+size_t __ALWAYS_INLINE get_global_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalSize, dimindx, 1); }
+
+/// \brief Returns work-item's unique global id within given dimension or 0 if dimindx >= get_work_dim()
+///
+size_t __ALWAYS_INLINE get_global_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalInvocationId, dimindx, 0); }
+
+/// \brief Returns number of local work-items specified for given dimension or 1 if dimindx >= get_work_dim()
+///
+size_t __ALWAYS_INLINE get_local_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarWorkgroupSize, dimindx, 1); }
+
+/// \brief Returns get_local_size[dimindx] for uniform work-group size or total number of work-items within work-groups that make uniform region in specified dimension.
+///         Returns 1 if dimindx >= get_work_dim()
+///
+size_t __ALWAYS_INLINE get_enqueued_local_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarEnqueuedWorkgroupSize, dimindx, 1); }
+
+/// \brief Return work-item's unique local id within given dimension or 0 if dimindx >= get_work_dim()
+///
+size_t __ALWAYS_INLINE get_local_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarLocalInvocationId, dimindx, 0); }
+
+/// \brief Returns number of work-groups specified for given dimension or 1 if dimindx >= get_work_dim()
+///
+size_t __ALWAYS_INLINE get_num_groups(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarNumWorkgroups, dimindx, 1); }
+
+/// \brief Returns work-group's unique id within given dimension or 0 if dimindx >= get_work_dim()
+///
+size_t __ALWAYS_INLINE get_group_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarWorkgroupId, dimindx, 0); }
+
+/// \brief Returns global offset value passed to clEnqueueNDRangeKernel for given dimension or 0 if dimindx >= get_work_dim()
+///
+size_t __ALWAYS_INLINE get_global_offset(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalOffset, dimindx, 0); }
+
+/// \brief Returns work-item's unique global id across all dimensions
+///
+size_t __ALWAYS_INLINE get_global_linear_id() { return __spirv::VarGlobalLinearId; }
+
+/// \brief Return work-item's unique local id across all dimensions
+///
+size_t __ALWAYS_INLINE get_local_linear_id() { return __spirv::VarLocalInvocationIndex; }
+
+/// \brief Returns number of work-items in subgroup
+///
+size_t __ALWAYS_INLINE get_sub_group_size() { return __spirv::VarSubgroupSize; }
+
+/// \brief Returns maximum size of a subgroup within the dispatch
+///
+///
+size_t __ALWAYS_INLINE get_max_sub_group_size() { return __spirv::VarSubgroupMaxSize; }
+
+/// \brief Returns number of subgroups that the current work-group is divided into
+///
+size_t __ALWAYS_INLINE get_num_sub_groups() { return __spirv::VarNumSubgroups; }
+
+/// \brief Returns get_num_sub_groups() for uniform work-group size or total number of sub-groups in work-groups which make uniform region
+///
+size_t __ALWAYS_INLINE get_enqueued_num_sub_groups() { return __spirv::VarNumEnqueuedSubgroups; }
+
+/// \brief Returns sub-group's id
+///
+size_t __ALWAYS_INLINE get_sub_group_id() { return __spirv::VarSubgroupId; }
+
+/// \brief Returns work-item's id within current subgroup
+///
+size_t __ALWAYS_INLINE get_sub_group_local_id() { return __spirv::VarSubgroupLocalInvocationId; }
+
+#undef __GET_VEC_BY_IDX
+
+}

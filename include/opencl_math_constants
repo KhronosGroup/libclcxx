@@ -1,0 +1,177 @@
+//
+// Copyright (c) 2015-2016 The Khronos Group Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and/or associated documentation files (the
+// "Materials"), to deal in the Materials without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Materials, and to
+// permit persons to whom the Materials are furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Materials.
+//
+// THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
+//
+
+#pragma once
+
+#include <__ocl_config.h>
+#include <__ocl_type_traits_vectors.h>
+
+namespace cl
+{
+
+template <class T>
+class math_constants
+{
+public:
+    __ALWAYS_INLINE static constexpr T e() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T log2e() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T log10e() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T ln2() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T ln10() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T pi() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T pi_2() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T pi_4() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T one_pi() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T two_pi() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T two_sqrtpi() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T sqrt2() __NOEXCEPT { return T(); }
+    __ALWAYS_INLINE static constexpr T sqrt1_2() __NOEXCEPT { return T(); }
+};
+
+//todo check if float -> half conversion is proper
+#ifdef cl_khr_fp16
+ #define M_E_H          2.71828174591064f
+ #define M_LOG2E_H      1.44269502162933f
+ #define M_LOG10E_H     0.43429449200630f
+ #define M_LN2_H        0.69314718246460f
+ #define M_LN10_H       2.30258512496948f
+ #define M_PI_H         3.14159274101257f
+ #define M_PI_2_H       1.57079637050629f
+ #define M_PI_4_H       0.78539818525314f
+ #define M_1_PI_H       0.31830987334251f
+ #define M_2_PI_H       0.63661974668503f
+ #define M_2_SQRTPI_H   1.12837922573090f
+ #define M_SQRT2_H      1.41421353816986f
+ #define M_SQRT1_2_H    0.70710676908493f
+#endif //cl_khr_fp16
+
+#define  M_E_F          2.71828174591064f
+#define  M_LOG2E_F      1.44269502162933f
+#define  M_LOG10E_F     0.43429449200630f
+#define  M_LN2_F        0.69314718246460f
+#define  M_LN10_F       2.30258512496948f
+#define  M_PI_F         3.14159274101257f
+#define  M_PI_2_F       1.57079637050629f
+#define  M_PI_4_F       0.78539818525314f
+#define  M_1_PI_F       0.31830987334251f
+#define  M_2_PI_F       0.63661974668503f
+#define  M_2_SQRTPI_F   1.12837922573090f
+#define  M_SQRT2_F      1.41421353816986f
+#define  M_SQRT1_2_F    0.70710676908493f
+
+#ifdef cl_khr_fp64
+ #define  M_E           2.718281828459045090796
+ #define  M_LOG2E       1.442695040888963387005
+ #define  M_LOG10E      0.434294481903251816668
+ #define  M_LN2         0.693147180559945286227
+ #define  M_LN10        2.302585092994045901094
+ #define  M_PI          3.141592653589793115998
+ #define  M_PI_2        1.570796326794896557999
+ #define  M_PI_4        0.785398163397448278999
+ #define  M_1_PI        0.318309886183790691216
+ #define  M_2_PI        0.636619772367581382433
+ #define  M_2_SQRTPI    1.128379167095512558561
+ #define  M_SQRT2       1.414213562373095145475
+ #define  M_SQRT1_2     0.707106781186547572737
+#endif //cl_khr_fp64
+
+#define __DEFINE_SINGLE_SPECIALIZATIONS(T, suffix) \
+    template <> class math_constants<T> \
+    { \
+    public: \
+        __ALWAYS_INLINE static constexpr T e() __NOEXCEPT { return T{ M_E##suffix }; } \
+        __ALWAYS_INLINE static constexpr T log2e() __NOEXCEPT { return T{ M_LOG2E##suffix }; } \
+        __ALWAYS_INLINE static constexpr T log10e() __NOEXCEPT { return T{ M_LOG10E##suffix }; } \
+        __ALWAYS_INLINE static constexpr T ln2() __NOEXCEPT { return T{ M_LN2##suffix }; } \
+        __ALWAYS_INLINE static constexpr T ln10() __NOEXCEPT { return T{ M_LN10##suffix }; } \
+        __ALWAYS_INLINE static constexpr T pi() __NOEXCEPT { return T{ M_PI##suffix }; } \
+        __ALWAYS_INLINE static constexpr T pi_2() __NOEXCEPT { return T{ M_PI_2##suffix }; } \
+        __ALWAYS_INLINE static constexpr T pi_4() __NOEXCEPT { return T{ M_PI_4##suffix }; } \
+        __ALWAYS_INLINE static constexpr T one_pi() __NOEXCEPT { return T{ M_1_PI##suffix }; } \
+        __ALWAYS_INLINE static constexpr T two_pi() __NOEXCEPT { return T{ M_2_PI##suffix }; } \
+        __ALWAYS_INLINE static constexpr T two_sqrtpi() __NOEXCEPT { return T{ M_2_SQRTPI##suffix }; } \
+        __ALWAYS_INLINE static constexpr T sqrt2() __NOEXCEPT { return T{ M_SQRT2##suffix }; } \
+        __ALWAYS_INLINE static constexpr T sqrt1_2() __NOEXCEPT { return T{ M_SQRT1_2##suffix }; } \
+    }
+
+#define __DEFINE_SPECIALIZATIONS(basetype, suffix) \
+    __DEFINE_SINGLE_SPECIALIZATIONS(basetype, suffix); \
+    __DEFINE_SINGLE_SPECIALIZATIONS(basetype##2, suffix); \
+    __DEFINE_SINGLE_SPECIALIZATIONS(basetype##3, suffix); \
+    __DEFINE_SINGLE_SPECIALIZATIONS(basetype##4, suffix); \
+    __DEFINE_SINGLE_SPECIALIZATIONS(basetype##8, suffix); \
+    __DEFINE_SINGLE_SPECIALIZATIONS(basetype##16, suffix)
+
+#ifdef cl_khr_fp16
+ __DEFINE_SPECIALIZATIONS(half, _H);
+#endif //cl_khr_fp16
+
+__DEFINE_SPECIALIZATIONS(float, _F);
+
+#ifdef cl_khr_fp64
+ __DEFINE_SPECIALIZATIONS(double, );
+#endif //cl_khr_fp64
+
+#undef __DEFINE_SINGLE_SPECIALIZATIONS
+#undef __DEFINE_SPECIALIZATIONS
+
+template<class T>
+constexpr T e_v = math_constants<T>::e();
+
+template<class T>
+constexpr T log2e_v = math_constants<T>::log2e();
+
+template<class T>
+constexpr T log10e_v = math_constants<T>::log10e();
+
+template<class T>
+constexpr T ln2_v = math_constants<T>::ln2();
+
+template<class T>
+constexpr T ln10_v = math_constants<T>::ln10();
+
+template<class T>
+constexpr T pi_v = math_constants<T>::pi();
+
+template<class T>
+constexpr T pi_2_v = math_constants<T>::pi_2();
+
+template<class T>
+constexpr T pi_4_v = math_constants<T>::pi_4();
+
+template<class T>
+constexpr T one_pi_v = math_constants<T>::one_pi();
+
+template<class T>
+constexpr T two_pi_v = math_constants<T>::two_pi();
+
+template<class T>
+constexpr T two_sqrtpi_v = math_constants<T>::two_sqrtpi();
+
+template<class T>
+constexpr T sqrt2_v = math_constants<T>::sqrt2();
+
+template<class T>
+constexpr T sqrt1_2_v = math_constants<T>::sqrt1_2();
+
+}

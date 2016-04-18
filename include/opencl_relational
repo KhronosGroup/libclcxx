@@ -1,0 +1,580 @@
+//
+// Copyright (c) 2015-2016 The Khronos Group Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and/or associated documentation files (the
+// "Materials"), to deal in the Materials without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Materials, and to
+// permit persons to whom the Materials are furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Materials.
+//
+// THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
+//
+
+#pragma once
+
+#include <__ocl_spirv_common_opcodes.h>
+#include <opencl_type_traits>
+
+namespace cl
+{
+namespace __spirv
+{
+
+MAKE_SPIRV_CALLABLE(OpAny);
+MAKE_SPIRV_CALLABLE(OpAll);
+MAKE_SPIRV_CALLABLE(OpIsNan);
+MAKE_SPIRV_CALLABLE(OpIsInf);
+MAKE_SPIRV_CALLABLE(OpIsFinite);
+MAKE_SPIRV_CALLABLE(OpIsNormal);
+MAKE_SPIRV_CALLABLE(OpSignBitSet);
+MAKE_SPIRV_CALLABLE(OpLessOrGreater);
+MAKE_SPIRV_CALLABLE(OpOrdered);
+MAKE_SPIRV_CALLABLE(OpUnordered);
+MAKE_SPIRV_CALLABLE(OpFOrdEqual);
+MAKE_SPIRV_CALLABLE(OpFOrdLessThan);
+MAKE_SPIRV_CALLABLE(OpFOrdGreaterThan);
+MAKE_SPIRV_CALLABLE(OpFOrdGreaterThanEqual);
+MAKE_SPIRV_CALLABLE(OpFOrdLessThanEqual);
+
+MAKE_SPIRV_CALLABLE(bitselect);
+
+}
+
+/// \brief returns x==y per component
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isequal(half x, half y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isequal(double x, double y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isequal(float x, float y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto isequal(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpFOrdEqual_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+/// \brief returns x!=y per component
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isnotequal(half x, half y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isnotequal(double x, double y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isnotequal(float x, float y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto isnotequal(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpFOrdNotEqual_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+/// \brief returns x>y per component
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isgreater(half x, half y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isgreater(double x, double y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isgreater(float x, float y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreater(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThan_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+/// \brief returns x>=y per component
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isgreaterequal(half x, half y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isgreaterequal(double x, double y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isgreaterequal(float x, float y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto isgreaterequal(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpFOrdGreaterThanEqual_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+/// \brief returns x<y per component
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isless(half x, half y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isless(double x, double y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isless(float x, float y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto isless(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThan_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+/// \brief returns x<=y per component
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto islessequal(half x, half y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto islessequal(double x, double y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto islessequal(float x, float y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto islessequal(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpFOrdLessThanEqual_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+/// \brief returns (x<y) || (x>y) per component
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto islessgreater(half x, half y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto islessgreater(double x, double y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto islessgreater(float x, float y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto islessgreater(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpLessOrGreater_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+/// \brief tests if arguments are ordered. Result per component is: isequal(x,x) && isequal(y,y)
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isordered(half x, half y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isordered(double x, double y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isordered(float x, float y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto isordered(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpOrdered_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+/// \brief tests if arguments are ordered. Returns true if at least one argument is NaN (per component)
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isunordered(half x, half y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<half>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(half2 x, half2 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<half2>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(half3 x, half3 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<half3>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(half4 x, half4 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<half4>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(half8 x, half8 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<half8>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(half16 x, half16 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<half16>::value>>(x, y); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isunordered(double x, double y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<double>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(double2 x, double2 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<double2>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(double3 x, double3 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<double3>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(double4 x, double4 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<double4>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(double8 x, double8 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<double8>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(double16 x, double16 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<double16>::value>>(x, y); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isunordered(float x, float y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<float>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(float2 x, float2 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<float2>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(float3 x, float3 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<float3>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(float4 x, float4 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<float4>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(float8 x, float8 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<float8>::value>>(x, y); }
+__ALWAYS_INLINE auto isunordered(float16 x, float16 y) __NOEXCEPT { return __spirv::__make_OpUnordered_call<make_vector_t<bool, vector_size<float16>::value>>(x, y); };
+
+
+
+
+
+/// \brief tests each component if it's finite value
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isfinite(half t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<half>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(half2 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<half2>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(half3 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<half3>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(half4 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<half4>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(half8 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<half8>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(half16 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<half16>::value>>(t); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isfinite(double t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<double>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(double2 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<double2>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(double3 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<double3>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(double4 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<double4>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(double8 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<double8>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(double16 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<double16>::value>>(t); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isfinite(float t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<float>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(float2 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<float2>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(float3 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<float3>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(float4 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<float4>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(float8 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<float8>::value>>(t); }
+__ALWAYS_INLINE auto isfinite(float16 t) __NOEXCEPT { return __spirv::__make_OpIsFinite_call<make_vector_t<bool, vector_size<float16>::value>>(t); };
+
+/// \brief tests each component if it's positive or negative infinity
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isinf(half t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<half>::value>>(t); }
+__ALWAYS_INLINE auto isinf(half2 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<half2>::value>>(t); }
+__ALWAYS_INLINE auto isinf(half3 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<half3>::value>>(t); }
+__ALWAYS_INLINE auto isinf(half4 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<half4>::value>>(t); }
+__ALWAYS_INLINE auto isinf(half8 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<half8>::value>>(t); }
+__ALWAYS_INLINE auto isinf(half16 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<half16>::value>>(t); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isinf(double t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<double>::value>>(t); }
+__ALWAYS_INLINE auto isinf(double2 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<double2>::value>>(t); }
+__ALWAYS_INLINE auto isinf(double3 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<double3>::value>>(t); }
+__ALWAYS_INLINE auto isinf(double4 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<double4>::value>>(t); }
+__ALWAYS_INLINE auto isinf(double8 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<double8>::value>>(t); }
+__ALWAYS_INLINE auto isinf(double16 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<double16>::value>>(t); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isinf(float t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<float>::value>>(t); }
+__ALWAYS_INLINE auto isinf(float2 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<float2>::value>>(t); }
+__ALWAYS_INLINE auto isinf(float3 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<float3>::value>>(t); }
+__ALWAYS_INLINE auto isinf(float4 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<float4>::value>>(t); }
+__ALWAYS_INLINE auto isinf(float8 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<float8>::value>>(t); }
+__ALWAYS_INLINE auto isinf(float16 t) __NOEXCEPT { return __spirv::__make_OpIsInf_call<make_vector_t<bool, vector_size<float16>::value>>(t); };
+
+/// \brief tests each component if it's NaN
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isnan(half t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<half>::value>>(t); }
+__ALWAYS_INLINE auto isnan(half2 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<half2>::value>>(t); }
+__ALWAYS_INLINE auto isnan(half3 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<half3>::value>>(t); }
+__ALWAYS_INLINE auto isnan(half4 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<half4>::value>>(t); }
+__ALWAYS_INLINE auto isnan(half8 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<half8>::value>>(t); }
+__ALWAYS_INLINE auto isnan(half16 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<half16>::value>>(t); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isnan(double t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<double>::value>>(t); }
+__ALWAYS_INLINE auto isnan(double2 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<double2>::value>>(t); }
+__ALWAYS_INLINE auto isnan(double3 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<double3>::value>>(t); }
+__ALWAYS_INLINE auto isnan(double4 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<double4>::value>>(t); }
+__ALWAYS_INLINE auto isnan(double8 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<double8>::value>>(t); }
+__ALWAYS_INLINE auto isnan(double16 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<double16>::value>>(t); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isnan(float t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<float>::value>>(t); }
+__ALWAYS_INLINE auto isnan(float2 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<float2>::value>>(t); }
+__ALWAYS_INLINE auto isnan(float3 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<float3>::value>>(t); }
+__ALWAYS_INLINE auto isnan(float4 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<float4>::value>>(t); }
+__ALWAYS_INLINE auto isnan(float8 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<float8>::value>>(t); }
+__ALWAYS_INLINE auto isnan(float16 t) __NOEXCEPT { return __spirv::__make_OpIsNan_call<make_vector_t<bool, vector_size<float16>::value>>(t); };
+
+/// \brief tests each component if it's normal value
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto isnormal(half t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<half>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(half2 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<half2>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(half3 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<half3>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(half4 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<half4>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(half8 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<half8>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(half16 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<half16>::value>>(t); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto isnormal(double t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<double>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(double2 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<double2>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(double3 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<double3>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(double4 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<double4>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(double8 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<double8>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(double16 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<double16>::value>>(t); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto isnormal(float t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<float>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(float2 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<float2>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(float3 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<float3>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(float4 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<float4>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(float8 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<float8>::value>>(t); }
+__ALWAYS_INLINE auto isnormal(float16 t) __NOEXCEPT { return __spirv::__make_OpIsNormal_call<make_vector_t<bool, vector_size<float16>::value>>(t); };
+
+/// \brief tests sign's bit value, returns true if set (per component)
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto signbit(half t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<half>::value>>(t); }
+__ALWAYS_INLINE auto signbit(half2 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<half2>::value>>(t); }
+__ALWAYS_INLINE auto signbit(half3 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<half3>::value>>(t); }
+__ALWAYS_INLINE auto signbit(half4 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<half4>::value>>(t); }
+__ALWAYS_INLINE auto signbit(half8 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<half8>::value>>(t); }
+__ALWAYS_INLINE auto signbit(half16 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<half16>::value>>(t); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto signbit(double t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<double>::value>>(t); }
+__ALWAYS_INLINE auto signbit(double2 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<double2>::value>>(t); }
+__ALWAYS_INLINE auto signbit(double3 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<double3>::value>>(t); }
+__ALWAYS_INLINE auto signbit(double4 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<double4>::value>>(t); }
+__ALWAYS_INLINE auto signbit(double8 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<double8>::value>>(t); }
+__ALWAYS_INLINE auto signbit(double16 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<double16>::value>>(t); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto signbit(float t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<float>::value>>(t); }
+__ALWAYS_INLINE auto signbit(float2 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<float2>::value>>(t); }
+__ALWAYS_INLINE auto signbit(float3 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<float3>::value>>(t); }
+__ALWAYS_INLINE auto signbit(float4 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<float4>::value>>(t); }
+__ALWAYS_INLINE auto signbit(float8 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<float8>::value>>(t); }
+__ALWAYS_INLINE auto signbit(float16 t) __NOEXCEPT { return __spirv::__make_OpSignBitSet_call<make_vector_t<bool, vector_size<float16>::value>>(t); };
+
+
+
+
+
+
+/// \brief performs: result.bit = (c.bit == 1 ? a.bit : b.bit) for all bits
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto bitselect(half a, half b, half c) __NOEXCEPT { return __spirv::__make_bitselect_call<half>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(half2 a, half2 b, half2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<half2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(half3 a, half3 b, half3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<half3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(half4 a, half4 b, half4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<half4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(half8 a, half8 b, half8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<half8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(half16 a, half16 b, half16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<half16>(a, b, c); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto bitselect(double a, double b, double c) __NOEXCEPT { return __spirv::__make_bitselect_call<double>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(double2 a, double2 b, double2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<double2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(double3 a, double3 b, double3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<double3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(double4 a, double4 b, double4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<double4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(double8 a, double8 b, double8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<double8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(double16 a, double16 b, double16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<double16>(a, b, c); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto bitselect(float a, float b, float c) __NOEXCEPT { return __spirv::__make_bitselect_call<float>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(float2 a, float2 b, float2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<float2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(float3 a, float3 b, float3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<float3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(float4 a, float4 b, float4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<float4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(float8 a, float8 b, float8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<float8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(float16 a, float16 b, float16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<float16>(a, b, c); };
+__ALWAYS_INLINE auto bitselect(char a, char b, char c) __NOEXCEPT { return __spirv::__make_bitselect_call<char>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(char2 a, char2 b, char2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<char2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(char3 a, char3 b, char3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<char3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(char4 a, char4 b, char4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<char4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(char8 a, char8 b, char8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<char8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(char16 a, char16 b, char16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<char16>(a, b, c); };
+__ALWAYS_INLINE auto bitselect(short a, short b, short c) __NOEXCEPT { return __spirv::__make_bitselect_call<short>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(short2 a, short2 b, short2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<short2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(short3 a, short3 b, short3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<short3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(short4 a, short4 b, short4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<short4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(short8 a, short8 b, short8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<short8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(short16 a, short16 b, short16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<short16>(a, b, c); };
+__ALWAYS_INLINE auto bitselect(int a, int b, int c) __NOEXCEPT { return __spirv::__make_bitselect_call<int>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(int2 a, int2 b, int2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<int2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(int3 a, int3 b, int3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<int3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(int4 a, int4 b, int4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<int4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(int8 a, int8 b, int8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<int8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(int16 a, int16 b, int16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<int16>(a, b, c); };
+__ALWAYS_INLINE auto bitselect(long a, long b, long c) __NOEXCEPT { return __spirv::__make_bitselect_call<long>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(long2 a, long2 b, long2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<long2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(long3 a, long3 b, long3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<long3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(long4 a, long4 b, long4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<long4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(long8 a, long8 b, long8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<long8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(long16 a, long16 b, long16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<long16>(a, b, c); };
+__ALWAYS_INLINE auto bitselect(uchar a, uchar b, uchar c) __NOEXCEPT { return __spirv::__make_bitselect_call<uchar>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uchar2 a, uchar2 b, uchar2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uchar2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uchar3 a, uchar3 b, uchar3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uchar3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uchar4 a, uchar4 b, uchar4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uchar4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uchar8 a, uchar8 b, uchar8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uchar8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uchar16 a, uchar16 b, uchar16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uchar16>(a, b, c); };
+__ALWAYS_INLINE auto bitselect(ushort a, ushort b, ushort c) __NOEXCEPT { return __spirv::__make_bitselect_call<ushort>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ushort2 a, ushort2 b, ushort2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ushort2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ushort3 a, ushort3 b, ushort3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ushort3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ushort4 a, ushort4 b, ushort4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ushort4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ushort8 a, ushort8 b, ushort8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ushort8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ushort16 a, ushort16 b, ushort16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ushort16>(a, b, c); };
+__ALWAYS_INLINE auto bitselect(uint a, uint b, uint c) __NOEXCEPT { return __spirv::__make_bitselect_call<uint>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uint2 a, uint2 b, uint2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uint2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uint3 a, uint3 b, uint3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uint3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uint4 a, uint4 b, uint4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uint4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uint8 a, uint8 b, uint8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uint8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(uint16 a, uint16 b, uint16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<uint16>(a, b, c); };
+__ALWAYS_INLINE auto bitselect(ulong a, ulong b, ulong c) __NOEXCEPT { return __spirv::__make_bitselect_call<ulong>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ulong2 a, ulong2 b, ulong2 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ulong2>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ulong3 a, ulong3 b, ulong3 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ulong3>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ulong4 a, ulong4 b, ulong4 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ulong4>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ulong8 a, ulong8 b, ulong8 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ulong8>(a, b, c); }
+__ALWAYS_INLINE auto bitselect(ulong16 a, ulong16 b, ulong16 c) __NOEXCEPT { return __spirv::__make_bitselect_call<ulong16>(a, b, c); };
+
+
+
+
+/// \brief performs: result = (c == true ? a : b) per component
+///
+#ifdef cl_khr_fp16
+__ALWAYS_INLINE auto select(half a, half b, make_vector_t<bool, vector_size<half>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<half>(a, b, c); }
+__ALWAYS_INLINE auto select(half2 a, half2 b, make_vector_t<bool, vector_size<half2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<half2>(a, b, c); }
+__ALWAYS_INLINE auto select(half3 a, half3 b, make_vector_t<bool, vector_size<half3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<half3>(a, b, c); }
+__ALWAYS_INLINE auto select(half4 a, half4 b, make_vector_t<bool, vector_size<half4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<half4>(a, b, c); }
+__ALWAYS_INLINE auto select(half8 a, half8 b, make_vector_t<bool, vector_size<half8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<half8>(a, b, c); }
+__ALWAYS_INLINE auto select(half16 a, half16 b, make_vector_t<bool, vector_size<half16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<half16>(a, b, c); };
+#endif //cl_khr_fp16
+#ifdef cl_khr_fp64
+__ALWAYS_INLINE auto select(double a, double b, make_vector_t<bool, vector_size<double>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<double>(a, b, c); }
+__ALWAYS_INLINE auto select(double2 a, double2 b, make_vector_t<bool, vector_size<double2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<double2>(a, b, c); }
+__ALWAYS_INLINE auto select(double3 a, double3 b, make_vector_t<bool, vector_size<double3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<double3>(a, b, c); }
+__ALWAYS_INLINE auto select(double4 a, double4 b, make_vector_t<bool, vector_size<double4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<double4>(a, b, c); }
+__ALWAYS_INLINE auto select(double8 a, double8 b, make_vector_t<bool, vector_size<double8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<double8>(a, b, c); }
+__ALWAYS_INLINE auto select(double16 a, double16 b, make_vector_t<bool, vector_size<double16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<double16>(a, b, c); };
+#endif //cl_khr_fp64
+__ALWAYS_INLINE auto select(float a, float b, make_vector_t<bool, vector_size<float>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<float>(a, b, c); }
+__ALWAYS_INLINE auto select(float2 a, float2 b, make_vector_t<bool, vector_size<float2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<float2>(a, b, c); }
+__ALWAYS_INLINE auto select(float3 a, float3 b, make_vector_t<bool, vector_size<float3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<float3>(a, b, c); }
+__ALWAYS_INLINE auto select(float4 a, float4 b, make_vector_t<bool, vector_size<float4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<float4>(a, b, c); }
+__ALWAYS_INLINE auto select(float8 a, float8 b, make_vector_t<bool, vector_size<float8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<float8>(a, b, c); }
+__ALWAYS_INLINE auto select(float16 a, float16 b, make_vector_t<bool, vector_size<float16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<float16>(a, b, c); };
+__ALWAYS_INLINE auto select(char a, char b, make_vector_t<bool, vector_size<char>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<char>(a, b, c); }
+__ALWAYS_INLINE auto select(char2 a, char2 b, make_vector_t<bool, vector_size<char2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<char2>(a, b, c); }
+__ALWAYS_INLINE auto select(char3 a, char3 b, make_vector_t<bool, vector_size<char3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<char3>(a, b, c); }
+__ALWAYS_INLINE auto select(char4 a, char4 b, make_vector_t<bool, vector_size<char4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<char4>(a, b, c); }
+__ALWAYS_INLINE auto select(char8 a, char8 b, make_vector_t<bool, vector_size<char8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<char8>(a, b, c); }
+__ALWAYS_INLINE auto select(char16 a, char16 b, make_vector_t<bool, vector_size<char16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<char16>(a, b, c); };
+__ALWAYS_INLINE auto select(short a, short b, make_vector_t<bool, vector_size<short>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<short>(a, b, c); }
+__ALWAYS_INLINE auto select(short2 a, short2 b, make_vector_t<bool, vector_size<short2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<short2>(a, b, c); }
+__ALWAYS_INLINE auto select(short3 a, short3 b, make_vector_t<bool, vector_size<short3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<short3>(a, b, c); }
+__ALWAYS_INLINE auto select(short4 a, short4 b, make_vector_t<bool, vector_size<short4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<short4>(a, b, c); }
+__ALWAYS_INLINE auto select(short8 a, short8 b, make_vector_t<bool, vector_size<short8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<short8>(a, b, c); }
+__ALWAYS_INLINE auto select(short16 a, short16 b, make_vector_t<bool, vector_size<short16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<short16>(a, b, c); };
+__ALWAYS_INLINE auto select(int a, int b, make_vector_t<bool, vector_size<int>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<int>(a, b, c); }
+__ALWAYS_INLINE auto select(int2 a, int2 b, make_vector_t<bool, vector_size<int2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<int2>(a, b, c); }
+__ALWAYS_INLINE auto select(int3 a, int3 b, make_vector_t<bool, vector_size<int3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<int3>(a, b, c); }
+__ALWAYS_INLINE auto select(int4 a, int4 b, make_vector_t<bool, vector_size<int4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<int4>(a, b, c); }
+__ALWAYS_INLINE auto select(int8 a, int8 b, make_vector_t<bool, vector_size<int8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<int8>(a, b, c); }
+__ALWAYS_INLINE auto select(int16 a, int16 b, make_vector_t<bool, vector_size<int16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<int16>(a, b, c); };
+__ALWAYS_INLINE auto select(long a, long b, make_vector_t<bool, vector_size<long>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<long>(a, b, c); }
+__ALWAYS_INLINE auto select(long2 a, long2 b, make_vector_t<bool, vector_size<long2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<long2>(a, b, c); }
+__ALWAYS_INLINE auto select(long3 a, long3 b, make_vector_t<bool, vector_size<long3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<long3>(a, b, c); }
+__ALWAYS_INLINE auto select(long4 a, long4 b, make_vector_t<bool, vector_size<long4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<long4>(a, b, c); }
+__ALWAYS_INLINE auto select(long8 a, long8 b, make_vector_t<bool, vector_size<long8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<long8>(a, b, c); }
+__ALWAYS_INLINE auto select(long16 a, long16 b, make_vector_t<bool, vector_size<long16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<long16>(a, b, c); };
+__ALWAYS_INLINE auto select(uchar a, uchar b, make_vector_t<bool, vector_size<uchar>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uchar>(a, b, c); }
+__ALWAYS_INLINE auto select(uchar2 a, uchar2 b, make_vector_t<bool, vector_size<uchar2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uchar2>(a, b, c); }
+__ALWAYS_INLINE auto select(uchar3 a, uchar3 b, make_vector_t<bool, vector_size<uchar3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uchar3>(a, b, c); }
+__ALWAYS_INLINE auto select(uchar4 a, uchar4 b, make_vector_t<bool, vector_size<uchar4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uchar4>(a, b, c); }
+__ALWAYS_INLINE auto select(uchar8 a, uchar8 b, make_vector_t<bool, vector_size<uchar8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uchar8>(a, b, c); }
+__ALWAYS_INLINE auto select(uchar16 a, uchar16 b, make_vector_t<bool, vector_size<uchar16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uchar16>(a, b, c); };
+__ALWAYS_INLINE auto select(ushort a, ushort b, make_vector_t<bool, vector_size<ushort>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ushort>(a, b, c); }
+__ALWAYS_INLINE auto select(ushort2 a, ushort2 b, make_vector_t<bool, vector_size<ushort2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ushort2>(a, b, c); }
+__ALWAYS_INLINE auto select(ushort3 a, ushort3 b, make_vector_t<bool, vector_size<ushort3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ushort3>(a, b, c); }
+__ALWAYS_INLINE auto select(ushort4 a, ushort4 b, make_vector_t<bool, vector_size<ushort4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ushort4>(a, b, c); }
+__ALWAYS_INLINE auto select(ushort8 a, ushort8 b, make_vector_t<bool, vector_size<ushort8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ushort8>(a, b, c); }
+__ALWAYS_INLINE auto select(ushort16 a, ushort16 b, make_vector_t<bool, vector_size<ushort16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ushort16>(a, b, c); };
+__ALWAYS_INLINE auto select(uint a, uint b, make_vector_t<bool, vector_size<uint>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uint>(a, b, c); }
+__ALWAYS_INLINE auto select(uint2 a, uint2 b, make_vector_t<bool, vector_size<uint2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uint2>(a, b, c); }
+__ALWAYS_INLINE auto select(uint3 a, uint3 b, make_vector_t<bool, vector_size<uint3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uint3>(a, b, c); }
+__ALWAYS_INLINE auto select(uint4 a, uint4 b, make_vector_t<bool, vector_size<uint4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uint4>(a, b, c); }
+__ALWAYS_INLINE auto select(uint8 a, uint8 b, make_vector_t<bool, vector_size<uint8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uint8>(a, b, c); }
+__ALWAYS_INLINE auto select(uint16 a, uint16 b, make_vector_t<bool, vector_size<uint16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<uint16>(a, b, c); };
+__ALWAYS_INLINE auto select(ulong a, ulong b, make_vector_t<bool, vector_size<ulong>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ulong>(a, b, c); }
+__ALWAYS_INLINE auto select(ulong2 a, ulong2 b, make_vector_t<bool, vector_size<ulong2>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ulong2>(a, b, c); }
+__ALWAYS_INLINE auto select(ulong3 a, ulong3 b, make_vector_t<bool, vector_size<ulong3>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ulong3>(a, b, c); }
+__ALWAYS_INLINE auto select(ulong4 a, ulong4 b, make_vector_t<bool, vector_size<ulong4>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ulong4>(a, b, c); }
+__ALWAYS_INLINE auto select(ulong8 a, ulong8 b, make_vector_t<bool, vector_size<ulong8>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ulong8>(a, b, c); }
+__ALWAYS_INLINE auto select(ulong16 a, ulong16 b, make_vector_t<bool, vector_size<ulong16>::value> c) __NOEXCEPT { return __spirv::__make_OpSelect_call<ulong16>(a, b, c); };
+
+/// \brief returns 'or' of all components
+///
+__ALWAYS_INLINE auto any(bool t) __NOEXCEPT { return __spirv::__make_OpAny_call<bool>(t); }
+__ALWAYS_INLINE auto any(bool2 t) __NOEXCEPT { return __spirv::__make_OpAny_call<bool>(t); }
+__ALWAYS_INLINE auto any(bool3 t) __NOEXCEPT { return __spirv::__make_OpAny_call<bool>(t); }
+__ALWAYS_INLINE auto any(bool4 t) __NOEXCEPT { return __spirv::__make_OpAny_call<bool>(t); }
+__ALWAYS_INLINE auto any(bool8 t) __NOEXCEPT { return __spirv::__make_OpAny_call<bool>(t); }
+__ALWAYS_INLINE auto any(bool16 t) __NOEXCEPT { return __spirv::__make_OpAny_call<bool>(t); };
+
+/// \brief returns 'and' of all components
+///
+__ALWAYS_INLINE auto all(bool t) __NOEXCEPT { return __spirv::__make_OpAll_call<bool>(t); }
+__ALWAYS_INLINE auto all(bool2 t) __NOEXCEPT { return __spirv::__make_OpAll_call<bool>(t); }
+__ALWAYS_INLINE auto all(bool3 t) __NOEXCEPT { return __spirv::__make_OpAll_call<bool>(t); }
+__ALWAYS_INLINE auto all(bool4 t) __NOEXCEPT { return __spirv::__make_OpAll_call<bool>(t); }
+__ALWAYS_INLINE auto all(bool8 t) __NOEXCEPT { return __spirv::__make_OpAll_call<bool>(t); }
+__ALWAYS_INLINE auto all(bool16 t) __NOEXCEPT { return __spirv::__make_OpAll_call<bool>(t); };
+
+}
