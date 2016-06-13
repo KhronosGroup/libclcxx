@@ -25,13 +25,13 @@ kernel void worker()
     uchar4 c;
     
     c = convert_cast<uchar4>(i);
-    // CHECK: call spir_func <4 x i8> @_Z{{[1-9][0-9]+}}__spirv_UConvert_Ruchar4{{[a-zA-Z0-9_]+}}(<4 x i32> {{.*}})
+    // CHECK: call spir_func <4 x i8> @_Z{{[1-9][0-9]+}}__spirv_SConvert_Ruchar4{{[a-zA-Z0-9_]+}}(<4 x i32> {{.*}})
     c = convert_cast<uchar4, saturate::on>(i);
     // CHECK-NOT: call spir_func <4 x i8> @_Z{{[1-9][0-9]+}}__spirv_SatConvertSToU_Ruchar4_sat{{[a-zA-Z0-9_]+}}(<4 x i32> {{.*}})
     // CHECK: call spir_func <4 x i8> @_Z{{[1-9][0-9]+}}__spirv_SatConvertSToU_Ruchar4{{[a-zA-Z0-9_]+}}(<4 x i32> {{.*}})
     
     s = convert_cast<short4>(u);
-    // CHECK: call spir_func <4 x i16> @_Z{{[1-9][0-9]+}}__spirv_SConvert_Rshort4{{[a-zA-Z0-9_]+}}(<4 x i32> {{.*}})
+    // CHECK: call spir_func <4 x i16> @_Z{{[1-9][0-9]+}}__spirv_UConvert_Rshort4{{[a-zA-Z0-9_]+}}(<4 x i32> {{.*}})
     s = convert_cast<short4, saturate::on>(u);
     // CHECK-NOT: call spir_func <4 x i16> @_Z{{[1-9][0-9]+}}__spirv_SatConvertUToS_Rshort4_sat{{[a-zA-Z0-9_]+}}(<4 x i32> {{.*}})
     // CHECK: call spir_func <4 x i16> @_Z{{[1-9][0-9]+}}__spirv_SatConvertUToS_Rshort4{{[a-zA-Z0-9_]+}}(<4 x i32> {{.*}})

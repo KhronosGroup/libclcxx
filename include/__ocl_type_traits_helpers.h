@@ -63,22 +63,22 @@ struct __any_type
 /// \brief Helper simulating C++17 fold expression: value = First && ... && Args;
 ///
 template <bool... Args>
-struct __all : public true_type { };
+struct __all : true_type { };
 
 /// \brief Helper simulating C++17 fold expression: value = First && ... && Args;
 ///
 template <bool First, bool... Args>
-struct __all<First, Args...> : public integral_constant<bool, First && __all<Args...>::value> { };
+struct __all<First, Args...> : integral_constant<bool, First && __all<Args...>::value> { };
 
 /// \brief Helper simulating C++17 fold expression: value = First || ... || Args;
 ///
 template <bool... Args>
-struct __any : public false_type { };
+struct __any : false_type { };
 
 /// \brief Helper simulating C++17 fold expression: value = First || ... || Args;
 ///
 template <bool First, bool... Args>
-struct __any<First, Args...> : public integral_constant<bool, First || __any<Args...>::value> { };
+struct __any<First, Args...> : integral_constant<bool, First || __any<Args...>::value> { };
 
 #endif //Simulate fold expressions
 
@@ -165,7 +165,7 @@ struct __find { };
 ///              if Idx > 0, returns Idx + index of first T in parameter pack.
 ///
 template <size_t Idx, typename T, typename C, typename... Rest>
-struct __find<Idx, T, C, Rest...> : public integral_constant<size_t, is_same<T, C>::value ? Idx : __find<Idx+1, Rest...>::value> { };
+struct __find<Idx, T, C, Rest...> : conditional_t<is_same<T, C>::value, integral_constant<size_t, Idx>, __find<Idx+1, T, Rest...>> { };
 
 /// \brief Helper class which shifts given Idx until it finds first type T in given parameter pack.
 ///     That is: if Idx == 0, returns index of first T in parameter pack,
@@ -173,7 +173,7 @@ struct __find<Idx, T, C, Rest...> : public integral_constant<size_t, is_same<T, 
 ///
 //handle __params
 template <size_t Idx, typename T, typename... InTypes>
-struct __find<Idx, T, __params<InTypes...>> { using type = typename __find<Idx, T, InTypes...>::type; };
+struct __find<Idx, T, __params<InTypes...>> : __find<Idx, T, InTypes...> { };
 
 
 #endif //"Parameter pack storing and querying"
@@ -186,6 +186,12 @@ struct __find<Idx, T, __params<InTypes...>> { using type = typename __find<Idx, 
 template <class T, T... I>
 struct __seq { template <T II> using prepend = __seq<T, II, I...>; template <T II> using append = __seq<T, I..., II>; };
 
+template <class T, T Value, size_t Count>
+struct __repeat { using type = typename __repeat<T, Value, Count - 1>::type::template prepend<Value>; };
+
+template <class T, T Value>
+struct __repeat<T, Value, 0> { using type = __seq<T>; };
+
 /// \brief shorthand when T == size_t
 ///
 template <size_t... I>
@@ -193,13 +199,13 @@ using __size_t_seq = __seq<size_t, I...>;
 
 /// \brief Helper class for making size_t sequences of form: Start, Start + 1, ..., End - 1
 ///
-template <size_t Start, size_t End, bool Ok = (Start < End)>
+template <size_t Start, size_t End, size_t Step = 1, bool Ok = (Start < End)>
 struct __make_size_t_seq { using type = __size_t_seq<>; };
 
 /// \brief Helper class for making size_t sequences of form: Start, Start + 1, ..., End - 1
 ///
-template <size_t Start, size_t End>
-struct __make_size_t_seq<Start, End, true> { using type = typename __make_size_t_seq<Start+1, End>::type::template prepend<Start>; };
+template <size_t Start, size_t End, size_t Step>
+struct __make_size_t_seq<Start, End, Step, true> { using type = typename __make_size_t_seq<Start+Step, End>::type::template prepend<Start>; };
 
 /// \brief Helper alias for making size_t sequences of form: 0, 1, ..., sizeof...(T) - 1
 ///
@@ -211,6 +217,12 @@ struct __make_index<__params<T...>> { using type = typename __make_size_t_seq<0,
 
 template <typename... T>
 using __make_index_t = typename __make_index<T...>::type;
+
+template <class T, class Seq1, class Seq2>
+struct __concat_seq;
+
+template <class T, class T1, T1... Seq1, class T2, T2... Seq2>
+struct __concat_seq<T, __seq<T1, Seq1...>, __seq<T2, Seq2...>> { using type = __seq<T, static_cast<T>(Seq1)..., static_cast<T>(Seq2)...>; };
 
 #endif //Compile-time sequences
 
@@ -278,7 +290,6 @@ using __filter = __filter_impl<Selector, 0, Types...>;
 template <typename F>
 struct __call_type
 {
-public:
     using args = __invalid_type;
     using ret = __invalid_type;
     using obj = __invalid_type;

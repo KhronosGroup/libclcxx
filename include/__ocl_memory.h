@@ -25,11 +25,173 @@
 
 #include <__ocl_config.h>
 #include <__ocl_utility.h>
+#include <opencl_type_traits>
 
 namespace cl
 {
 namespace __details
 {
+
+enum __as_ptr_type
+{
+    __as_ptr_referencable,
+    __as_ptr_notrefencable,
+    __as_ptr_array
+};
+
+template <class T, template <class> class AsModifier, class Impl, __as_ptr_type ImplType>
+class __as_ptr_impl {
+    template <class U>
+    using add_as_t = typename AsModifier<U>::type;
+
+public:
+    typedef T                           element_type;
+    typedef ptrdiff_t                   difference_type;
+    typedef add_as_t<T>*                pointer;
+    typedef add_as_t<add_const_t<T>>*   const_pointer;
+    typedef add_as_t<T>&                reference;
+    typedef add_as_t<add_const_t<T>>&   const_reference;
+    
+    //constructors:
+    __ALWAYS_INLINE constexpr __as_ptr_impl() __NOEXCEPT = default;
+    __ALWAYS_INLINE explicit __as_ptr_impl(pointer p) __NOEXCEPT: __ptr(p) { };
+    __ALWAYS_INLINE __as_ptr_impl(const __as_ptr_impl &r) __NOEXCEPT = default;
+    __ALWAYS_INLINE __as_ptr_impl(__as_ptr_impl &&r) __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __as_ptr_impl(nullptr_t) __NOEXCEPT: __as_ptr_impl() { };
+
+    //assignment:
+    __ALWAYS_INLINE Impl& operator = (const __as_ptr_impl &r) __NOEXCEPT{ __ptr = r.__ptr; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (__as_ptr_impl &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (pointer r) __NOEXCEPT{ __ptr = r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (nullptr_t)__NOEXCEPT{ reset(); return reinterpret_cast<Impl&>(*this); }
+
+    //observers:
+    __ALWAYS_INLINE reference operator*() const __NOEXCEPT{ return *get(); }
+    __ALWAYS_INLINE pointer operator->() const __NOEXCEPT{ return get(); }
+    __ALWAYS_INLINE pointer get() const __NOEXCEPT{ return __ptr; }
+    __ALWAYS_INLINE explicit operator bool() const __NOEXCEPT{ return get() != nullptr; }
+
+    //modifiers:
+    __ALWAYS_INLINE pointer release() __NOEXCEPT{ pointer t = __ptr; __ptr = nullptr; return t; }
+    __ALWAYS_INLINE void reset(pointer p = pointer()) __NOEXCEPT{ __ptr = p; }
+    __ALWAYS_INLINE void swap(__as_ptr_impl& r) __NOEXCEPT{ cl::swap(*this, r); }
+
+    //modifiers specific for OpenCL C++:
+    __ALWAYS_INLINE Impl operator++() __NOEXCEPT{ Impl t(reinterpret_cast<Impl&>(*this)); ++__ptr; return t; }
+    __ALWAYS_INLINE Impl& operator++(int)__NOEXCEPT{ __ptr++; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl operator--() __NOEXCEPT{ Impl t(reinterpret_cast<Impl&>(*this)); --__ptr; return t; }
+    __ALWAYS_INLINE Impl& operator--(int)__NOEXCEPT{ --__ptr; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator += (difference_type r) __NOEXCEPT{ __ptr += r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl operator + (difference_type r) __NOEXCEPT{ Impl t(reinterpret_cast<Impl&>(*this)); t += r; return t; }
+    __ALWAYS_INLINE Impl operator - (difference_type r) __NOEXCEPT{ Impl t(reinterpret_cast<Impl&>(*this)); t -= r; return t; }
+
+private:
+    add_as_t<T>* __ptr;
+};
+
+template <class T, template <class> class AsModifier, class Impl>
+class __as_ptr_impl<T, AsModifier, Impl, __as_ptr_notrefencable> {
+    template <class U>
+    using add_as_t = typename AsModifier<U>::type;
+
+public:
+    typedef T                               element_type;
+    typedef ptrdiff_t                       difference_type;
+    typedef add_as_t<T>*                    pointer;
+    typedef add_as_t<add_constant_t<T>>*    const_pointer;
+    
+    //constructors:
+    __ALWAYS_INLINE constexpr __as_ptr_impl() __NOEXCEPT = default;
+    __ALWAYS_INLINE explicit __as_ptr_impl(pointer p) __NOEXCEPT: __ptr(p) { };
+    __ALWAYS_INLINE __as_ptr_impl(const __as_ptr_impl &r) __NOEXCEPT = default;
+    __ALWAYS_INLINE __as_ptr_impl(__as_ptr_impl &&r) __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __as_ptr_impl(nullptr_t) __NOEXCEPT: __as_ptr_impl() { };
+
+    //assignment:
+    __ALWAYS_INLINE Impl& operator = (const __as_ptr_impl &r) __NOEXCEPT{ __ptr = r.__ptr; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (__as_ptr_impl &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (pointer r) __NOEXCEPT{ __ptr = r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (nullptr_t)__NOEXCEPT{ reset(); return reinterpret_cast<Impl&>(*this); }
+
+    //observers:
+    __ALWAYS_INLINE pointer operator->() const __NOEXCEPT{ return get(); }
+    __ALWAYS_INLINE pointer get() const __NOEXCEPT{ return __ptr; }
+    __ALWAYS_INLINE explicit operator bool() const __NOEXCEPT{ return get() != nullptr; }
+
+    //modifiers:
+    __ALWAYS_INLINE pointer release() __NOEXCEPT{ pointer t = __ptr; __ptr = nullptr; return t; }
+    __ALWAYS_INLINE void reset(pointer p = pointer()) __NOEXCEPT{ __ptr = p; }
+    __ALWAYS_INLINE void swap(__as_ptr_impl& r) __NOEXCEPT{ cl::swap(*this, r); }
+
+    //modifiers specific for OpenCL C++:
+    __ALWAYS_INLINE Impl operator++() __NOEXCEPT{ __as_ptr_impl t(reinterpret_cast<Impl&>(*this)); ++__ptr; return t; }
+    __ALWAYS_INLINE Impl& operator++(int)__NOEXCEPT{ __ptr++; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl operator--() __NOEXCEPT{ __as_ptr_impl t(reinterpret_cast<Impl&>(*this)); --__ptr; return t; }
+    __ALWAYS_INLINE Impl& operator--(int)__NOEXCEPT{ --__ptr; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator += (difference_type r) __NOEXCEPT{ __ptr += r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl operator + (difference_type r) __NOEXCEPT{ __as_ptr_impl t(reinterpret_cast<Impl&>(*this)); t += r; return t; }
+    __ALWAYS_INLINE Impl operator - (difference_type r) __NOEXCEPT{ __as_ptr_impl t(reinterpret_cast<Impl&>(*this)); t -= r; return t; }
+
+private:
+    add_as_t<T>* __ptr;
+};
+
+template <class T, template <class> class AsModifier, class Impl>
+class __as_ptr_impl<T[], AsModifier, Impl, __as_ptr_array> {
+    template <class U>
+    using add_as_t = typename AsModifier<U>::type;
+    
+public:
+    typedef T                           element_type;
+    typedef ptrdiff_t                   difference_type;
+    typedef add_as_t<T>*                pointer;
+    typedef add_as_t<add_const_t<T>>*   const_pointer;
+    typedef add_as_t<T>&                reference;
+    typedef add_as_t<add_const_t<T>>&   const_reference;
+
+    //constructors:
+    __ALWAYS_INLINE constexpr __as_ptr_impl() __NOEXCEPT = default;
+    __ALWAYS_INLINE explicit __as_ptr_impl(pointer p) __NOEXCEPT: __ptr(p) { };
+    __ALWAYS_INLINE __as_ptr_impl(const __as_ptr_impl &r) __NOEXCEPT = default;
+    __ALWAYS_INLINE __as_ptr_impl(__as_ptr_impl &&r) __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __as_ptr_impl(nullptr_t) __NOEXCEPT: __as_ptr_impl() { };
+
+    //assignment:
+    __ALWAYS_INLINE Impl& operator = (const __as_ptr_impl &r) __NOEXCEPT{ __ptr = r.__ptr; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (__as_ptr_impl &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (pointer r) __NOEXCEPT{ __ptr = r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator = (nullptr_t)__NOEXCEPT{ reset(); return reinterpret_cast<Impl&>(*this); }
+
+    //observers:
+    __ALWAYS_INLINE reference operator[](size_t pos) const __NOEXCEPT{ return get()[pos]; }
+    __ALWAYS_INLINE pointer get() const __NOEXCEPT{ return __ptr; }
+    __ALWAYS_INLINE explicit operator bool() const __NOEXCEPT{ return get() != nullptr; }
+
+    //modifiers:
+    __ALWAYS_INLINE pointer release() __NOEXCEPT{ pointer tmp = __ptr; __ptr = nullptr; return tmp; }
+    __ALWAYS_INLINE void reset(pointer p) __NOEXCEPT{ __ptr = p; }
+    __ALWAYS_INLINE void reset(nullptr_t p = nullptr) __NOEXCEPT{ reset(pointer()); }
+    __ALWAYS_INLINE void swap(__as_ptr_impl& r) __NOEXCEPT{ cl::swap(*this, r); }
+
+    //modifiers specific for OpenCL C++:
+    __ALWAYS_INLINE Impl operator++() __NOEXCEPT{ Impl t(reinterpret_cast<Impl&>(*this)); ++__ptr; return t; }
+    __ALWAYS_INLINE Impl& operator++(int)__NOEXCEPT{ __ptr++; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl operator--() __NOEXCEPT{ Impl t(reinterpret_cast<Impl&>(*this)); --__ptr; return t; }
+    __ALWAYS_INLINE Impl& operator--(int)__NOEXCEPT{ --__ptr; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator += (difference_type r) __NOEXCEPT{ __ptr += r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl& operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return reinterpret_cast<Impl&>(*this); }
+    __ALWAYS_INLINE Impl operator + (difference_type r) __NOEXCEPT{ Impl t(reinterpret_cast<Impl&>(*this)); t += r; return t; }
+    __ALWAYS_INLINE Impl operator - (difference_type r) __NOEXCEPT{ Impl t(reinterpret_cast<Impl&>(*this)); t -= r; return t; }
+
+private:
+    add_as_t<T>* __ptr;
+};
+
+template <class T>
+struct __choose_as_ptr_impl_type : public integral_constant<__as_ptr_type, (is_array<T>::value ? __as_ptr_array : (is_void<T>::value ? __as_ptr_notrefencable : __as_ptr_referencable))> {};
+
 /// \brief Helper class to compute a size of local memory. The class is used by enqueue_kernel methods
 ///
 template <class T>
@@ -49,148 +211,57 @@ struct __local_ptr_size
 /// The class is needed to preserve the address space information without
 /// extending C++ language.
 template <class T>
-class global_ptr {
+class global_ptr : public __details::__as_ptr_impl<T, add_global, global_ptr<T>, __details::__choose_as_ptr_impl_type<T>::value> {
+    using __parent = __details::__as_ptr_impl<T, add_global, global_ptr<T>, __details::__choose_as_ptr_impl_type<T>::value>;
 public:
-    //types:
-    typedef T                       element_type;
-    typedef ptrdiff_t               difference_type;
-    typedef add_global_t<T>*        pointer;
-    typedef add_global_t<const T>*  const_pointer;
-    typedef add_global_t<T>&        reference;
-    typedef add_global_t<const T>&  const_reference;
-
-    //constructors:
-    constexpr __ALWAYS_INLINE global_ptr() __NOEXCEPT = default;
-    explicit __ALWAYS_INLINE global_ptr(pointer p) __NOEXCEPT: __ptr(p) { };
-    __ALWAYS_INLINE global_ptr(const global_ptr &r) __NOEXCEPT = default;
-    __ALWAYS_INLINE global_ptr(global_ptr &&r) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE global_ptr(nullptr_t) __NOEXCEPT: global_ptr() { };
-
-    //assignment:
-    global_ptr& __ALWAYS_INLINE operator = (const global_ptr &r) __NOEXCEPT{ __ptr = r.__ptr; return *this; }
-    global_ptr& __ALWAYS_INLINE operator = (global_ptr &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return *this; }
-    global_ptr& __ALWAYS_INLINE operator = (pointer r) __NOEXCEPT{ __ptr = r; return *this; }
-    global_ptr& __ALWAYS_INLINE operator = (nullptr_t)__NOEXCEPT{ reset(); return *this; }
-
-    //observers:
-    add_lvalue_reference_t<add_global_t<T>> __ALWAYS_INLINE operator*() const __NOEXCEPT{ return *get(); }
-    pointer __ALWAYS_INLINE operator->() const __NOEXCEPT{ return get(); }
-    pointer __ALWAYS_INLINE get() const __NOEXCEPT{ return __ptr; }
-    explicit __ALWAYS_INLINE operator bool() const __NOEXCEPT{ return get() != nullptr; }
-
-    //modifiers:
-    pointer __ALWAYS_INLINE release() __NOEXCEPT{ pointer t = __ptr; __ptr = nullptr; return t; }
-    void __ALWAYS_INLINE reset(pointer p = pointer()) __NOEXCEPT{ __ptr = p; }
-    void __ALWAYS_INLINE swap(global_ptr& r) __NOEXCEPT{ cl::swap(*this, r); }
-
-    //modifiers specific for OpenCL C++:
-    global_ptr __ALWAYS_INLINE operator++() __NOEXCEPT{ global_ptr t(*this); ++__ptr; return t; }
-    global_ptr& __ALWAYS_INLINE operator++(int)__NOEXCEPT{ __ptr++; return *this; }
-    global_ptr __ALWAYS_INLINE operator--() __NOEXCEPT{ global_ptr t(*this); --__ptr; return t; }
-    global_ptr& __ALWAYS_INLINE operator--(int)__NOEXCEPT{ --__ptr; return *this; }
-    global_ptr& __ALWAYS_INLINE operator += (difference_type r) __NOEXCEPT{ __ptr += r; return *this; }
-    global_ptr& __ALWAYS_INLINE operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return *this; }
-    global_ptr __ALWAYS_INLINE operator + (difference_type r) __NOEXCEPT{ global_ptr t(*this); t += r; return t; }
-    global_ptr __ALWAYS_INLINE operator - (difference_type r) __NOEXCEPT{ global_ptr t(*this); t -= r; return t; }
-
-private:
-    add_global_t<T>* __ptr;
-};
-
-/// \brief Explicit address space pointer class specialization for arrays
-///
-template <class T>
-class global_ptr<T[]> {
-public:
-    typedef T                       element_type;
-    typedef ptrdiff_t               difference_type;
-    typedef add_global_t<T>*        pointer;
-    typedef add_global_t<const T>*  const_pointer;
-    typedef add_global_t<T>&        reference;
-    typedef add_global_t<const T>&  const_reference;
-
-    //constructors:
-    constexpr __ALWAYS_INLINE global_ptr() __NOEXCEPT = default;
-    explicit __ALWAYS_INLINE global_ptr(pointer p) __NOEXCEPT: __ptr(p) { };
-    __ALWAYS_INLINE global_ptr(const global_ptr &r) __NOEXCEPT = default;
-    __ALWAYS_INLINE global_ptr(global_ptr &&r) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE global_ptr(nullptr_t) __NOEXCEPT: global_ptr() { };
-
-    //assignment:
-    global_ptr& __ALWAYS_INLINE operator = (const global_ptr &r) __NOEXCEPT{ __ptr = r.__ptr; return *this; }
-    global_ptr& __ALWAYS_INLINE operator = (global_ptr &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return *this; }
-    global_ptr& __ALWAYS_INLINE operator = (pointer r) __NOEXCEPT{ __ptr = r; return *this; }
-    global_ptr& __ALWAYS_INLINE operator = (nullptr_t)__NOEXCEPT{ reset(); return *this; }
-
-    //observers:
-    reference __ALWAYS_INLINE operator[](size_t pos) const __NOEXCEPT{ return get()[pos]; }
-    pointer __ALWAYS_INLINE get() const __NOEXCEPT{ return __ptr; }
-    explicit __ALWAYS_INLINE operator bool() const __NOEXCEPT{ return get() != nullptr; }
-
-    //modifiers:
-    pointer __ALWAYS_INLINE release() __NOEXCEPT{ pointer tmp = __ptr; __ptr = nullptr; return tmp; }
-    void __ALWAYS_INLINE reset(pointer p) __NOEXCEPT{ __ptr = p; }
-    void __ALWAYS_INLINE reset(nullptr_t p = nullptr) __NOEXCEPT{ reset(pointer()); }
-    void __ALWAYS_INLINE swap(global_ptr& r) __NOEXCEPT{ cl::swap(*this, r); }
-
-    //modifiers specific for OpenCL C++:
-    global_ptr __ALWAYS_INLINE operator++() __NOEXCEPT{ global_ptr t(*this); ++__ptr; return t; }
-    global_ptr __ALWAYS_INLINE operator++(int)__NOEXCEPT{ __ptr++; return *this; }
-    global_ptr __ALWAYS_INLINE operator--() __NOEXCEPT{ global_ptr t(*this); --__ptr; return t; }
-    global_ptr __ALWAYS_INLINE operator--(int)__NOEXCEPT{ --__ptr; return *this; }
-    global_ptr __ALWAYS_INLINE operator += (difference_type r) __NOEXCEPT{ __ptr += r; return *this; }
-    global_ptr __ALWAYS_INLINE operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return *this; }
-    global_ptr __ALWAYS_INLINE operator + (difference_type r) __NOEXCEPT{ global_ptr t(*this); t += r; return t; }
-    global_ptr __ALWAYS_INLINE operator - (difference_type r) __NOEXCEPT{ global_ptr t(*this); t -= r; return t; }
-
-private:
-    add_global_t<T>* __ptr;
+    using __parent::__parent;
+    using __parent::operator =;
 };
 
 /// \brief Non-member address space pointer compare operators.
 ///
 template<class T>
-bool __ALWAYS_INLINE operator == (const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return a.get() == b.get(); }
+__ALWAYS_INLINE bool operator == (const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return a.get() == b.get(); }
 template<class T>
-bool __ALWAYS_INLINE operator != (const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return !(a == b); }
+__ALWAYS_INLINE bool operator != (const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return !(a == b); }
 template<class T>
-bool __ALWAYS_INLINE operator<(const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return a.get() < b.get(); } //TODO: cl::less should be used
+__ALWAYS_INLINE bool operator<(const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return a.get() < b.get(); } //TODO: cl::less should be used
 template<class T>
-bool __ALWAYS_INLINE operator>(const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return b < a; }
+__ALWAYS_INLINE bool operator>(const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return b < a; }
 template<class T>
-bool __ALWAYS_INLINE operator <= (const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return !(b < a); }
+__ALWAYS_INLINE bool operator <= (const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return !(b < a); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return !(a < b); }
+__ALWAYS_INLINE bool operator >= (const global_ptr<T> &a, const global_ptr<T> &b) __NOEXCEPT{ return !(a < b); }
 
 template<class T>
-bool __ALWAYS_INLINE operator == (const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !x; }
+__ALWAYS_INLINE bool operator == (const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !x; }
 template<class T>
-bool __ALWAYS_INLINE operator == (nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return !x; }
+__ALWAYS_INLINE bool operator == (nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return !x; }
 template<class T>
-bool __ALWAYS_INLINE operator != (const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return (bool)x; }
+__ALWAYS_INLINE bool operator != (const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return (bool)x; }
 template<class T>
-bool __ALWAYS_INLINE operator != (nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return (bool)x; }
+__ALWAYS_INLINE bool operator != (nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return (bool)x; }
 template<class T>
-bool __ALWAYS_INLINE operator<(const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return x.get() < nullptr; } //TODO: cl:less should be used
+__ALWAYS_INLINE bool operator<(const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return x.get() < nullptr; } //TODO: cl:less should be used
 template<class T>
-bool __ALWAYS_INLINE operator<(nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return nullptr < x.get(); } //TODO: cl:less should be used
+__ALWAYS_INLINE bool operator<(nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return nullptr < x.get(); } //TODO: cl:less should be used
 template<class T>
-bool __ALWAYS_INLINE operator>(const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return nullptr < x; }
+__ALWAYS_INLINE bool operator>(const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return nullptr < x; }
 template<class T>
-bool __ALWAYS_INLINE operator>(nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return x < nullptr; }
+__ALWAYS_INLINE bool operator>(nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return x < nullptr; }
 template<class T>
-bool __ALWAYS_INLINE operator <= (const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(nullptr < x); }
+__ALWAYS_INLINE bool operator <= (const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(nullptr < x); }
 template<class T>
-bool __ALWAYS_INLINE operator <= (nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return !(x < nullptr); }
+__ALWAYS_INLINE bool operator <= (nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return !(x < nullptr); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(x < nullptr); }
+__ALWAYS_INLINE bool operator >= (const global_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(x < nullptr); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return !(nullptr < x); }
+__ALWAYS_INLINE bool operator >= (nullptr_t, const global_ptr<T> &x) __NOEXCEPT{ return !(nullptr < x); }
 
 /// \brief Non-member address space pointer swap function
 ///
 template<class T>
-void __ALWAYS_INLINE swap(global_ptr<T>& a, global_ptr<T>& b) __NOEXCEPT { a.swap(b); }
+__ALWAYS_INLINE void swap(global_ptr<T>& a, global_ptr<T>& b) __NOEXCEPT { a.swap(b); }
 
 /// \brief Explicit local address space pointer class
 ///
@@ -198,152 +269,59 @@ void __ALWAYS_INLINE swap(global_ptr<T>& a, global_ptr<T>& b) __NOEXCEPT { a.swa
 /// The class is needed to preserve the address space information without
 /// extending C++ language.
 template <class T>
-class local_ptr {
+class local_ptr : public __details::__as_ptr_impl<T, add_local, local_ptr<T>, __details::__choose_as_ptr_impl_type<T>::value> {
+    using __parent = __details::__as_ptr_impl<T, add_local, local_ptr<T>, __details::__choose_as_ptr_impl_type<T>::value>;
 public:
-    //types:
-    typedef T                      element_type;
-    typedef ptrdiff_t              difference_type;
-    typedef add_local_t<T>*        pointer;
-    typedef add_local_t<const T>*  const_pointer;
-    typedef add_local_t<T>&        reference;
-    typedef add_local_t<const T>&  const_reference;
-
-    typedef __details::__local_ptr_size<T> size_type;
-
-    //constructors:
-    constexpr __ALWAYS_INLINE local_ptr() __NOEXCEPT = default;
-    explicit __ALWAYS_INLINE local_ptr(pointer p) __NOEXCEPT: __ptr(p) { };
-    __ALWAYS_INLINE local_ptr(const local_ptr &r) __NOEXCEPT = default;
-    __ALWAYS_INLINE local_ptr(local_ptr &&r) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE local_ptr(nullptr_t) __NOEXCEPT: local_ptr() { };
-
-    //assignment:
-    local_ptr& __ALWAYS_INLINE operator = (const local_ptr &r) __NOEXCEPT{ __ptr = r.__ptr; return *this; }
-    local_ptr& __ALWAYS_INLINE operator = (local_ptr &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return *this; }
-    local_ptr& __ALWAYS_INLINE operator = (pointer r) __NOEXCEPT{ __ptr = r; return *this; }
-    local_ptr& __ALWAYS_INLINE operator = (nullptr_t)__NOEXCEPT{ reset(); return *this; }
-
-    //observers:
-    add_lvalue_reference_t<add_local_t<T>> __ALWAYS_INLINE operator*() const __NOEXCEPT{ return *get(); }
-    pointer __ALWAYS_INLINE operator->() const __NOEXCEPT{ return get(); }
-    pointer __ALWAYS_INLINE get() const __NOEXCEPT{ return __ptr; }
-    explicit __ALWAYS_INLINE operator bool() const __NOEXCEPT{ return get() != nullptr; }
-
-    //modifiers:
-    pointer __ALWAYS_INLINE release() __NOEXCEPT{ pointer t = __ptr; __ptr = nullptr; return t; }
-    void __ALWAYS_INLINE reset(pointer p = pointer()) __NOEXCEPT{ __ptr = p; }
-    void __ALWAYS_INLINE swap(local_ptr& r) __NOEXCEPT{ cl::swap(*this, r); }
-
-    //modifiers specific for OpenCL C++:
-    local_ptr __ALWAYS_INLINE operator++() __NOEXCEPT{ local_ptr t(*this); ++__ptr; return t; }
-    local_ptr& __ALWAYS_INLINE operator++(int)__NOEXCEPT{ __ptr++; return *this; }
-    local_ptr __ALWAYS_INLINE operator--() __NOEXCEPT{ local_ptr t(*this); --__ptr; return t; }
-    local_ptr& __ALWAYS_INLINE operator--(int)__NOEXCEPT{ --__ptr; return *this; }
-    local_ptr& __ALWAYS_INLINE operator += (difference_type r) __NOEXCEPT{ __ptr += r; return *this; }
-    local_ptr& __ALWAYS_INLINE operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return *this; }
-    local_ptr __ALWAYS_INLINE operator + (difference_type r) __NOEXCEPT{ local_ptr t(*this); t += r; return t; }
-    local_ptr __ALWAYS_INLINE operator - (difference_type r) __NOEXCEPT{ local_ptr t(*this); t -= r; return t; }
-
-private:
-    add_local_t<T>* __ptr;
-};
-
-/// \brief Explicit address space pointer class specialization for arrays
-///
-template <class T>
-class local_ptr<T[]> {
-public:
-    typedef T                      element_type;
-    typedef ptrdiff_t              difference_type;
-    typedef add_local_t<T>*        pointer;
-    typedef add_local_t<const T>*  const_pointer;
-    typedef add_local_t<T>&        reference;
-    typedef add_local_t<const T>&  const_reference;
-
-    typedef __details::__local_ptr_size<T> size_type;
-
-    //constructors:
-    constexpr __ALWAYS_INLINE local_ptr() __NOEXCEPT = default;
-    explicit __ALWAYS_INLINE local_ptr(pointer p) __NOEXCEPT: __ptr(p) { };
-    __ALWAYS_INLINE local_ptr(const local_ptr &r) __NOEXCEPT = default;
-    __ALWAYS_INLINE local_ptr(local_ptr &&r) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE local_ptr(nullptr_t) __NOEXCEPT: local_ptr() { };
-
-    //assignment:
-    local_ptr& __ALWAYS_INLINE operator = (const local_ptr &r) __NOEXCEPT{ __ptr = r.__ptr; return *this; }
-    local_ptr& __ALWAYS_INLINE operator = (local_ptr &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return *this; }
-    local_ptr& __ALWAYS_INLINE operator = (pointer r) __NOEXCEPT{ __ptr = r; return *this; }
-    local_ptr& __ALWAYS_INLINE operator = (nullptr_t)__NOEXCEPT{ reset(); return *this; }
-
-    //observers:
-    reference __ALWAYS_INLINE operator[](size_t pos) const __NOEXCEPT{ return get()[pos]; }
-    pointer __ALWAYS_INLINE get() const __NOEXCEPT{ return __ptr; }
-    explicit __ALWAYS_INLINE operator bool() const __NOEXCEPT{ return get() != nullptr; }
-
-    //modifiers:
-    pointer __ALWAYS_INLINE release() __NOEXCEPT{ pointer tmp = __ptr; __ptr = nullptr; return tmp; }
-    void __ALWAYS_INLINE reset(pointer p) __NOEXCEPT{ __ptr = p; }
-    void __ALWAYS_INLINE reset(nullptr_t p = nullptr) __NOEXCEPT{ reset(pointer()); }
-    void __ALWAYS_INLINE swap(local_ptr& r) __NOEXCEPT{ cl::swap(*this, r); }
-
-    //modifiers specific for OpenCL C++:
-    local_ptr __ALWAYS_INLINE operator++() __NOEXCEPT{ local_ptr t(*this); ++__ptr; return t; }
-    local_ptr __ALWAYS_INLINE operator++(int)__NOEXCEPT{ __ptr++; return *this; }
-    local_ptr __ALWAYS_INLINE operator--() __NOEXCEPT{ local_ptr t(*this); --__ptr; return t; }
-    local_ptr __ALWAYS_INLINE operator--(int)__NOEXCEPT{ --__ptr; return *this; }
-    local_ptr __ALWAYS_INLINE operator += (difference_type r) __NOEXCEPT{ __ptr += r; return *this; }
-    local_ptr __ALWAYS_INLINE operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return *this; }
-    local_ptr __ALWAYS_INLINE operator + (difference_type r) __NOEXCEPT{ local_ptr t(*this); t += r; return t; }
-    local_ptr __ALWAYS_INLINE operator - (difference_type r) __NOEXCEPT{ local_ptr t(*this); t -= r; return t; }
-
-private:
-    add_local_t<T>* __ptr;
+    using __parent::__parent;
+    using __parent::operator =;
+    
+    using size_type = __details::__local_ptr_size<T>;
 };
 
 /// \brief Non-member address space pointer compare operators.
 ///
 template<class T>
-bool __ALWAYS_INLINE operator == (const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return a.get() == b.get(); }
+__ALWAYS_INLINE bool operator == (const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return a.get() == b.get(); }
 template<class T>
-bool __ALWAYS_INLINE operator != (const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return !(a == b); }
+__ALWAYS_INLINE bool operator != (const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return !(a == b); }
 template<class T>
-bool __ALWAYS_INLINE operator<(const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return a.get() < b.get(); } //TODO: cl::less should be used
+__ALWAYS_INLINE bool operator<(const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return a.get() < b.get(); } //TODO: cl::less should be used
 template<class T>
-bool __ALWAYS_INLINE operator>(const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return b < a; }
+__ALWAYS_INLINE bool operator>(const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return b < a; }
 template<class T>
-bool __ALWAYS_INLINE operator <= (const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return !(b < a); }
+__ALWAYS_INLINE bool operator <= (const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return !(b < a); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return !(a < b); }
+__ALWAYS_INLINE bool operator >= (const local_ptr<T> &a, const local_ptr<T> &b) __NOEXCEPT{ return !(a < b); }
 
 template<class T>
-bool __ALWAYS_INLINE operator == (const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !x; }
+__ALWAYS_INLINE bool operator == (const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !x; }
 template<class T>
-bool __ALWAYS_INLINE operator == (nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return !x; }
+__ALWAYS_INLINE bool operator == (nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return !x; }
 template<class T>
-bool __ALWAYS_INLINE operator != (const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return (bool)x; }
+__ALWAYS_INLINE bool operator != (const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return (bool)x; }
 template<class T>
-bool __ALWAYS_INLINE operator != (nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return (bool)x; }
+__ALWAYS_INLINE bool operator != (nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return (bool)x; }
 template<class T>
-bool __ALWAYS_INLINE operator<(const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return x.get() < nullptr; } //TODO: cl:less should be used
+__ALWAYS_INLINE bool operator<(const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return x.get() < nullptr; } //TODO: cl:less should be used
 template<class T>
-bool __ALWAYS_INLINE operator<(nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return nullptr < x.get(); } //TODO: cl:less should be used
+__ALWAYS_INLINE bool operator<(nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return nullptr < x.get(); } //TODO: cl:less should be used
 template<class T>
-bool __ALWAYS_INLINE operator>(const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return nullptr < x; }
+__ALWAYS_INLINE bool operator>(const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return nullptr < x; }
 template<class T>
-bool __ALWAYS_INLINE operator>(nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return x < nullptr; }
+__ALWAYS_INLINE bool operator>(nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return x < nullptr; }
 template<class T>
-bool __ALWAYS_INLINE operator <= (const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(nullptr < x); }
+__ALWAYS_INLINE bool operator <= (const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(nullptr < x); }
 template<class T>
-bool __ALWAYS_INLINE operator <= (nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return !(x < nullptr); }
+__ALWAYS_INLINE bool operator <= (nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return !(x < nullptr); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(x < nullptr); }
+__ALWAYS_INLINE bool operator >= (const local_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(x < nullptr); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return !(nullptr < x); }
+__ALWAYS_INLINE bool operator >= (nullptr_t, const local_ptr<T> &x) __NOEXCEPT{ return !(nullptr < x); }
 
 /// \brief Non-member address space pointer swap function
 ///
 template<class T>
-void __ALWAYS_INLINE swap(local_ptr<T>& a, local_ptr<T>& b) __NOEXCEPT { a.swap(b); }
+__ALWAYS_INLINE void swap(local_ptr<T>& a, local_ptr<T>& b) __NOEXCEPT { a.swap(b); }
 
 /// \brief Explicit constant address space pointer class
 ///
@@ -351,148 +329,57 @@ void __ALWAYS_INLINE swap(local_ptr<T>& a, local_ptr<T>& b) __NOEXCEPT { a.swap(
 /// The class is needed to preserve the address space information without
 /// extending C++ language.
 template <class T>
-class constant_ptr {
+class constant_ptr : public __details::__as_ptr_impl<T, add_constant, constant_ptr<T>, __details::__choose_as_ptr_impl_type<T>::value> {
+    using __parent = __details::__as_ptr_impl<T, add_constant, constant_ptr<T>, __details::__choose_as_ptr_impl_type<T>::value>;
 public:
-    //types:
-    typedef T                         element_type;
-    typedef ptrdiff_t                 difference_type;
-    typedef add_constant_t<T>*        pointer;
-    typedef add_constant_t<const T>*  const_pointer;
-    typedef add_constant_t<T>&        reference;
-    typedef add_constant_t<const T>&  const_reference;
-
-    //constructors:
-    constexpr __ALWAYS_INLINE constant_ptr() __NOEXCEPT = default;
-    explicit __ALWAYS_INLINE constant_ptr(pointer p) __NOEXCEPT: __ptr(p) { };
-    __ALWAYS_INLINE constant_ptr(const constant_ptr &r) __NOEXCEPT = default;
-    __ALWAYS_INLINE constant_ptr(constant_ptr &&r) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE constant_ptr(nullptr_t) __NOEXCEPT: constant_ptr() { };
-
-    //assignment:
-    constant_ptr& __ALWAYS_INLINE operator = (const constant_ptr &r) __NOEXCEPT{ __ptr = r.__ptr; return *this; }
-    constant_ptr& __ALWAYS_INLINE operator = (constant_ptr &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return *this; }
-    constant_ptr& __ALWAYS_INLINE operator = (pointer r) __NOEXCEPT{ __ptr = r; return *this; }
-    constant_ptr& __ALWAYS_INLINE operator = (nullptr_t)__NOEXCEPT{ reset(); return *this; }
-
-    //observers:
-    add_lvalue_reference_t<add_constant_t<T>> __ALWAYS_INLINE operator*() const __NOEXCEPT{ return *get(); }
-    pointer __ALWAYS_INLINE operator->() const __NOEXCEPT{ return get(); }
-    pointer __ALWAYS_INLINE get() const __NOEXCEPT{ return __ptr; }
-    explicit __ALWAYS_INLINE operator bool() const __NOEXCEPT{ return get() != nullptr; }
-
-    //modifiers:
-    pointer __ALWAYS_INLINE release() __NOEXCEPT{ pointer t = __ptr; __ptr = nullptr; return t; }
-    void __ALWAYS_INLINE reset(pointer p = pointer()) __NOEXCEPT{ __ptr = p; }
-    void __ALWAYS_INLINE swap(constant_ptr& r) __NOEXCEPT{ cl::swap(*this, r); }
-
-    //modifiers specific for OpenCL C++:
-    constant_ptr __ALWAYS_INLINE operator++() __NOEXCEPT{ constant_ptr t(*this); ++__ptr; return t; }
-    constant_ptr& __ALWAYS_INLINE operator++(int)__NOEXCEPT{ __ptr++; return *this; }
-    constant_ptr __ALWAYS_INLINE operator--() __NOEXCEPT{ constant_ptr t(*this); --__ptr; return t; }
-    constant_ptr& __ALWAYS_INLINE operator--(int)__NOEXCEPT{ --__ptr; return *this; }
-    constant_ptr& __ALWAYS_INLINE operator += (difference_type r) __NOEXCEPT{ __ptr += r; return *this; }
-    constant_ptr& __ALWAYS_INLINE operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return *this; }
-    constant_ptr __ALWAYS_INLINE operator + (difference_type r) __NOEXCEPT{ constant_ptr t(*this); t += r; return t; }
-    constant_ptr __ALWAYS_INLINE operator - (difference_type r) __NOEXCEPT{ constant_ptr t(*this); t -= r; return t; }
-
-private:
-    add_constant_t<T>* __ptr;
-};
-
-/// \brief Explicit address space pointer class specialization for arrays
-///
-template <class T>
-class constant_ptr<T[]> {
-public:
-    typedef T                         element_type;
-    typedef ptrdiff_t                 difference_type;
-    typedef add_constant_t<T>*        pointer;
-    typedef add_constant_t<const T>*  const_pointer;
-    typedef add_constant_t<T>&        reference;
-    typedef add_constant_t<const T>&  const_reference;
-
-    //constructors:
-    constexpr __ALWAYS_INLINE constant_ptr() __NOEXCEPT = default;
-    explicit __ALWAYS_INLINE constant_ptr(pointer p) __NOEXCEPT: __ptr(p) { };
-    __ALWAYS_INLINE constant_ptr(const constant_ptr &r) __NOEXCEPT = default;
-    __ALWAYS_INLINE constant_ptr(constant_ptr &&r) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE constant_ptr(nullptr_t) __NOEXCEPT: constant_ptr() { };
-
-    //assignment:
-    constant_ptr& __ALWAYS_INLINE operator = (const constant_ptr &r) __NOEXCEPT{ __ptr = r.__ptr; return *this; }
-    constant_ptr& __ALWAYS_INLINE operator = (constant_ptr &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return *this; }
-    constant_ptr& __ALWAYS_INLINE operator = (pointer r) __NOEXCEPT{ __ptr = r; return *this; }
-    constant_ptr& __ALWAYS_INLINE operator = (nullptr_t)__NOEXCEPT{ reset(); return *this; }
-
-    //observers:
-    reference __ALWAYS_INLINE operator[](size_t pos) const __NOEXCEPT{ return get()[pos]; }
-    pointer __ALWAYS_INLINE get() const __NOEXCEPT{ return __ptr; }
-    explicit __ALWAYS_INLINE operator bool() const __NOEXCEPT{ return get() != nullptr; }
-
-    //modifiers:
-    pointer __ALWAYS_INLINE release() __NOEXCEPT{ pointer tmp = __ptr; __ptr = nullptr; return tmp; }
-    void __ALWAYS_INLINE reset(pointer p) __NOEXCEPT{ __ptr = p; }
-    void __ALWAYS_INLINE reset(nullptr_t p = nullptr) __NOEXCEPT{ reset(pointer()); }
-    void __ALWAYS_INLINE swap(constant_ptr& r) __NOEXCEPT{ cl::swap(*this, r); }
-
-    //modifiers specific for OpenCL C++:
-    constant_ptr __ALWAYS_INLINE operator++() __NOEXCEPT{ constant_ptr t(*this); ++__ptr; return t; }
-    constant_ptr __ALWAYS_INLINE operator++(int)__NOEXCEPT{ __ptr++; return *this; }
-    constant_ptr __ALWAYS_INLINE operator--() __NOEXCEPT{ constant_ptr t(*this); --__ptr; return t; }
-    constant_ptr __ALWAYS_INLINE operator--(int)__NOEXCEPT{ --__ptr; return *this; }
-    constant_ptr __ALWAYS_INLINE operator += (difference_type r) __NOEXCEPT{ __ptr += r; return *this; }
-    constant_ptr __ALWAYS_INLINE operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return *this; }
-    constant_ptr __ALWAYS_INLINE operator + (difference_type r) __NOEXCEPT{ constant_ptr t(*this); t += r; return t; }
-    constant_ptr __ALWAYS_INLINE operator - (difference_type r) __NOEXCEPT{ constant_ptr t(*this); t -= r; return t; }
-
-private:
-    add_constant_t<T>* __ptr;
+    using __parent::__parent;
+    using __parent::operator =;
 };
 
 /// \brief Non-member address space pointer compare operators.
 ///
 template<class T>
-bool __ALWAYS_INLINE operator == (const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return a.get() == b.get(); }
+__ALWAYS_INLINE bool operator == (const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return a.get() == b.get(); }
 template<class T>
-bool __ALWAYS_INLINE operator != (const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return !(a == b); }
+__ALWAYS_INLINE bool operator != (const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return !(a == b); }
 template<class T>
-bool __ALWAYS_INLINE operator<(const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return a.get() < b.get(); } //TODO: cl::less should be used
+__ALWAYS_INLINE bool operator<(const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return a.get() < b.get(); } //TODO: cl::less should be used
 template<class T>
-bool __ALWAYS_INLINE operator>(const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return b < a; }
+__ALWAYS_INLINE bool operator>(const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return b < a; }
 template<class T>
-bool __ALWAYS_INLINE operator <= (const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return !(b < a); }
+__ALWAYS_INLINE bool operator <= (const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return !(b < a); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return !(a < b); }
+__ALWAYS_INLINE bool operator >= (const constant_ptr<T> &a, const constant_ptr<T> &b) __NOEXCEPT{ return !(a < b); }
 
 template<class T>
-bool __ALWAYS_INLINE operator == (const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !x; }
+__ALWAYS_INLINE bool operator == (const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !x; }
 template<class T>
-bool __ALWAYS_INLINE operator == (nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return !x; }
+__ALWAYS_INLINE bool operator == (nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return !x; }
 template<class T>
-bool __ALWAYS_INLINE operator != (const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return (bool)x; }
+__ALWAYS_INLINE bool operator != (const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return (bool)x; }
 template<class T>
-bool __ALWAYS_INLINE operator != (nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return (bool)x; }
+__ALWAYS_INLINE bool operator != (nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return (bool)x; }
 template<class T>
-bool __ALWAYS_INLINE operator<(const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return x.get() < nullptr; } //TODO: cl:less should be used
+__ALWAYS_INLINE bool operator<(const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return x.get() < nullptr; } //TODO: cl:less should be used
 template<class T>
-bool __ALWAYS_INLINE operator<(nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return nullptr < x.get(); } //TODO: cl:less should be used
+__ALWAYS_INLINE bool operator<(nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return nullptr < x.get(); } //TODO: cl:less should be used
 template<class T>
-bool __ALWAYS_INLINE operator>(const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return nullptr < x; }
+__ALWAYS_INLINE bool operator>(const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return nullptr < x; }
 template<class T>
-bool __ALWAYS_INLINE operator>(nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return x < nullptr; }
+__ALWAYS_INLINE bool operator>(nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return x < nullptr; }
 template<class T>
-bool __ALWAYS_INLINE operator <= (const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(nullptr < x); }
+__ALWAYS_INLINE bool operator <= (const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(nullptr < x); }
 template<class T>
-bool __ALWAYS_INLINE operator <= (nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return !(x < nullptr); }
+__ALWAYS_INLINE bool operator <= (nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return !(x < nullptr); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(x < nullptr); }
+__ALWAYS_INLINE bool operator >= (const constant_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(x < nullptr); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return !(nullptr < x); }
+__ALWAYS_INLINE bool operator >= (nullptr_t, const constant_ptr<T> &x) __NOEXCEPT{ return !(nullptr < x); }
 
 /// \brief Non-member address space pointer swap function
 ///
 template<class T>
-void __ALWAYS_INLINE swap(constant_ptr<T>& a, constant_ptr<T>& b) __NOEXCEPT { a.swap(b); }
+__ALWAYS_INLINE void swap(constant_ptr<T>& a, constant_ptr<T>& b) __NOEXCEPT { a.swap(b); }
 
 /// \brief Explicit private address space pointer class
 ///
@@ -500,147 +387,95 @@ void __ALWAYS_INLINE swap(constant_ptr<T>& a, constant_ptr<T>& b) __NOEXCEPT { a
 /// The class is needed to preserve the address space information without
 /// extending C++ language.
 template <class T>
-class private_ptr {
+class private_ptr : public __details::__as_ptr_impl<T, add_private, private_ptr<T>, __details::__choose_as_ptr_impl_type<T>::value> {
+    using __parent = __details::__as_ptr_impl<T, add_private, private_ptr<T>, __details::__choose_as_ptr_impl_type<T>::value>;
 public:
-    //types:
-    typedef T                        element_type;
-    typedef ptrdiff_t                difference_type;
-    typedef add_private_t<T>*        pointer;
-    typedef add_private_t<const T>*  const_pointer;
-    typedef add_private_t<T>&        reference;
-    typedef add_private_t<const T>&  const_reference;
-
-    //constructors:
-    constexpr __ALWAYS_INLINE private_ptr() __NOEXCEPT = default;
-    explicit __ALWAYS_INLINE private_ptr(pointer p) __NOEXCEPT: __ptr(p) { };
-    __ALWAYS_INLINE private_ptr(const private_ptr &r) __NOEXCEPT = default;
-    __ALWAYS_INLINE private_ptr(private_ptr &&r) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE private_ptr(nullptr_t) __NOEXCEPT: private_ptr() { };
-
-    //assignment:
-    private_ptr& __ALWAYS_INLINE operator = (const private_ptr &r) __NOEXCEPT{ __ptr = r.__ptr; return *this; }
-    private_ptr& __ALWAYS_INLINE operator = (private_ptr &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return *this; }
-    private_ptr& __ALWAYS_INLINE operator = (pointer r) __NOEXCEPT{ __ptr = r; return *this; }
-    private_ptr& __ALWAYS_INLINE operator = (nullptr_t)__NOEXCEPT{ reset(); return *this; }
-
-    //observers:
-    add_lvalue_reference_t<add_private_t<T>> __ALWAYS_INLINE operator*() const __NOEXCEPT{ return *get(); }
-    pointer __ALWAYS_INLINE operator->() const __NOEXCEPT{ return get(); }
-    pointer __ALWAYS_INLINE get() const __NOEXCEPT{ return __ptr; }
-    explicit __ALWAYS_INLINE operator bool() const __NOEXCEPT{ return get() != nullptr; }
-
-    //modifiers:
-    pointer __ALWAYS_INLINE release() __NOEXCEPT{ pointer t = __ptr; __ptr = nullptr; return t; }
-    void __ALWAYS_INLINE reset(pointer p = pointer()) __NOEXCEPT{ __ptr = p; }
-    void __ALWAYS_INLINE swap(private_ptr& r) __NOEXCEPT{ cl::swap(*this, r); }
-
-    //modifiers specific for OpenCL C++:
-    private_ptr __ALWAYS_INLINE operator++() __NOEXCEPT{ private_ptr t(*this); ++__ptr; return t; }
-    private_ptr& __ALWAYS_INLINE operator++(int)__NOEXCEPT{ __ptr++; return *this; }
-    private_ptr __ALWAYS_INLINE operator--() __NOEXCEPT{ private_ptr t(*this); --__ptr; return t; }
-    private_ptr& __ALWAYS_INLINE operator--(int)__NOEXCEPT{ --__ptr; return *this; }
-    private_ptr& __ALWAYS_INLINE operator += (difference_type r) __NOEXCEPT{ __ptr += r; return *this; }
-    private_ptr& __ALWAYS_INLINE operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return *this; }
-    private_ptr __ALWAYS_INLINE operator + (difference_type r) __NOEXCEPT{ private_ptr t(*this); t += r; return t; }
-    private_ptr __ALWAYS_INLINE operator - (difference_type r) __NOEXCEPT{ private_ptr t(*this); t -= r; return t; }
-
-private:
-    add_private_t<T>* __ptr;
-};
-
-/// \brief Explicit address space pointer class specialization for arrays
-///
-template <class T>
-class private_ptr<T[]> {
-public:
-    typedef T                        element_type;
-    typedef ptrdiff_t                difference_type;
-    typedef add_private_t<T>*        pointer;
-    typedef add_private_t<const T>*  const_pointer;
-    typedef add_private_t<T>&        reference;
-    typedef add_private_t<const T>&  const_reference;
-
-    //constructors:
-    constexpr __ALWAYS_INLINE private_ptr() __NOEXCEPT = default;
-    explicit __ALWAYS_INLINE private_ptr(pointer p) __NOEXCEPT: __ptr(p) { };
-    __ALWAYS_INLINE private_ptr(const private_ptr &r) __NOEXCEPT = default;
-    __ALWAYS_INLINE private_ptr(private_ptr &&r) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE private_ptr(nullptr_t) __NOEXCEPT: private_ptr() { };
-
-    //assignment:
-    private_ptr& __ALWAYS_INLINE operator = (const private_ptr &r) __NOEXCEPT{ __ptr = r.__ptr; return *this; }
-    private_ptr& __ALWAYS_INLINE operator = (private_ptr &&r) __NOEXCEPT{ __ptr = cl::move(r.__ptr); return *this; }
-    private_ptr& __ALWAYS_INLINE operator = (pointer r) __NOEXCEPT{ __ptr = r; return *this; }
-    private_ptr& __ALWAYS_INLINE operator = (nullptr_t)__NOEXCEPT{ reset(); return *this; }
-
-    //observers:
-    reference __ALWAYS_INLINE operator[](size_t pos) const __NOEXCEPT{ return get()[pos]; }
-    pointer __ALWAYS_INLINE get() const __NOEXCEPT{ return __ptr; }
-    explicit __ALWAYS_INLINE operator bool() const __NOEXCEPT{ return get() != nullptr; }
-
-    //modifiers:
-    pointer __ALWAYS_INLINE release() __NOEXCEPT{ pointer tmp = __ptr; __ptr = nullptr; return tmp; }
-    void __ALWAYS_INLINE reset(pointer p) __NOEXCEPT{ __ptr = p; }
-    void __ALWAYS_INLINE reset(nullptr_t p = nullptr) __NOEXCEPT{ reset(pointer()); }
-    void __ALWAYS_INLINE swap(private_ptr& r) __NOEXCEPT{ cl::swap(*this, r); }
-
-    //modifiers specific for OpenCL C++:
-    private_ptr __ALWAYS_INLINE operator++() __NOEXCEPT{ private_ptr t(*this); ++__ptr; return t; }
-    private_ptr __ALWAYS_INLINE operator++(int)__NOEXCEPT{ __ptr++; return *this; }
-    private_ptr __ALWAYS_INLINE operator--() __NOEXCEPT{ private_ptr t(*this); --__ptr; return t; }
-    private_ptr __ALWAYS_INLINE operator--(int)__NOEXCEPT{ --__ptr; return *this; }
-    private_ptr __ALWAYS_INLINE operator += (difference_type r) __NOEXCEPT{ __ptr += r; return *this; }
-    private_ptr __ALWAYS_INLINE operator -= (difference_type r) __NOEXCEPT{ __ptr -= r; return *this; }
-    private_ptr __ALWAYS_INLINE operator + (difference_type r) __NOEXCEPT{ private_ptr t(*this); t += r; return t; }
-    private_ptr __ALWAYS_INLINE operator - (difference_type r) __NOEXCEPT{ private_ptr t(*this); t -= r; return t; }
-
-private:
-    add_private_t<T>* __ptr;
+    using __parent::__parent;
+    using __parent::operator =;
 };
 
 /// \brief Non-member address space pointer compare operators.
 ///
 template<class T>
-bool __ALWAYS_INLINE operator == (const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return a.get() == b.get(); }
+__ALWAYS_INLINE bool operator == (const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return a.get() == b.get(); }
 template<class T>
-bool __ALWAYS_INLINE operator != (const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return !(a == b); }
+__ALWAYS_INLINE bool operator != (const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return !(a == b); }
 template<class T>
-bool __ALWAYS_INLINE operator<(const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return a.get() < b.get(); } //TODO: cl::less should be used
+__ALWAYS_INLINE bool operator<(const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return a.get() < b.get(); } //TODO: cl::less should be used
 template<class T>
-bool __ALWAYS_INLINE operator>(const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return b < a; }
+__ALWAYS_INLINE bool operator>(const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return b < a; }
 template<class T>
-bool __ALWAYS_INLINE operator <= (const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return !(b < a); }
+__ALWAYS_INLINE bool operator <= (const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return !(b < a); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return !(a < b); }
+__ALWAYS_INLINE bool operator >= (const private_ptr<T> &a, const private_ptr<T> &b) __NOEXCEPT{ return !(a < b); }
 
 template<class T>
-bool __ALWAYS_INLINE operator == (const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !x; }
+__ALWAYS_INLINE bool operator == (const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !x; }
 template<class T>
-bool __ALWAYS_INLINE operator == (nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return !x; }
+__ALWAYS_INLINE bool operator == (nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return !x; }
 template<class T>
-bool __ALWAYS_INLINE operator != (const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return (bool)x; }
+__ALWAYS_INLINE bool operator != (const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return (bool)x; }
 template<class T>
-bool __ALWAYS_INLINE operator != (nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return (bool)x; }
+__ALWAYS_INLINE bool operator != (nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return (bool)x; }
 template<class T>
-bool __ALWAYS_INLINE operator<(const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return x.get() < nullptr; } //TODO: cl:less should be used
+__ALWAYS_INLINE bool operator<(const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return x.get() < nullptr; } //TODO: cl:less should be used
 template<class T>
-bool __ALWAYS_INLINE operator<(nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return nullptr < x.get(); } //TODO: cl:less should be used
+__ALWAYS_INLINE bool operator<(nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return nullptr < x.get(); } //TODO: cl:less should be used
 template<class T>
-bool __ALWAYS_INLINE operator>(const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return nullptr < x; }
+__ALWAYS_INLINE bool operator>(const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return nullptr < x; }
 template<class T>
-bool __ALWAYS_INLINE operator>(nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return x < nullptr; }
+__ALWAYS_INLINE bool operator>(nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return x < nullptr; }
 template<class T>
-bool __ALWAYS_INLINE operator <= (const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(nullptr < x); }
+__ALWAYS_INLINE bool operator <= (const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(nullptr < x); }
 template<class T>
-bool __ALWAYS_INLINE operator <= (nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return !(x < nullptr); }
+__ALWAYS_INLINE bool operator <= (nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return !(x < nullptr); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(x < nullptr); }
+__ALWAYS_INLINE bool operator >= (const private_ptr<T> &x, nullptr_t) __NOEXCEPT{ return !(x < nullptr); }
 template<class T>
-bool __ALWAYS_INLINE operator >= (nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return !(nullptr < x); }
+__ALWAYS_INLINE bool operator >= (nullptr_t, const private_ptr<T> &x) __NOEXCEPT{ return !(nullptr < x); }
 
 /// \brief Non-member address space pointer swap function
 ///
 template<class T>
-void __ALWAYS_INLINE swap(private_ptr<T>& a, private_ptr<T>& b) __NOEXCEPT { a.swap(b); }
+__ALWAYS_INLINE void swap(private_ptr<T>& a, private_ptr<T>& b) __NOEXCEPT { a.swap(b); }
+
+namespace __details
+{
+
+template <template <class> class AsWrapper>
+struct __asptr_cast_maker
+{
+    template <class SrcT, class DstT>
+    __ALWAYS_INLINE static auto __make_static_cast(AsWrapper<SrcT> const& r)
+    {
+        return AsWrapper<DstT>{ //3. re-wrap cast result
+            static_cast<typename AsWrapper<DstT>::pointer>( //2. cast content to a new type
+                r.get() //1. remove wrapper
+            )
+        };
+    }
+    
+    template <class SrcT, class DstT>
+    __ALWAYS_INLINE static auto __make_reinterpret_cast(AsWrapper<SrcT> const& r)
+    {
+        return AsWrapper<DstT>{
+            reinterpret_cast<typename AsWrapper<DstT>::pointer>(
+                r.get()
+            )
+        };
+    }
+};
+
+} // namespace __details
+
+template <class T, class U> __ALWAYS_INLINE local_ptr<T> static_asptr_cast(local_ptr<U> const& ptr) { return __details::__asptr_cast_maker<local_ptr>::__make_static_cast<U, T>(ptr); }
+template <class T, class U> __ALWAYS_INLINE global_ptr<T> static_asptr_cast(global_ptr<U> const& ptr) { return __details::__asptr_cast_maker<global_ptr>::__make_static_cast<U, T>(ptr); }
+template <class T, class U> __ALWAYS_INLINE constant_ptr<T> static_asptr_cast(constant_ptr<U> const& ptr) { return __details::__asptr_cast_maker<constant_ptr>::__make_static_cast<U, T>(ptr); }
+template <class T, class U> __ALWAYS_INLINE private_ptr<T> static_asptr_cast(private_ptr<U> const& ptr) { return __details::__asptr_cast_maker<private_ptr>::__make_static_cast<U, T>(ptr); }
+
+template <class T, class U> __ALWAYS_INLINE local_ptr<T> reinterpret_asptr_cast(local_ptr<U> const& ptr) { return __details::__asptr_cast_maker<local_ptr>::__make_reinterpret_cast<U, T>(ptr); }
+template <class T, class U> __ALWAYS_INLINE global_ptr<T> reinterpret_asptr_cast(global_ptr<U> const& ptr) { return __details::__asptr_cast_maker<global_ptr>::__make_reinterpret_cast<U, T>(ptr); }
+template <class T, class U> __ALWAYS_INLINE constant_ptr<T> reinterpret_asptr_cast(constant_ptr<U> const& ptr) { return __details::__asptr_cast_maker<constant_ptr>::__make_reinterpret_cast<U, T>(ptr); }
+template <class T, class U> __ALWAYS_INLINE private_ptr<T> reinterpret_asptr_cast(private_ptr<U> const& ptr) { return __details::__asptr_cast_maker<private_ptr>::__make_reinterpret_cast<U, T>(ptr); }
 
 }

@@ -27,7 +27,7 @@
 
 #define MAKE_SPIRV_CALLABLE(spirv_call) \
     template <typename Ret, typename... Args> \
-    static __ALWAYS_INLINE Ret __make_##spirv_call##_call(Args... args) __NOEXCEPT { \
+    __ALWAYS_INLINE static Ret __make_##spirv_call##_call(Args... args) __NOEXCEPT { \
         extern Ret spirv_call(Args...); \
         return spirv_call(args...); \
     }
@@ -36,6 +36,6 @@
     template <typename Ret, typename... Args> \
     Ret spirv_call(Args...) __NOEXCEPT; \
     template <typename Ret, typename... Args> \
-    static __ALWAYS_INLINE Ret __make_##spirv_call##_call(Args... args) __NOEXCEPT { \
+    __ALWAYS_INLINE static Ret __make_##spirv_call##_call(Args... args) __NOEXCEPT { \
         return spirv_call<Ret>(args...); \
     }

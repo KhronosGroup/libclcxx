@@ -41,32 +41,35 @@ struct __data_fundamental
     __ALWAYS_INLINE __data_fundamental() __NOEXCEPT  = default;
     __ALWAYS_INLINE __data_fundamental(const __data_fundamental&) __NOEXCEPT = default;
     __ALWAYS_INLINE __data_fundamental(__data_fundamental&&) __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE __data_fundamental() __CONSTANT_QUALIFIER __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE __data_fundamental(const __data_fundamental&) __CONSTANT_QUALIFIER __NOEXCEPT = default;
-    constexpr __ALWAYS_INLINE __data_fundamental(__data_fundamental&&) __CONSTANT_QUALIFIER __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __data_fundamental() __CONSTANT_QUALIFIER __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __data_fundamental(const __data_fundamental&) __CONSTANT_QUALIFIER __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __data_fundamental(__data_fundamental&&) __CONSTANT_QUALIFIER __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __data_fundamental() __GLOBAL_QUALIFIER __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __data_fundamental(const __data_fundamental&) __GLOBAL_QUALIFIER __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __data_fundamental(__data_fundamental&&) __GLOBAL_QUALIFIER __NOEXCEPT = default;
 
-    __data_fundamental& __ALWAYS_INLINE operator=(const __data_fundamental&)__NOEXCEPT = default;
-    __data_fundamental& __ALWAYS_INLINE operator=(__data_fundamental&&)__NOEXCEPT  = default;
-    __data_fundamental& __ALWAYS_INLINE operator=(const T &rhs) __NOEXCEPT{ __elem = rhs; return *this; }
+    __ALWAYS_INLINE __data_fundamental& operator=(const __data_fundamental&)__NOEXCEPT = default;
+    __ALWAYS_INLINE __data_fundamental& operator=(__data_fundamental&&)__NOEXCEPT  = default;
+    __ALWAYS_INLINE __data_fundamental& operator=(const T &rhs) __NOEXCEPT{ __elem = rhs; return *this; }
 
-    T *operator&() __NOEXCEPT{ return &__elem; }
-    const T *operator&() const __NOEXCEPT{ return &__elem; }
-    constant_ptr<T> operator&() __CONSTANT_QUALIFIER __NOEXCEPT{ return constant_ptr<T>(&__elem); }
-    constant_ptr<const T> operator&() __CONSTANT_QUALIFIER const __NOEXCEPT{ return constant_ptr<const T>(&__elem); }
+    __ALWAYS_INLINE T *operator&() __NOEXCEPT{ return &__elem; }
+    __ALWAYS_INLINE const T *operator&() const __NOEXCEPT{ return &__elem; }
+    __ALWAYS_INLINE constant_ptr<T> operator&() __CONSTANT_QUALIFIER __NOEXCEPT{ return constant_ptr<T>(&__elem); }
+    __ALWAYS_INLINE constant_ptr<const T> operator&() __CONSTANT_QUALIFIER const __NOEXCEPT{ return constant_ptr<const T>(&__elem); }
 
-    operator T&() __NOEXCEPT{ return __elem; }
-    operator const T&() const __NOEXCEPT{ return __elem; }
-    operator add_constant_t<T>&() __CONSTANT_QUALIFIER __NOEXCEPT{ return __elem; }
-    operator const add_constant_t<T>&() __CONSTANT_QUALIFIER const __NOEXCEPT{ return __elem; }
+    __ALWAYS_INLINE operator T&() __NOEXCEPT{ return __elem; }
+    __ALWAYS_INLINE operator const T&() const __NOEXCEPT{ return __elem; }
+    __ALWAYS_INLINE operator add_constant_t<T>&() __CONSTANT_QUALIFIER __NOEXCEPT{ return __elem; }
+    __ALWAYS_INLINE operator const add_constant_t<T>&() __CONSTANT_QUALIFIER const __NOEXCEPT{ return __elem; }
 
-    global_ptr<T> __ALWAYS_INLINE ptr() __GLOBAL_QUALIFIER __NOEXCEPT{ return global_ptr<T>(&__elem); }
-    global_ptr<const T> __ALWAYS_INLINE ptr() __GLOBAL_QUALIFIER const __NOEXCEPT{ return global_ptr<const T>(&__elem); }
-    local_ptr<T> __ALWAYS_INLINE ptr() __LOCAL_QUALIFIER __NOEXCEPT{ return local_ptr<T>(&__elem); }
-    local_ptr<const T> __ALWAYS_INLINE ptr() __LOCAL_QUALIFIER const __NOEXCEPT{ return local_ptr<const T>(&__elem); }
-    private_ptr<T> __ALWAYS_INLINE ptr() __PRIVATE_QUALIFIER __NOEXCEPT{ return private_ptr<T>(&__elem); }
-    private_ptr<const T> __ALWAYS_INLINE ptr() __PRIVATE_QUALIFIER const __NOEXCEPT{ return private_ptr<const T>(&__elem); }
-    constant_ptr<T> __ALWAYS_INLINE ptr() __CONSTANT_QUALIFIER __NOEXCEPT{ return constant_ptr<T>(&__elem); }
-    constant_ptr<const T> __ALWAYS_INLINE ptr() __CONSTANT_QUALIFIER const __NOEXCEPT{ return constant_ptr<const T>(&__elem); }
+    __ALWAYS_INLINE global_ptr<T> ptr() __GLOBAL_QUALIFIER __NOEXCEPT{ return global_ptr<T>(&__elem); }
+    __ALWAYS_INLINE global_ptr<const T> ptr() __GLOBAL_QUALIFIER const __NOEXCEPT{ return global_ptr<const T>(&__elem); }
+    __ALWAYS_INLINE local_ptr<T> ptr() __LOCAL_QUALIFIER __NOEXCEPT{ return local_ptr<T>(&__elem); }
+    __ALWAYS_INLINE local_ptr<const T> ptr() __LOCAL_QUALIFIER const __NOEXCEPT{ return local_ptr<const T>(&__elem); }
+    __ALWAYS_INLINE private_ptr<T> ptr() __PRIVATE_QUALIFIER __NOEXCEPT{ return private_ptr<T>(&__elem); }
+    __ALWAYS_INLINE private_ptr<const T> ptr() __PRIVATE_QUALIFIER const __NOEXCEPT{ return private_ptr<const T>(&__elem); }
+    __ALWAYS_INLINE constant_ptr<T> ptr() __CONSTANT_QUALIFIER __NOEXCEPT{ return constant_ptr<T>(&__elem); }
+    __ALWAYS_INLINE constant_ptr<const T> ptr() __CONSTANT_QUALIFIER const __NOEXCEPT{ return constant_ptr<const T>(&__elem); }
 };
 
 /// \brief Explicit address space storage class for the classes
@@ -77,24 +80,24 @@ struct __data_class : public T
     using T::T;
     using T::operator=;
 
-    T *operator&() __NOEXCEPT{ return this; }
-    const T *operator&() const __NOEXCEPT{ return this; }
-    constant_ptr<T> operator&() __CONSTANT_QUALIFIER __NOEXCEPT{ return constant_ptr<T>(this); }
-    constant_ptr<const T>  *operator&() __CONSTANT_QUALIFIER const __NOEXCEPT{ return constant_ptr<const T>(this); }
+    __ALWAYS_INLINE T *operator&() __NOEXCEPT{ return this; }
+    __ALWAYS_INLINE const T *operator&() const __NOEXCEPT{ return this; }
+    __ALWAYS_INLINE constant_ptr<T> operator&() __CONSTANT_QUALIFIER __NOEXCEPT{ return constant_ptr<T>(this); }
+    __ALWAYS_INLINE constant_ptr<const T>  *operator&() __CONSTANT_QUALIFIER const __NOEXCEPT{ return constant_ptr<const T>(this); }
 
-    operator T&() __NOEXCEPT{ return *this; }
-    operator const T&() const __NOEXCEPT{ return *this; }
-    operator add_constant_t<T>&() __CONSTANT_QUALIFIER __NOEXCEPT{ return *this; }
-    operator const add_constant_t<T>&() __CONSTANT_QUALIFIER const __NOEXCEPT{ return *this; }
+    __ALWAYS_INLINE operator T&() __NOEXCEPT{ return *this; }
+    __ALWAYS_INLINE operator const T&() const __NOEXCEPT{ return *this; }
+    __ALWAYS_INLINE operator add_constant_t<T>&() __CONSTANT_QUALIFIER __NOEXCEPT{ return *this; }
+    __ALWAYS_INLINE operator const add_constant_t<T>&() __CONSTANT_QUALIFIER const __NOEXCEPT{ return *this; }
 
-    global_ptr<T> __ALWAYS_INLINE ptr() __GLOBAL_QUALIFIER __NOEXCEPT{ return global_ptr<T>(this); }
-    global_ptr<const T> __ALWAYS_INLINE ptr() __GLOBAL_QUALIFIER const __NOEXCEPT{ return global_ptr<const T>(this); }
-    local_ptr<T> __ALWAYS_INLINE ptr() __LOCAL_QUALIFIER __NOEXCEPT{ return local_ptr<T>(this); }
-    local_ptr<const T> __ALWAYS_INLINE ptr() __LOCAL_QUALIFIER const __NOEXCEPT{ return local_ptr<const T>(this); }
-    private_ptr<T> __ALWAYS_INLINE ptr() __PRIVATE_QUALIFIER __NOEXCEPT{ return private_ptr<T>(this); }
-    private_ptr<const T> __ALWAYS_INLINE ptr() __PRIVATE_QUALIFIER const __NOEXCEPT{ return private_ptr<const T>(this); }
-    constant_ptr<T> __ALWAYS_INLINE ptr() __CONSTANT_QUALIFIER __NOEXCEPT{ return constant_ptr<T>(this); }
-    constant_ptr<const T> __ALWAYS_INLINE ptr() __CONSTANT_QUALIFIER const __NOEXCEPT{ return constant_ptr<const T>(this); }
+    __ALWAYS_INLINE global_ptr<T> ptr() __GLOBAL_QUALIFIER __NOEXCEPT{ return global_ptr<T>(this); }
+    __ALWAYS_INLINE global_ptr<const T> ptr() __GLOBAL_QUALIFIER const __NOEXCEPT{ return global_ptr<const T>(this); }
+    __ALWAYS_INLINE local_ptr<T> ptr() __LOCAL_QUALIFIER __NOEXCEPT{ return local_ptr<T>(this); }
+    __ALWAYS_INLINE local_ptr<const T> ptr() __LOCAL_QUALIFIER const __NOEXCEPT{ return local_ptr<const T>(this); }
+    __ALWAYS_INLINE private_ptr<T> ptr() __PRIVATE_QUALIFIER __NOEXCEPT{ return private_ptr<T>(this); }
+    __ALWAYS_INLINE private_ptr<const T> ptr() __PRIVATE_QUALIFIER const __NOEXCEPT{ return private_ptr<const T>(this); }
+    __ALWAYS_INLINE constant_ptr<T> ptr() __CONSTANT_QUALIFIER __NOEXCEPT{ return constant_ptr<T>(this); }
+    __ALWAYS_INLINE constant_ptr<const T> ptr() __CONSTANT_QUALIFIER const __NOEXCEPT{ return constant_ptr<const T>(this); }
 };
 
 template<class T>

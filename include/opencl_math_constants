@@ -24,7 +24,9 @@
 #pragma once
 
 #include <__ocl_config.h>
+#include <__ocl_limits_values.h>
 #include <__ocl_type_traits_vectors.h>
+#include <opencl_reinterpret>
 
 namespace cl
 {
@@ -48,7 +50,40 @@ public:
     __ALWAYS_INLINE static constexpr T sqrt1_2() __NOEXCEPT { return T(); }
 };
 
-//todo check if float -> half conversion is proper
+/**
+ * Value of maximum non-infinite single-precision floating-point
+ * number.
+ */
+#define MAXFLOAT    0x1.fffffep127f
+
+/**
+ * A positive float constant expression. HUGE_VALF evaluates
+ * to +infinity. Used as an error value returned by the built-in
+ * math functions.
+ */
+#define HUGE_VALF (__builtin_huge_valf())
+
+/**
+ * A positive double constant expression. HUGE_VAL evaluates
+ * to +infinity. Used as an error value returned by the built-in
+ * math functions.
+ */
+#define HUGE_VAL (__builtin_huge_val())
+
+/**
+ * A constant expression of type float representing positive or
+ * unsigned infinity.
+ */
+#define INFINITY (__builtin_inff())
+
+/**
+ * A constant expression of type float representing a quiet NaN.
+ */
+#define NAN (__builtin_nanf(""))
+
+#define FP_ILOGB0      INT_MIN
+#define FP_ILOGBNAN    INT_MAX
+
 #ifdef cl_khr_fp16
  #define M_E_H          2.71828174591064f
  #define M_LOG2E_H      1.44269502162933f

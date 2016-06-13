@@ -102,46 +102,46 @@ namespace __details
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, uint_to_fp, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg)      { return __spirv::OpConvertUToF<Rmode, To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg)      { return __spirv::OpConvertUToF<Rmode, To>(arg); }
     };
 
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, sint_to_fp, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg)      { return __spirv::OpConvertSToF<Rmode, To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg)      { return __spirv::OpConvertSToF<Rmode, To>(arg); }
     };
 
     // floating points to ints
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, fp_to_uint, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg)      { return __spirv::OpConvertFToU<Rmode, Smode, To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg)      { return __spirv::OpConvertFToU<Rmode, Smode, To>(arg); }
     };
 
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, fp_to_sint, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg)      { return __spirv::OpConvertFToS<Rmode, Smode, To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg)      { return __spirv::OpConvertFToS<Rmode, Smode, To>(arg); }
     };
 
     // ints to ints (sign preserving)
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, uint_to_uint, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::OpUConvert<Smode, To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::OpUConvert<Smode, To>(arg); }
     };
 
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, sint_to_sint, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::OpSConvert<Smode, To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::OpSConvert<Smode, To>(arg); }
     };
 
     //floating points to floating points
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, fp_to_fp, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::OpFConvert<Rmode, To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::OpFConvert<Rmode, To>(arg); }
     };
 
     // ints to ints (with sign change)
@@ -150,59 +150,59 @@ namespace __details
     template <typename To, typename From, rounding_mode Rmode>
     struct __choose_convert<To, From, uint_to_sint, Rmode, saturate::off, false>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::OpSConvert<To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::OpUConvert<To>(arg); }
     };
 
     // without saturation but types has equal size => just reinterpret with OpBitcast
     template <typename To, typename From, rounding_mode Rmode>
     struct __choose_convert<To, From, uint_to_sint, Rmode, saturate::off, true>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::__make_OpBitcast_call<To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::__make_OpBitcast_call<To>(arg); }
     };
 
     // without saturation and with different sizes => treat argument as signed/unsigned (regardless original type) and widen/narrow it to match destination type's size
     template <typename To, typename From, rounding_mode Rmode>
     struct __choose_convert<To, From, sint_to_uint, Rmode, saturate::off, false>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::OpUConvert<To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::OpSConvert<To>(arg); }
     };
 
     // without saturation but types has equal size => just reinterpret with OpBitcast
     template <typename To, typename From, rounding_mode Rmode>
     struct __choose_convert<To, From, sint_to_uint, Rmode, saturate::off, true>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::__make_OpBitcast_call<To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::__make_OpBitcast_call<To>(arg); }
     };
 
     template <typename To, typename From, rounding_mode Rmode, bool EqualSize>
     struct __choose_convert<To, From, uint_to_sint, Rmode, saturate::on, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::OpSatConvertUToS<To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::OpSatConvertUToS<To>(arg); }
     };
 
     template <typename To, typename From, rounding_mode Rmode, bool EqualSize>
     struct __choose_convert<To, From, sint_to_uint, Rmode, saturate::on, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::OpSatConvertSToU<To>(arg); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::OpSatConvertSToU<To>(arg); }
     };
 
     //to-from booleans
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, bool_to_num, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::__make_OpSelect_call<To>(arg, To{ 1 }, To{ 0 }); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::__make_OpSelect_call<To>(arg, To{ 1 }, To{ 0 }); }
     };
 
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, int_to_bool, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::__make_OpINotEqual_call<To>(arg, From{ 0 }); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::__make_OpINotEqual_call<To>(arg, From{ 0 }); }
     };
 
     template <typename To, typename From, rounding_mode Rmode, saturate Smode, bool EqualSize>
     struct __choose_convert<To, From, fp_to_bool, Rmode, Smode, EqualSize>
     {
-        static __ALWAYS_INLINE To __make_call(From const& arg) { return __spirv::__make_OpFOrdNotEqual_call<To>(arg, From{ 0 }); }
+        __ALWAYS_INLINE static To __make_call(From const& arg) { return __spirv::__make_OpFOrdNotEqual_call<To>(arg, From{ 0 }); }
     };
 
     /// \brief structures which expose __convert_type values if given types match kind of conversion or 0 otherwise.
@@ -224,7 +224,7 @@ namespace __details
     /// \brief convert_cast base implementation which only chooses right spirv conversion instruction. Any decorations are handled outside of it
     ///
     template <typename To, typename From, rounding_mode Rmode, saturate Smode>
-    To __ALWAYS_INLINE __convert_cast(From const& arg)
+    __ALWAYS_INLINE To __convert_cast(From const& arg)
     {
         _CHECK_VECTOR_SIZE;
         _CHECK_TYPE(To);
@@ -253,7 +253,7 @@ namespace __details
     /// \brief Target and destination types are the same => NoOp
     ///
     template <typename To, typename From, rounding_mode Rmode, saturate Smode>
-    To __ALWAYS_INLINE __convert_cast(To const& t)
+    __ALWAYS_INLINE To __convert_cast(To const& t)
     {
         return t;
     }
@@ -266,14 +266,14 @@ namespace __details
 }
 
 template <typename To, typename From>
-To __ALWAYS_INLINE convert_cast(From const& arg)
+__ALWAYS_INLINE To convert_cast(From const& arg)
 {
     // just plain convert_cast without decorations
     return __details::__convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, __details::__default_rmode<To, From>::value, __details::__default_smode<To, From>::value>(arg);
 }
 
 template <typename To, rounding_mode Rmode, typename From>
-To __ALWAYS_INLINE convert_cast(From const& arg)
+__ALWAYS_INLINE To convert_cast(From const& arg)
 {
     static_assert(is_floating_point<To>::value || is_floating_point<From>::value, "convert_cast with rounding mode option can be used only in conversions to/from floating point types.");
     static_assert(!__details::__is_bool<To>::value && !__details::__is_bool<From>::value, "rounding mode cannot be used while converting to/from bool.");
@@ -282,7 +282,7 @@ To __ALWAYS_INLINE convert_cast(From const& arg)
 }
 
 template <typename To, saturate Smode, typename From>
-To __ALWAYS_INLINE convert_cast(From const& arg)
+__ALWAYS_INLINE To convert_cast(From const& arg)
 {
     static_assert(Smode == saturate::off || is_integral<To>::value, "convert_cast with saturate option can be used only in conversions to integer types.");
     static_assert(Smode == saturate::off || (!__details::__is_bool<To>::value && !__details::__is_bool<From>::value), "convert_cast with saturate option cannot be used in conversions to/from bool.");
@@ -291,7 +291,7 @@ To __ALWAYS_INLINE convert_cast(From const& arg)
 }
 
 template <typename To, rounding_mode Rmode, saturate Smode, typename From>
-To __ALWAYS_INLINE convert_cast(From const& arg)
+__ALWAYS_INLINE To convert_cast(From const& arg)
 {
     static_assert(is_floating_point<To>::value || is_floating_point<From>::value, "convert_cast with rounding mode option can be used only in conversions to/from floating point types.");
     static_assert(!__details::__is_bool<To>::value && !__details::__is_bool<From>::value, "rounding mode cannot be used while converting to/from bool.");

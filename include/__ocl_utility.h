@@ -25,38 +25,43 @@
 
 #include <__ocl_config.h>
 #include <__ocl_type_traits_cv_ref_ptr.h>
+#include <__ocl_type_traits_supported_operations.h>
+#include <__ocl_type_traits_type_generators.h>
 
 namespace cl
 {
 
-/// \brief Converts any type to rvalue reference type which allows to use it in decltype expressions even if constructors are unavailable
-///
-template<class T>
-add_rvalue_reference_t<T> declval( );
-
 template <class T>
-__ALWAYS_INLINE constexpr T&& forward(typename remove_reference<T>::type& t) __NOEXCEPT
+__ALWAYS_INLINE constexpr T&& forward(remove_reference_t<T>& t) __NOEXCEPT
 {
   return static_cast<T&&>(t);
 }
 template <class T>
-__ALWAYS_INLINE constexpr T&& forward(typename remove_reference<T>::type&& t) __NOEXCEPT
+__ALWAYS_INLINE constexpr T&& forward(remove_reference_t<T>&& t) __NOEXCEPT
 {
   return static_cast<T&&>(t);
 }
 template <class T>
-__ALWAYS_INLINE constexpr typename remove_reference<T>::type&& move(T&& t) __NOEXCEPT
+__ALWAYS_INLINE constexpr remove_reference_t<T>&& move(T&& t) __NOEXCEPT
 {
-  return static_cast<typename remove_reference<T>::type&&>(t);
+  return static_cast<remove_reference_t<T>&&>(t);
 }
 
 template<class T>
-void swap(T& a, T& b) __NOEXCEPT
+__ALWAYS_INLINE void swap(T& a, T& b) __NOEXCEPT
 {
   remove_as_t<T> t(cl::move(a));
   b = cl::move(a);
   a = cl::move(t);
 }
+
+template <class T>
+__ALWAYS_INLINE constexpr auto move_if_noexcept(T& t) __NOEXCEPT
+    -> enable_if_t<is_nothrow_move_constructible<T>::value, T&&> { return move(t); }
+
+template <class T>
+__ALWAYS_INLINE constexpr auto move_if_noexcept(T& t) __NOEXCEPT
+    -> enable_if_t<!is_nothrow_move_constructible<T>::value, const T&> { return t; }
 
 //TODO: template <class T, size_t N>
 //      void swap(T (&a)[N], T (&b)[N]) __NOEXCEPT;

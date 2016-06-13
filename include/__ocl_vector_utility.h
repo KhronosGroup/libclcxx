@@ -32,6 +32,9 @@ namespace cl
 namespace __details
 {
 
+template <class Vec, size_t...>
+struct __swizzle;
+
 /// \brief Helper that allows indexing vector channels with compile time size_t indexes.
 ///
 template <class Vec, size_t Size>
@@ -251,14 +254,17 @@ struct __channel_ref_base
     __ALWAYS_INLINE constexpr __channel_ref_base( ) = default;
     __ALWAYS_INLINE constexpr __channel_ref_base( const __channel_ref_base&) __NOEXCEPT = default;
     __ALWAYS_INLINE constexpr __channel_ref_base( __channel_ref_base&&) __NOEXCEPT = default;
-    __ALWAYS_INLINE constexpr __channel_ref_base& operator=( const __channel_ref_base&) __NOEXCEPT = default;
-    __ALWAYS_INLINE constexpr __channel_ref_base& operator=( __channel_ref_base&&) __NOEXCEPT = default;
+    __ALWAYS_INLINE constexpr __channel_ref_base& operator=( const __channel_ref_base& b) __NOEXCEPT { _set(b._get()); return *this; }
+    __ALWAYS_INLINE constexpr __channel_ref_base& operator=( __channel_ref_base&& b) __NOEXCEPT { _set(b._get()); return *this; }
 
     using type = remove_attrs_t<vector_element_t<Vec>>;
 
 protected:
     __ALWAYS_INLINE constexpr type _get( ) __NOEXCEPT { return __index_helper<Vec>::get( _vec, _channel ); }
     __ALWAYS_INLINE constexpr void _set( type value ) __NOEXCEPT { __index_helper<Vec>::set( _vec, _channel, value ); }
+
+    template <class V, size_t S> friend __ALWAYS_INLINE V& __get_underlying_vec(__swizzle<V,S> const& s);
+    template <class V, size_t S> friend __ALWAYS_INLINE V& __get_underlying_vec(__swizzle<V,S>& s);
 
     size_t _channel;
     Vec& _vec;

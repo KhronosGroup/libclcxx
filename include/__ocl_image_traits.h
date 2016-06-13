@@ -210,6 +210,18 @@ struct __image_write_trait
     {
         __spirv::__make_OpImageWrite_call<void>( static_cast<_ImageType*>( this )->_handle, coord, color );
     }
+
+#if cl_khr_mipmap_image_writes
+    /// \brief Implementation of write method with lod
+    ///
+    /// @param coord coordinates from where value will be read
+    /// @param color value to which pixel pointed by coords will be set
+	/// @param lod level of detail for images having mipmaps
+    __ALWAYS_INLINE void write( _Coord coord, _ElemType color, int lod ) __NOEXCEPT
+    {
+        __spirv::__make_OpImageWrite_call<void>( static_cast<_ImageType*>( this )->_handle, coord, color, static_cast<underlying_type_t<__spirv::ImageOperands>>(__spirv::ImageOperands::Lod), lod );
+    }
+#endif
 };
 
 /// \brief Helper class for width trait for vector OpImageQuerySize return type
@@ -411,7 +423,7 @@ struct __image_multisample_trait
     /// @return element loo
     __ALWAYS_INLINE _ElemType read( _integer_coord coord, int sample ) const __NOEXCEPT
     {
-        return __spirv::__make_OpImageRead_call<_ElemType>( static_cast<const _ImageType*>( this )->_handle, coord, sample );
+        return __spirv::__make_OpImageRead_call<_ElemType>( static_cast<const _ImageType*>( this )->_handle, coord, static_cast<underlying_type_t<__spirv::ImageOperands>>(__spirv::ImageOperands::Sample), sample );
     }
 };
 #endif

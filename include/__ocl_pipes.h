@@ -41,7 +41,7 @@ namespace __details
 template<pipe_access Access = pipe_access::read>
 struct __choose_create_pipe_from_pipe_storage
 {
-    static __global __spirv::OpTypePipe<__spirv::AccessQualifier::Read>* __ALWAYS_INLINE __make_call(__global const __spirv::OpTypePipeStorage* p) __NOEXCEPT
+    __ALWAYS_INLINE static __global __spirv::OpTypePipe<__spirv::AccessQualifier::Read>* __make_call(__global const __spirv::OpTypePipeStorage* p) __NOEXCEPT
     {
         return __spirv::OpCreatePipeFromPipeStorage_read(p);
     }
@@ -52,7 +52,7 @@ struct __choose_create_pipe_from_pipe_storage
 template<>
 struct __choose_create_pipe_from_pipe_storage<pipe_access::write>
 {
-    static __global __spirv::OpTypePipe<__spirv::AccessQualifier::Write>* __ALWAYS_INLINE __make_call(__global const __spirv::OpTypePipeStorage* p) __NOEXCEPT
+    __ALWAYS_INLINE static __global __spirv::OpTypePipe<__spirv::AccessQualifier::Write>* __make_call(__global const __spirv::OpTypePipeStorage* p) __NOEXCEPT
     {
         return __spirv::OpCreatePipeFromPipeStorage_write(p);
     }
@@ -77,7 +77,12 @@ class pipe_storage
 public:
     static_assert(is_pod<T>::value, "Template parameter T in pipe_storage does not satisfy POD type requirements.");
 
-    constexpr pipe_storage() __global: _handle((__global const __spirv::OpTypePipeStorage*)(&__details::OpConstantPipeStorage_Creator<static_cast<int>(sizeof(T)), static_cast<int>(alignof(T)), static_cast<int>(N)>::value)) { }
+    constexpr pipe_storage() __global: _handle(
+        // force evaluation as constant value (if possible)
+        __builtin_constant_p((__global const __spirv::OpTypePipeStorage*)(&__details::OpConstantPipeStorage_Creator<static_cast<int>(sizeof(T)), static_cast<int>(alignof(T)), static_cast<int>(N)>::value))
+            ? (__global const __spirv::OpTypePipeStorage*)(&__details::OpConstantPipeStorage_Creator<static_cast<int>(sizeof(T)), static_cast<int>(alignof(T)), static_cast<int>(N)>::value)
+            : (__global const __spirv::OpTypePipeStorage*)(&__details::OpConstantPipeStorage_Creator<static_cast<int>(sizeof(T)), static_cast<int>(alignof(T)), static_cast<int>(N)>::value)
+    ) { }
 
     /// \brief Copy constructor of pipe storage class must be defaulted per OpenCL C++ spec.
     ///
@@ -102,7 +107,7 @@ public:
     /// \brief Constructs a read only or write only pipe from pipe_storage object.
     ///
     template<pipe_access Access = pipe_access::read>
-    pipe<T, Access> __ALWAYS_INLINE get() const __NOEXCEPT
+    __ALWAYS_INLINE pipe<T, Access> get() const __NOEXCEPT
     {
         return pipe<T, Access>(__details::__choose_create_pipe_from_pipe_storage<Access>::__make_call(_handle));
     }
@@ -156,7 +161,7 @@ public:
 
         /// \brief Tests if reservation object is valid
         ///
-        bool __ALWAYS_INLINE is_valid() const __NOEXCEPT
+        __ALWAYS_INLINE bool is_valid() const __NOEXCEPT
         {
             return __spirv::__make_OpIsValidReserveId_call<bool>(_reserve_id);
         }
@@ -170,25 +175,25 @@ public:
 
         /// \brief Performs read packet from the reserved area of the pipe referred to by index into ref.
         ///
-        bool __ALWAYS_INLINE read(uint index, T& ref) const __NOEXCEPT
+        __ALWAYS_INLINE bool read(uint index, T& ref) const __NOEXCEPT
         {
-            return __spirv::__make_OpReservedReadPipe_call<int>(_pipe, _reserve_id, index, &ref, sizeof(T), alignof(T));
+            return __spirv::__make_OpReservedReadPipe_call<int>(_pipe, _reserve_id, index, (void *)&ref, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
         }
 
         /// \brief Commits read associated with reservation
         ///
         template<memory_scope K = S>
-        enable_if_t<K == memory_scope::memory_scope_work_item> __ALWAYS_INLINE commit() __NOEXCEPT
+        __ALWAYS_INLINE enable_if_t<K == memory_scope::memory_scope_work_item> commit() __NOEXCEPT
         {
-            __spirv::__make_OpCommitReadPipe_call<void>(_pipe, _reserve_id, sizeof(T), alignof(T));
+            __spirv::__make_OpCommitReadPipe_call<void>(_pipe, _reserve_id, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
         }
 
         /// \brief Commits read associated with reservation returned by work_group_reserve or sub_group_reserve
         ///
         template<memory_scope K = S>
-        enable_if_t<K != memory_scope::memory_scope_work_item> __ALWAYS_INLINE commit() __NOEXCEPT
+        __ALWAYS_INLINE enable_if_t<K != memory_scope::memory_scope_work_item> commit() __NOEXCEPT
         {
-            __spirv::__make_OpGroupCommitReadPipe_call<void>(S, _pipe, _reserve_id, sizeof(T), alignof(T));
+            __spirv::__make_OpGroupCommitReadPipe_call<void>(S, _pipe, _reserve_id, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
         }
 
     protected:
@@ -229,49 +234,49 @@ public:
 
     /// \brief Performs read on a pipe, returns true on success and false on failure
     ///
-    bool __ALWAYS_INLINE read(T & ret) const __NOEXCEPT
+    __ALWAYS_INLINE bool read(T & ret) const __NOEXCEPT
     {
-        return __spirv::__make_OpReadPipe_call<int>(_handle, &ret, sizeof(T), alignof(T));
+        return __spirv::__make_OpReadPipe_call<int>(_handle, (void *)&ret, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
     }
 
     /// \brief Reserves read on a pipe, returns valid reservation object if operation succeeded
     ///
-    reservation<memory_scope::memory_scope_work_item> __ALWAYS_INLINE reserve(uint num_packets) const __NOEXCEPT
+    __ALWAYS_INLINE reservation<memory_scope::memory_scope_work_item> reserve(uint num_packets) const __NOEXCEPT
     {
-        return{ _handle, __spirv::__make_OpReserveReadPipePackets_call<__global __spirv::OpTypeReserveId*>(_handle, num_packets, sizeof(T), alignof(T)) };
+        return{ _handle, __spirv::__make_OpReserveReadPipePackets_call<__global __spirv::OpTypeReserveId*>(_handle, num_packets, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) };
     }
 
     /// \brief Reserves read on a pipe, returns valid reservation object if operation succeeded
     ///
     /// This operation has to be encountered by all items
     /// in a work-group with the same arguments otherwise the behavior is undefined
-    reservation<memory_scope::memory_scope_work_group> __ALWAYS_INLINE work_group_reserve(uint num_packets) const __NOEXCEPT
+    __ALWAYS_INLINE reservation<memory_scope::memory_scope_work_group> work_group_reserve(uint num_packets) const __NOEXCEPT
     {
-        return{ _handle, __spirv::__make_OpGroupReserveReadPipePackets_call<__global __spirv::OpTypeReserveId*>(memory_scope::memory_scope_work_group, _handle, num_packets, sizeof(T), alignof(T)) };
+        return{ _handle, __spirv::__make_OpGroupReserveReadPipePackets_call<__global __spirv::OpTypeReserveId*>(memory_scope::memory_scope_work_group, _handle, num_packets, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) };
     }
 
     /// \brief Reserves read on a pipe, returns valid reservation object if operation succeeded
     ///
     /// This operation has to be encountered by all items
     /// in a sub-group with the same arguments otherwise the behavior is undefined
-    reservation<memory_scope::memory_scope_sub_group> __ALWAYS_INLINE sub_group_reserve(uint num_packets) const __NOEXCEPT
+    __ALWAYS_INLINE reservation<memory_scope::memory_scope_sub_group> sub_group_reserve(uint num_packets) const __NOEXCEPT
     {
-        return{ _handle, __spirv::__make_OpGroupReserveReadPipePackets_call<__global __spirv::OpTypeReserveId*>(memory_scope::memory_scope_sub_group, _handle, num_packets, sizeof(T), alignof(T)) };
+        return{ _handle, __spirv::__make_OpGroupReserveReadPipePackets_call<__global __spirv::OpTypeReserveId*>(memory_scope::memory_scope_sub_group, _handle, num_packets, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) };
     }
 
     /// \brief Returns number of packets that are currently stored in a pipe
     ///
     /// Please note that this value is already outdated at the point of return according to OCL C++ specification
-    uint __ALWAYS_INLINE num_packets() const __NOEXCEPT
+    __ALWAYS_INLINE uint num_packets() const __NOEXCEPT
     {
-        return __spirv::__make_OpGetNumPipePackets_call<unsigned int>(_handle, sizeof(T), alignof(T));
+        return __spirv::__make_OpGetNumPipePackets_call<unsigned int>(_handle, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
     }
 
     /// \brief Returns maximum number of packets that can be stored in a pipe
     ///
-    uint __ALWAYS_INLINE max_packets() const __NOEXCEPT
+    __ALWAYS_INLINE uint max_packets() const __NOEXCEPT
     {
-        return __spirv::__make_OpGetMaxPipePackets_call<unsigned int>(_handle, sizeof(T), alignof(T));
+        return __spirv::__make_OpGetMaxPipePackets_call<unsigned int>(_handle, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
     }
 
 protected:
@@ -328,7 +333,7 @@ public:
 
         /// \brief Tests if reservation object is valid
         ///
-        bool __ALWAYS_INLINE is_valid() const __NOEXCEPT
+        __ALWAYS_INLINE bool is_valid() const __NOEXCEPT
         {
             return __spirv::__make_OpIsValidReserveId_call<bool>(_reserve_id);
         }
@@ -342,25 +347,25 @@ public:
 
         /// \brief Performs write packet specified by ref to the reserved area of the pipe referred to by index.
         ///
-        bool __ALWAYS_INLINE write(uint index, const T& ref) __NOEXCEPT
+        __ALWAYS_INLINE bool write(uint index, const T& ref) __NOEXCEPT
         {
-            return __spirv::__make_OpReservedWritePipe_call<int>(_pipe, _reserve_id, index, &ref, sizeof(T), alignof(T));
+            return __spirv::__make_OpReservedWritePipe_call<int>(_pipe, _reserve_id, index, (void *)&ref, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
         }
 
         /// \brief Commits write associated with reservation object
         ///
         template<memory_scope K = S>
-        enable_if_t<K == memory_scope::memory_scope_work_item> __ALWAYS_INLINE commit() __NOEXCEPT
+        __ALWAYS_INLINE enable_if_t<K == memory_scope::memory_scope_work_item> commit() __NOEXCEPT
         {
-            __spirv::__make_OpCommitWritePipe_call<void>(_pipe, _reserve_id, sizeof(T), alignof(T));
+            __spirv::__make_OpCommitWritePipe_call<void>(_pipe, _reserve_id, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
         }
 
         /// \brief Commits write associated with reservation object returned by work_group_reserve and sub_group_reserve
         ///
         template<memory_scope K = S>
-        enable_if_t<K != memory_scope::memory_scope_work_item> __ALWAYS_INLINE commit() __NOEXCEPT
+        __ALWAYS_INLINE enable_if_t<K != memory_scope::memory_scope_work_item> commit() __NOEXCEPT
         {
-            __spirv::__make_OpGroupCommitWritePipe_call<void>(S, _pipe, _reserve_id, sizeof(T), alignof(T));
+            __spirv::__make_OpGroupCommitWritePipe_call<void>(S, _pipe, _reserve_id, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
         }
 
     protected:
@@ -401,49 +406,49 @@ public:
 
     /// \brief Performs write on a pipe, returns true on success and false on failure
     ///
-    bool __ALWAYS_INLINE write(const T & ret) const __NOEXCEPT
+    __ALWAYS_INLINE bool write(const T & ret) const __NOEXCEPT
     {
-        return __spirv::__make_OpWritePipe_call<int>(_handle, &ret, sizeof(T), alignof(T));
+        return __spirv::__make_OpWritePipe_call<int>(_handle, (void *)&ret, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
     }
 
     /// \brief Reserves write on a pipe, returns valid reservation object if operation succeeded
     ///
-    reservation<memory_scope::memory_scope_work_item> __ALWAYS_INLINE reserve(uint num_packets) __NOEXCEPT
+    __ALWAYS_INLINE reservation<memory_scope::memory_scope_work_item> reserve(uint num_packets) __NOEXCEPT
     {
-        return{ _handle, __spirv::__make_OpReserveWritePipePackets_call<__global __spirv::OpTypeReserveId*>(_handle, num_packets, sizeof(T), alignof(T)) };
+        return{ _handle, __spirv::__make_OpReserveWritePipePackets_call<__global __spirv::OpTypeReserveId*>(_handle, num_packets, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) };
     }
 
     /// \brief Reserves write on a pipe, returns valid reservation object if operation succeeded
     ///
     /// This operation has to be encountered by all items
     /// in a work-group with the same arguments otherwise the behavior is undefined
-    reservation<memory_scope::memory_scope_work_group> __ALWAYS_INLINE work_group_reserve(uint num_packets) __NOEXCEPT
+    __ALWAYS_INLINE reservation<memory_scope::memory_scope_work_group> work_group_reserve(uint num_packets) __NOEXCEPT
     {
-        return{ _handle, __spirv::__make_OpGroupReserveWritePipePackets_call<__global __spirv::OpTypeReserveId*>(memory_scope::memory_scope_work_group, _handle, num_packets, sizeof(T), alignof(T)) };
+        return{ _handle, __spirv::__make_OpGroupReserveWritePipePackets_call<__global __spirv::OpTypeReserveId*>(memory_scope::memory_scope_work_group, _handle, num_packets, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) };
     }
 
     /// \brief Reserves write on a pipe, returns valid reservation object if operation succeeded
     ///
     /// This operation has to be encountered by all items
     /// in a subgroup with the same arguments otherwise the behavior is undefined
-    reservation<memory_scope::memory_scope_sub_group> __ALWAYS_INLINE sub_group_reserve(uint num_packets) __NOEXCEPT
+    __ALWAYS_INLINE reservation<memory_scope::memory_scope_sub_group> sub_group_reserve(uint num_packets) __NOEXCEPT
     {
-        return{ _handle, __spirv::__make_OpGroupReserveWritePipePackets_call<__global __spirv::OpTypeReserveId*>(memory_scope::memory_scope_sub_group, _handle, num_packets, sizeof(T), alignof(T)) };
+        return{ _handle, __spirv::__make_OpGroupReserveWritePipePackets_call<__global __spirv::OpTypeReserveId*>(memory_scope::memory_scope_sub_group, _handle, num_packets, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) };
     }
 
     /// \brief Returns number of packets that are currently stored in a pipe
     ///
     /// Please note that this value is already outdated at the point of return according to OCL C++ specification
-    uint __ALWAYS_INLINE num_packets() const __NOEXCEPT
+    __ALWAYS_INLINE uint num_packets() const __NOEXCEPT
     {
-        return __spirv::__make_OpGetNumPipePackets_call<unsigned int>(_handle, sizeof(T), alignof(T));
+        return __spirv::__make_OpGetNumPipePackets_call<unsigned int>(_handle, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
     }
 
     /// \brief Returns maximum number of packets that can be stored in a pipe
     ///
-    uint __ALWAYS_INLINE max_packets() const __NOEXCEPT
+    __ALWAYS_INLINE uint max_packets() const __NOEXCEPT
     {
-        return __spirv::__make_OpGetMaxPipePackets_call<unsigned int>(_handle, sizeof(T), alignof(T));
+        return __spirv::__make_OpGetMaxPipePackets_call<unsigned int>(_handle, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
     }
 
 protected:
@@ -459,7 +464,7 @@ private:
 /// \brief Constructs a read only or write only pipe from pipe_storage object.
 ///
 template<pipe_access Access = pipe_access::read, class T, size_t N>
-pipe<T, Access> __ALWAYS_INLINE make_pipe(pipe_storage<T, N>& ps) __NOEXCEPT
+__ALWAYS_INLINE pipe<T, Access> make_pipe(pipe_storage<T, N>& ps) __NOEXCEPT
 {
     return ps.template get<Access>();
 }

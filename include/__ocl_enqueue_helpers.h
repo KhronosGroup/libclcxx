@@ -41,9 +41,9 @@ namespace __details
 /// \brief Helper function wrapping passed function and its arguments to kernel call
 ///
 template <class WrapperLambda, class... LocalPtrs>
-void __enqueue_kernel_wrapper(void* wrapping_lambda, LocalPtrs... locals)
+static void __enqueue_kernel_wrapper(__private void* wrapping_lambda, LocalPtrs... locals)
 {
-    reinterpret_cast<WrapperLambda*>(wrapping_lambda)->operator()(move(locals)...);
+    reinterpret_cast<__private WrapperLambda*>(wrapping_lambda)->operator()(move(locals)...);
 }
 
 /// \brief Helper structure used while merging two already merged sequences
@@ -135,7 +135,7 @@ template <size_t InTupleIdx>
 struct __merge<__merge_pos<0, InTupleIdx>>
 {
     template <typename... T, typename... U>
-    static auto __get(tuple<T...> const& t, tuple<U...> const&u) -> decltype(get<InTupleIdx>(t))
+    __ALWAYS_INLINE static auto __get(tuple<T...> const& t, tuple<U...> const&u) -> decltype(get<InTupleIdx>(t))
     {
         return get<InTupleIdx>(t);
     }
@@ -148,7 +148,7 @@ template <size_t InTupleIdx>
 struct __merge<__merge_pos<1, InTupleIdx>>
 {
     template <typename... T, typename... U>
-    static auto __get(tuple<T...> const& t, tuple<U...> const&u) -> decltype(get<InTupleIdx>(u))
+    __ALWAYS_INLINE static auto __get(tuple<T...> const& t, tuple<U...> const&u) -> decltype(get<InTupleIdx>(u))
     {
         return get<InTupleIdx>(u);
     }
@@ -185,7 +185,7 @@ struct __enqueue_helper<Fun,
                         __params<MergePosTy...>,
                         __params<Args...>>
 {
-    static auto __get_enqueue_kernel_static_data(Fun&& fun, tuple<Args...>&& args)
+    __ALWAYS_INLINE static auto __get_enqueue_kernel_static_data(Fun&& fun, tuple<Args...>&& args)
     {
         auto&& data = make_tuple(get<NonPointersIdx>(move(args))...);
 
@@ -196,7 +196,7 @@ struct __enqueue_helper<Fun,
         };
     }
 
-    static auto& __get_enqueue_kernel_wrapper()
+    __ALWAYS_INLINE static auto& __get_enqueue_kernel_wrapper()
     {
         return __enqueue_kernel_wrapper<decltype(__get_enqueue_kernel_static_data(declval<Fun>(), declval<tuple<Args...>&&>())), PointersTy...>;
     }
@@ -205,24 +205,24 @@ struct __enqueue_helper<Fun,
     /// first is captured into single data block (alongside enqueued object) and latter is passed directly to SPIRV intrinsic.
     /// Passed callable object is enqueued indirectly via data block which is firstly unpacked by wrapping lambda, which also
     /// merge back captured trivial arguments with formed by runtime group of local_ptr<T>, in the end enqueued object is called.
-    static enqueue_status __enqueue(
-        __spirv::OpTypeQueue* queue,
+    __ALWAYS_INLINE static enqueue_status __enqueue(
+        __global __spirv::OpTypeQueue* queue,
         int flag,
-        ndrange const& ndrange,
+        const ndrange& nd,
         uint num_events_in_wait_list,
-        const __spirv::OpTypeDeviceEvent* const* event_wait_list,
-        __spirv::OpTypeDeviceEvent** event_ret,
+        __global const __spirv::OpTypeDeviceEvent* const* event_wait_list,
+        __global __spirv::OpTypeDeviceEvent** event_ret,
         Fun fun,
         tuple<Args...>&& args)
     {
         // capture all data which are not local_ptr<T>
-        auto static_data = __get_enqueue_kernel_static_data(move(fun), move(args));
+        __private auto static_data = __get_enqueue_kernel_static_data(move(fun), move(args));
 
         // enqueue 'kernel' wrapper, pass wrapping_lambda as void* block of data and size_t arguments as separate arguments to form valid pointers on called kernel's side
         return __spirv::OpEnqueueKernel(
             queue,
             flag,
-            ndrange,
+            nd,
             num_events_in_wait_list,
             event_wait_list,
             event_ret,

@@ -1,7 +1,7 @@
 // RUN: %clang_cc1 %s -triple spir-unknown-unknown -cl-std=c++ -pedantic -O0 -Wall -Wno-unused-variable -verify -emit-llvm -o -
 // RUN: %clang_cc1 %s -triple spir-unknown-unknown -cl-std=c++ -pedantic -O0 -Wall -Wno-unused-variable -verify -emit-llvm -o - -cl-fp16-enable
 // RUN: %clang_cc1 %s -triple spir-unknown-unknown -cl-std=c++ -pedantic -O0 -Wall -Wno-unused-variable -verify -emit-llvm -o - -cl-fp64-enable
-// RUN: %clang_cc1 %s -triple spir-unknown-unknown -cl-std=c++ -pedantic -O0 -Wall -Wno-unused-variable -verify -emit-llvm -o - -cl-fp64-enable
+// RUN: %clang_cc1 %s -triple spir-unknown-unknown -cl-std=c++ -pedantic -O0 -Wall -Wno-unused-variable -verify -emit-llvm -o - -cl-fp64-enable -cl-fp64-enable
 // expected-no-diagnostics
 
 #pragma OPENCL EXTENSION cl_khr_fp16: disable
@@ -17,19 +17,21 @@
 
 #include <opencl_half>
 
-kernel void worker(half arg0, cl::fp16 arg1)
+kernel void worker(cl::fp16 arg1)
 {
-  half h0 = 0.0h;
   float f0 = 0.0f;
   cl::fp16 v0;
   cl::fp16 v1(v0);
+  cl::fp16 v3;
+#ifdef cl_khr_fp16
+  half h0 = 0.0h;
   cl::fp16 v2{cl::fp16(h0)};
   v2 = v0;
   v2 = {cl::fp16(h0)};
-  
-  cl::fp16 v3(h0);
   v3 = h0;
   half h1 = v3;
+#endif
+  
   v3++;
   ++v3;
   v3--;

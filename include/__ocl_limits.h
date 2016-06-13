@@ -39,8 +39,9 @@ namespace __details
 /// \brief Base class providing default values
 ///
 template<class T>
-struct __num_base
+class __num_base
 {
+public:
     static constexpr bool is_specialized = false;
     static constexpr int max_digits10 = 0;
     static constexpr bool is_signed = false;
@@ -72,8 +73,9 @@ struct __num_base
 /// digits10 is number of digits in base 10
 /// This specialization is for signed types
 template<typename T, bool = cl::is_signed<T>::value>
-struct __digits_helper
+class __digits_helper
 {
+public:
     static constexpr int digits = (CHAR_BIT * sizeof(T)-1);
     static constexpr int digits10 = digits * 301L / 1000; //301L / 1000 gives value of logarithm of 2 to base 10 (~0.30103...) - used to convert number of digits
                                                           //from base 2 to base 10. In our range of possible number of digits its precision is sufficient
@@ -85,8 +87,9 @@ struct __digits_helper
 /// digits10 is number of digits in base 10
 /// This specialization is for unsigned types
 template<typename T>
-struct __digits_helper<T, false>
+class __digits_helper<T, false>
 {
+public:
     static constexpr int digits = CHAR_BIT * sizeof(T);
     static constexpr int digits10 = digits * 301L / 1000; //301L / 1000 gives value of logarithm of 2 to base 10 (~0.30103...) - used to convert number of digits
                                                           //from base 2 to base 10. In our range of possible number of digits its precision is sufficient
@@ -95,8 +98,9 @@ struct __digits_helper<T, false>
 /// \brief Helper class for integer types
 ///
 template<class T, T Min, T Max>
-struct __num_int_base : public __digits_helper<T>, public __num_base<T>
+class __num_int_base : public __digits_helper<T>, public __num_base<T>
 {
+public:
     inline static constexpr T min() __NOEXCEPT{ return Min; }
     inline static constexpr T max() __NOEXCEPT{ return Max; }
     inline static constexpr T lowest() __NOEXCEPT{ return Min; }
@@ -115,8 +119,9 @@ struct __num_int_base : public __digits_helper<T>, public __num_base<T>
 /// min, max, lowest, epsilon should be redeclared with proper values in specialization,
 /// because C++ forbids to pass floating point values as non-type template parameters
 template<class T, int Dig, int MantDig, int Max10Exp, int MaxExp, int Min10Exp, int MinExp>
-struct __num_float_base : public __num_base<T>
+class __num_float_base : public __num_base<T>
 {
+public:
     inline static constexpr T round_error() __NOEXCEPT{ return 0.5F; }
 
     static constexpr int digits = MantDig;
@@ -157,7 +162,7 @@ template<class T, bool  A = __is_one_of<typename vector_element<T>::type, bool, 
     , double
 #endif
 >::value>
-struct __numeric_limits_base;
+class __numeric_limits_base;
 
 
 template<> class __numeric_limits_base<int>    : public __num_int_base<int, INT_MIN, INT_MAX> { };
@@ -238,7 +243,8 @@ public:
 
 /// \brief Numeric limits specialization for bool
 ///
-template<> class __numeric_limits_base<bool> {
+template<> class __numeric_limits_base<bool>
+{
 public:
     static constexpr bool is_specialized = true;
     static constexpr bool min() __NOEXCEPT{ return false; }
@@ -281,7 +287,7 @@ public:
 ///
 /// This specialization catches not supported types
 template<class T>
-struct __numeric_limits_base<T, false>
+class __numeric_limits_base<T, false>
 {
     static_assert(__always_false<T>::value, "Invalid specialization - type not supported.");
 };
@@ -290,7 +296,9 @@ struct __numeric_limits_base<T, false>
 ///
 /// This is specialization is for scalar types
 template<class T, bool = is_vector_type<T>::value>
-struct __numeric_limits_helper : public __numeric_limits_base<T> {
+class __numeric_limits_helper : public __numeric_limits_base<T>
+{
+public:
     static constexpr bool is_scalar = true;
     static constexpr bool is_vector = false;
 };
@@ -299,8 +307,9 @@ struct __numeric_limits_helper : public __numeric_limits_base<T> {
 ///
 /// This specialization is for vector types
 template<class T>
-struct __numeric_limits_helper<T, true> : public __numeric_limits_base<typename vector_element<T>::type>
+class __numeric_limits_helper<T, true> : public __numeric_limits_base<typename vector_element<T>::type>
 {
+public:
     inline static constexpr T min() __NOEXCEPT{ return { numeric_limits<typename vector_element<T>::type>::min() }; }
     inline static constexpr T max() __NOEXCEPT{ return { numeric_limits<typename vector_element<T>::type>::max() }; }
     inline static constexpr T lowest() __NOEXCEPT{ return{ numeric_limits<typename vector_element<T>::type>::lowest() }; }
@@ -320,7 +329,7 @@ struct __numeric_limits_helper<T, true> : public __numeric_limits_base<typename 
 ///
 /// This is specialization for bool type
 template<>
-struct __numeric_limits_helper<bool, false> : public __numeric_limits_base<bool> { };
+class __numeric_limits_helper<bool, false> : public __numeric_limits_base<bool> { };
 
 }
 
