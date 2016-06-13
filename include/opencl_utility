@@ -23,12 +23,4 @@
 
 #pragma once
 
-#include <opencl_def>
-
-#define __NOEXCEPT noexcept
-#define __ALWAYS_INLINE inline __attribute__((always_inline))
-#define __LOCAL_QUALIFIER __local
-#define __GLOBAL_QUALIFIER __global
-#define __CONSTANT_QUALIFIER __constant
-#define __PRIVATE_QUALIFIER __private
-#define __GENERIC_QUALIFIER __generic
+#include <__ocl_utility.h>

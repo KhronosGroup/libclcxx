@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <__ocl_config.h>
 #include <__ocl_type_traits_type_generators.h>
 #include <__ocl_spirv_sampler_opcodes.h>
 #include <__ocl_marker_type.h>
@@ -99,7 +100,11 @@ private:
     template <typename _ElemType, typename _ImageType>
     friend struct __details::__image_sample_trait;
 
-    constexpr sampler(__global const __spirv::OpConstantSampler &handle):_handle((__global const __spirv::OpTypeSampler*)(&handle)) { };
+    constexpr sampler(__global const __spirv::OpConstantSampler &handle): _handle(
+        // force evaluation as constant value (if possible)
+        __builtin_constant_p((__global const __spirv::OpTypeSampler*)(&handle))
+            ? (__global const __spirv::OpTypeSampler*)(&handle)
+            : (__global const __spirv::OpTypeSampler*)(&handle)) { };
 
     __global const __spirv::OpTypeSampler *_handle;
 };

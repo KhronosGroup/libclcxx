@@ -1,4 +1,4 @@
-// RUN: %clang_cc1 %s -triple spir-unknown-unknown -cl-std=c++ -fsyntax-only -pedantic -verify -O0 -emit-llvm -o -o /dev/null
+// RUN: %clang_cc1 %s -triple spir-unknown-unknown -cl-std=c++ -fsyntax-only -pedantic -verify -O0 -emit-llvm -o /dev/null
 // expected-no-diagnostics
 
 #include <opencl_pipe>

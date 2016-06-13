@@ -26,20 +26,13 @@
 #include <__ocl_config.h>
 #include <__ocl_marker_type.h>
 #include <opencl_type_traits>
+#include <opencl_memory>
 
 namespace cl
 {
 
-template <class T>
-T* addressof(T& arg)
-{
-    return reinterpret_cast<T*>(
-        &const_cast<typename __details::__copy_as_helper<T, char>::type&>(
-        reinterpret_cast<typename __details::__copy_as_helper<T, const volatile char>::type&> (arg)));
-}
-
 template <class Fun, class... Args>
-result_of_t<Fun&&(Args&&...)> invoke(Fun&& f, Args&&... args)
+__ALWAYS_INLINE result_of_t<Fun&&(Args&&...)> invoke(Fun&& f, Args&&... args)
 {
     return __details::__invoke(forward<Fun>(f), forward<Args>(args)...);
 }
@@ -72,10 +65,10 @@ public:
     __reference_wrapper_base(T&& t) = delete;
     __reference_wrapper_base(__reference_wrapper_base const& other) __NOEXCEPT = default;
 
-    __reference_wrapper_base& operator = (__reference_wrapper_base const& other) __NOEXCEPT = default;
+    __ALWAYS_INLINE __reference_wrapper_base& operator = (__reference_wrapper_base const& other) __NOEXCEPT = default;
 
-    operator T& () const __NOEXCEPT { return *my_ref; }
-    T& get() const __NOEXCEPT { return *my_ref; }
+    __ALWAYS_INLINE operator T& () const __NOEXCEPT { return *my_ref; }
+    __ALWAYS_INLINE T& get() const __NOEXCEPT { return *my_ref; }
 
 private:
     T* my_ref;
@@ -146,32 +139,32 @@ public:
     using __details::__reference_wrapper_base<T>::operator T&;
 
     template <typename... Args>
-    result_of_t<T&(Args&&...)> operator ()(Args&&... args) const
+    __ALWAYS_INLINE result_of_t<T&(Args&&...)> operator ()(Args&&... args) const
     {
         return __details::__invoke(__details::__reference_wrapper_base<T>::get(), forward<Args>(args)...);
     }
 };
 
 template <class T>
-reference_wrapper<T> ref(T& t) __NOEXCEPT
+__ALWAYS_INLINE reference_wrapper<T> ref(T& t) __NOEXCEPT
 {
     return reference_wrapper<T>(t);
 }
 
 template<class T>
-reference_wrapper<T> ref(reference_wrapper<T> t) __NOEXCEPT
+__ALWAYS_INLINE reference_wrapper<T> ref(reference_wrapper<T> t) __NOEXCEPT
 {
     return ref(t.get());
 }
 
 template <class T>
-reference_wrapper<const T> cref(T const& t) __NOEXCEPT
+__ALWAYS_INLINE reference_wrapper<const T> cref(T const& t) __NOEXCEPT
 {
     return reference_wrapper<const T>(t);
 }
 
 template<class T>
-reference_wrapper<const T> cref(reference_wrapper<T> t) __NOEXCEPT
+__ALWAYS_INLINE reference_wrapper<const T> cref(reference_wrapper<T> t) __NOEXCEPT
 {
     return cref(t.get());
 }

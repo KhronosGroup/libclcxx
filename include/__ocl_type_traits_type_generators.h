@@ -24,7 +24,7 @@
 #pragma once
 
 #include <__ocl_type_traits_base.h>
-#include <__ocl_utility.h>
+#include <__ocl_type_traits_declval.h>
 #include <__ocl_type_traits_cv_ref_ptr.h>
 #include <__ocl_type_traits_extents.h>
 #include <__ocl_type_traits_type_categories.h>

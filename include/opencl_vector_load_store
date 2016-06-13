@@ -41,33 +41,75 @@ namespace __spirv
     template <rounding_mode Rmode, typename... Args>
     void vstore_half(Args... args);
 
+    MAKE_SPIRV_CALLABLE(vstore_half_r);
+
     template <rounding_mode Rmode, typename... Args>
     void vstore_halfn(Args... args);
+
+    MAKE_SPIRV_CALLABLE(vstore_halfn_r);
 
     MAKE_SPIRV_CALLABLE_WITH_TEMPLATE_RETTYPE(vloada_halfn)
 
     template <rounding_mode Rmode, typename... Args>
     void vstorea_halfn(Args... args);
+
+    MAKE_SPIRV_CALLABLE(vstorea_halfn_r);
 };
 
 namespace __details
 {
 
-template <size_t N> struct __vload_half_helper  { __ALWAYS_INLINE static auto __make_call(size_t offset, const half* ptr)               { return __spirv::__make_vload_halfn_call<make_vector_t<float, N>>(offset, ptr, N); }
-                                                  __ALWAYS_INLINE static auto __make_call(size_t offset, const constant_ptr<half> ptr)  { return __spirv::__make_vload_halfn_call<make_vector_t<float, N>>(offset, ptr.get(), N); } };
+template <size_t N> struct __vload_half_helper
+{
+    __ALWAYS_INLINE static auto __make_call(size_t offset, const half* ptr)
+    {
+        return __spirv::__make_vload_halfn_call<make_vector_t<float, N>>(offset, ptr, N);
+    }
 
-template <> struct __vload_half_helper<1>       { __ALWAYS_INLINE static auto __make_call(size_t offset, const half* ptr)               { return __spirv::__make_vload_half_call<float>(offset, ptr); }
-                                                  __ALWAYS_INLINE static auto __make_call(size_t offset, const constant_ptr<half> ptr)  { return __spirv::__make_vload_half_call<float>(offset, ptr.get()); } };
+    __ALWAYS_INLINE static auto __make_call(size_t offset, const constant_ptr<half> ptr)
+    {
+        return __spirv::__make_vload_halfn_call<make_vector_t<float, N>>(offset, ptr.get(), N);
+    }
+};
 
-template <size_t N> struct __vstore_half_helper { template <rounding_mode Rmode, typename T>
-                                                  __ALWAYS_INLINE static auto __make_call(T data, size_t offset, const half* ptr)               { return __spirv::vstore_halfn<Rmode>(data, offset, ptr); }
-                                                  template <rounding_mode Rmode, typename T>
-                                                  __ALWAYS_INLINE static auto __make_call(T data, size_t offset, const constant_ptr<half> ptr)  { return __spirv::vstore_halfn<Rmode>(data, offset, ptr.get()); }};
+template <> struct __vload_half_helper<1>
+{
+    __ALWAYS_INLINE static auto __make_call(size_t offset, const half* ptr)
+    {
+        return __spirv::__make_vload_half_call<float>(offset, ptr);
+    }
 
-template <> struct __vstore_half_helper<1>      { template <rounding_mode Rmode, typename T>
-                                                  __ALWAYS_INLINE static auto __make_call(T data, size_t offset, const half* ptr)               { return __spirv::vstore_half<Rmode>(data, offset, ptr); }
-                                                  template <rounding_mode Rmode, typename T>
-                                                  __ALWAYS_INLINE static auto __make_call(T data, size_t offset, const constant_ptr<half> ptr)  { return __spirv::vstore_half<Rmode>(data, offset, ptr.get()); }};
+    __ALWAYS_INLINE static auto __make_call(size_t offset, const constant_ptr<half> ptr)
+    {
+        return __spirv::__make_vload_half_call<float>(offset, ptr.get());
+    }
+};
+
+template <size_t N> struct __vstore_half_helper
+{
+    template <rounding_mode Rmode, typename T>
+    __ALWAYS_INLINE static auto __make_call(T data, size_t offset, const half* ptr)
+    {
+#ifdef __CL_USE_UNDECORATED_VSTORE
+        return __spirv::__make_vstore_halfn_r_call<void>(data, offset, ptr, Rmode);
+#else
+        return __spirv::vstore_halfn<Rmode>(data, offset, ptr);
+#endif
+    }
+};
+
+template <> struct __vstore_half_helper<1>
+{
+    template <rounding_mode Rmode, typename T>
+    __ALWAYS_INLINE static auto __make_call(T data, size_t offset, const half* ptr)
+    {
+#ifdef __CL_USE_UNDECORATED_VSTORE
+        return __spirv::__make_vstore_half_r_call<void>(data, offset, ptr, Rmode);
+#else
+        return __spirv::vstore_half<Rmode>(data, offset, ptr);
+#endif
+    }
+};
 
 } //end namespace __details
 
@@ -131,14 +173,14 @@ template <size_t N>
 __ALWAYS_INLINE enable_if_t<!is_same<make_vector_t<float, N>, float>::value, make_vector_t<float, N>>
 vloada_half(size_t offset, const half* ptr)
 {
-    return __spirv::__make_vloada_halfn_call<make_vector_t<float,N>>(offset, ptr);
+    return __spirv::__make_vloada_halfn_call<make_vector_t<float,N>>(offset, ptr, N);
 }
 
 template <size_t N>
 __ALWAYS_INLINE enable_if_t<!is_same<make_vector_t<float, N>, float>::value, make_vector_t<float, N>>
 vloada_half(size_t offset, const constant_ptr<half> ptr)
 {
-    return __spirv::__make_vloada_halfn_call<make_vector_t<float,N>>(offset, ptr.get());
+    return __spirv::__make_vloada_halfn_call<make_vector_t<float,N>>(offset, ptr.get(), N);
 }
 
 
@@ -153,7 +195,12 @@ __ALWAYS_INLINE enable_if_t<
                             ), void>
 vstorea_half(T data, size_t offset, half* ptr)
 {
+#ifdef __CL_USE_UNDECORATED_VSTORE
+    return __spirv::__make_vstorea_halfn_r_call<void>(data, offset, ptr, Rmode);
+#else
     return __spirv::vstorea_halfn<Rmode>(data, offset, ptr);
+#endif
+
 }
 
 } //end namespace cl

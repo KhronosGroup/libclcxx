@@ -47,7 +47,7 @@ struct __choose_dynamic_as_cast
 template<class T>
 struct __choose_dynamic_as_cast<global_ptr<T>>
 {
-    static __global T * __ALWAYS_INLINE __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_OpGenericCastToPtrExplicit_ToGlobal_call(arg); }
+    __ALWAYS_INLINE static __global T * __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_OpGenericCastToPtrExplicit_ToGlobal_call(arg); }
 };
 
 /// \brief Helper trait to select the address space cast SPIR-V function.
@@ -55,7 +55,7 @@ struct __choose_dynamic_as_cast<global_ptr<T>>
 template<class T>
 struct __choose_dynamic_as_cast<local_ptr<T>>
 {
-    static __local T * __ALWAYS_INLINE __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_OpGenericCastToPtrExplicit_ToLocal_call(arg); }
+    __ALWAYS_INLINE static __local T * __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_OpGenericCastToPtrExplicit_ToLocal_call(arg); }
 };
 
 /// \brief Helper trait to select the address space cast SPIR-V function.
@@ -63,7 +63,7 @@ struct __choose_dynamic_as_cast<local_ptr<T>>
 template<class T>
 struct __choose_dynamic_as_cast<private_ptr<T>>
 {
-    static __private T * __ALWAYS_INLINE __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_GenericCastToPtrExplicit_ToPrivate_call(arg); }
+    __ALWAYS_INLINE static __private T * __make_call(__generic T *arg) __NOEXCEPT{ return __spirv::__make_GenericCastToPtrExplicit_ToPrivate_call(arg); }
 };
 
 } // namespace __details
@@ -72,7 +72,7 @@ struct __choose_dynamic_as_cast<private_ptr<T>>
 ///
 /// The function can return nullptr if the given pointer cannot be casted to specified address space pointer.
 template<class To, class From>
-To dynamic_as_cast(From *ptr)
+__ALWAYS_INLINE To dynamic_as_cast(From *ptr)
 {
     static_assert(is_same<global_ptr<From>, To>::value || is_same<local_ptr<From>, To>::value || is_same<private_ptr<From>, To>::value, "Invalid dynamic address space cast.");
 
@@ -82,21 +82,26 @@ To dynamic_as_cast(From *ptr)
 /// \brief Local address space storage class
 ///
 template<class T>
-using local = add_local_t<__details::__data<T>>;
+using local = __local __details::__data<T>;
 
 /// \brief Constant address space storage class
 ///
 template<class T>
-using constant = add_constant_t<__details::__data_fundamental<T>>;
+using constant = __constant __details::__data_fundamental<T>;
 
 /// \brief Global address space storage class
 ///
 template<class T>
-using global = add_global_t<__details::__data<T>>;
+using global = __global __details::__data<T>;
 
 /// \brief Private address space storage class
 ///
 template<class T>
-using priv = add_private_t<__details::__data<T>>;
+using priv = __private __details::__data<T>;
+
+/// \brief Obtains direct memory address of argument
+///
+template <class T>
+__ALWAYS_INLINE T* addressof(T& t) __NOEXCEPT { return __builtin_addressof(t); }
 
 } // namespace cl

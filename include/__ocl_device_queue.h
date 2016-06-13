@@ -186,7 +186,7 @@ struct device_queue
     ///
     /// __details::__verify - enables this overload only if passed arguments form valid invocation of 'fun', fallbacks to overload below which prints detailed information about failure cause
     template <class Fun, class... Args>
-    auto enqueue_kernel( enqueue_policy flag,
+    __ALWAYS_INLINE auto enqueue_kernel( enqueue_policy flag,
                          uint num_events_in_wait_list,
                          const event * event_wait_list,
                          event * event_ret,
@@ -200,8 +200,8 @@ struct device_queue
                 static_cast<int>(flag),
                 ndrange,
                 num_events_in_wait_list,
-                reinterpret_cast<const __spirv::OpTypeDeviceEvent* const*>(event_wait_list),
-                reinterpret_cast<__spirv::OpTypeDeviceEvent**>(event_ret),
+                reinterpret_cast<__global const __spirv::OpTypeDeviceEvent* const*>(event_wait_list),
+                reinterpret_cast<__global __spirv::OpTypeDeviceEvent**>(event_ret),
                 fun,
                 forward_as_tuple(forward<Args&&>(args)...));
     }
@@ -214,7 +214,7 @@ struct device_queue
     ///
     /// !__details::__verify - enables this overload only as fallback in case of invocation failure, prints detailed information about failure cause
     template <class Fun, class... Args>
-    auto enqueue_kernel( enqueue_policy flag,
+    __ALWAYS_INLINE auto enqueue_kernel( enqueue_policy flag,
                          uint num_events_in_wait_list,
                          const event * event_wait_list,
                          event * event_ret,
@@ -242,13 +242,13 @@ struct device_queue
     ///
     __ALWAYS_INLINE enqueue_status enqueue_marker(uint num_events_in_wait_list, const event * event_wait_list, event * event_ret) __NOEXCEPT
     {
-        return __spirv::OpEnqueueMarker(__this, num_events_in_wait_list, reinterpret_cast<const __spirv::OpTypeDeviceEvent* const*>(event_wait_list), reinterpret_cast<__spirv::OpTypeDeviceEvent**>(event_ret));
+        return __spirv::OpEnqueueMarker(__this, num_events_in_wait_list, reinterpret_cast<__global const __spirv::OpTypeDeviceEvent* const*>(event_wait_list), reinterpret_cast<__global __spirv::OpTypeDeviceEvent**>(event_ret));
     }
 
 private:
     __global __spirv::OpTypeQueue* __this;
 
-    friend device_queue get_default_queue();
+    friend device_queue get_default_device_queue();
     device_queue(__global __spirv::OpTypeQueue* ptr) : __this(ptr) {}
 };
 
@@ -262,7 +262,7 @@ __ALWAYS_INLINE event make_user_event()
 
 /// \brief standard function which returns default device_queue object
 ///
-__ALWAYS_INLINE device_queue get_default_queue()
+__ALWAYS_INLINE device_queue get_default_device_queue()
 {
     return  device_queue{ __spirv::OpGetDefaultQueue() };
 }
@@ -270,19 +270,18 @@ __ALWAYS_INLINE device_queue get_default_queue()
 /// \brief function which queries the maximum work-group size that can be used to execute given block
 ///
 template <class Fun, class... Args>
-enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_work_group_size(Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_work_group_size(Fun fun, Args... args)
 {
     using EnqueueHelper = __details::__build_enqueue_helper_t<Fun, Args...>;
 
-    auto& kernel_wrapper = EnqueueHelper::__get_enqueue_kernel_wrapper();
-    auto data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
-    return static_cast<uint>(__spirv::OpGetKernelWorkGroupSize(kernel_wrapper, &data, 0, 0));
+    __private auto static_data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
+    return static_cast<uint>(__spirv::OpGetKernelWorkGroupSize(EnqueueHelper::__get_enqueue_kernel_wrapper(), &static_data, 0, 0));
 }
 
 /// \brief fallback if given object 'fun' is not invokable with given arguments
 ///
 template <class Fun, class... Args>
-enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_work_group_size(Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_work_group_size(Fun fun, Args... args)
 {
     _ENQUEUE_VALIDATION_ERROR(Fun, Args);
     return 0;
@@ -291,19 +290,18 @@ enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint
 /// \brief function which returns preferred multiple of work-group size for launch.
 ///
 template <class Fun, class... Args>
-enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_preferred_work_group_size_multiple(Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_preferred_work_group_size_multiple(Fun fun, Args... args)
 {
     using EnqueueHelper = __details::__build_enqueue_helper_t<Fun, Args...>;
 
-    auto& kernel_wrapper = EnqueueHelper::__get_enqueue_kernel_wrapper();
-    auto data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
-    return static_cast<uint>(__spirv::OpGetKernelPreferredWorkGroupSizeMultiple(kernel_wrapper, &data, 0, 0));
+    __private auto static_data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
+    return static_cast<uint>(__spirv::OpGetKernelPreferredWorkGroupSizeMultiple(EnqueueHelper::__get_enqueue_kernel_wrapper(), &static_data, 0, 0));
 }
 
 /// \brief fallback if given object 'fun' is not invokable with given arguments
 ///
 template <class Fun, class... Args>
-enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_preferred_work_group_size_multiple(Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_preferred_work_group_size_multiple(Fun fun, Args... args)
 {
     _ENQUEUE_VALIDATION_ERROR(Fun, Args);
     return 0;
@@ -312,19 +310,18 @@ enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint
 /// \brief function which returns the number of sub-groups in each work-group of the dispatch.
 ///
 template <class Fun, class... Args>
-enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_sub_group_count_for_ndrange(const ndrange & ndrange, Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_sub_group_count_for_ndrange(const ndrange & ndrange, Fun fun, Args... args)
 {
     using EnqueueHelper = __details::__build_enqueue_helper_t<Fun, Args...>;
 
-    auto& kernel_wrapper = EnqueueHelper::__get_enqueue_kernel_wrapper();
-    auto data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
-    return static_cast<uint>(__spirv::OpGetKernelNDrangeSubGroupCount(ndrange, kernel_wrapper, &data, 0, 0));
+    __private auto static_data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
+    return static_cast<uint>(__spirv::OpGetKernelNDrangeSubGroupCount(ndrange, EnqueueHelper::__get_enqueue_kernel_wrapper(), &static_data, 0, 0));
 }
 
 /// \brief fallback if given object 'fun' is not invokable with given arguments
 ///
 template <class Fun, class... Args>
-enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_sub_group_count_for_ndrange(const ndrange & ndrange, Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_sub_group_count_for_ndrange(const ndrange & ndrange, Fun fun, Args... args)
 {
     _ENQUEUE_VALIDATION_ERROR(Fun, Args);
     return 0;
@@ -333,19 +330,18 @@ enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint
 /// \brief funtion which returns the maximum sub-group size for a lambda
 ///
 template <class Fun, class... Args>
-enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_max_sub_group_size_for_ndrange(const ndrange & ndrange, Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_max_sub_group_size_for_ndrange(const ndrange & ndrange, Fun fun, Args... args)
 {
     using EnqueueHelper = __details::__build_enqueue_helper_t<Fun, Args...>;
 
-    auto& kernel_wrapper = EnqueueHelper::__get_enqueue_kernel_wrapper();
-    auto data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
-    return static_cast<uint>(__spirv::OpGetKernelNDrangeMaxSubGroupSize(ndrange, kernel_wrapper, &data, 0, 0));
+    __private auto static_data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
+    return static_cast<uint>(__spirv::OpGetKernelNDrangeMaxSubGroupSize(ndrange, EnqueueHelper::__get_enqueue_kernel_wrapper(), &static_data, 0, 0));
 }
 
 /// \brief fallback if given object 'fun' is not invokable with given arguments
 ///
 template <class Fun, class... Args>
-enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_max_sub_group_size_for_ndrange(const ndrange & ndrange, Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_max_sub_group_size_for_ndrange(const ndrange & ndrange, Fun fun, Args... args)
 {
     _ENQUEUE_VALIDATION_ERROR(Fun, Args);
     return 0;
@@ -353,19 +349,18 @@ enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint
 
 /// \brief function which returns a valid local size that would produce the requested number of sub-groups such that each sub-group is complete with no partial sub-groups
 template <class Fun, class... Args>
-enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_local_size_for_sub_group_count(uint num_sub_groups, Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_local_size_for_sub_group_count(uint num_sub_groups, Fun fun, Args... args)
 {
     using EnqueueHelper = __details::__build_enqueue_helper_t<Fun, Args...>;
 
-    auto& kernel_wrapper = EnqueueHelper::__get_enqueue_kernel_wrapper();
-    auto data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
-    return static_cast<uint>(__spirv::OpGetKernelLocalSizeForSubgroupCount(num_sub_groups, kernel_wrapper, &data, 0, 0));
+    __private auto static_data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
+    return static_cast<uint>(__spirv::OpGetKernelLocalSizeForSubgroupCount(num_sub_groups, EnqueueHelper::__get_enqueue_kernel_wrapper(), &static_data, 0, 0));
 }
 
 /// \brief fallback if given object 'fun' is not invokable with given arguments
 ///
 template <class Fun, class... Args>
-enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_local_size_for_sub_group_count(uint num_sub_groups, Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_local_size_for_sub_group_count(uint num_sub_groups, Fun fun, Args... args)
 {
     _ENQUEUE_VALIDATION_ERROR(Fun, Args);
     return 0;
@@ -374,19 +369,18 @@ enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint
 /// \brief function which provides a mechanism to query the maximum number of sub-groups that can be used to execute the passed lambda
 ///
 template <class Fun, class... Args>
-enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_max_num_sub_groups(Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_max_num_sub_groups(Fun fun, Args... args)
 {
     using EnqueueHelper = __details::__build_enqueue_helper_t<Fun, Args...>;
 
-    auto& kernel_wrapper = EnqueueHelper::__get_enqueue_kernel_wrapper();
-    auto data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
-    return static_cast<uint>(__spirv::OpGetKernelMaxNumSubgroups(kernel_wrapper, &data, 0, 0));
+    __private auto static_data = EnqueueHelper::__get_enqueue_kernel_static_data(move(fun), make_tuple(move(args)...));
+    return static_cast<uint>(__spirv::OpGetKernelMaxNumSubgroups(EnqueueHelper::__get_enqueue_kernel_wrapper(), &static_data, 0, 0));
 }
 
 /// \brief fallback if given object 'fun' is not invokable with given arguments
 ///
 template <class Fun, class... Args>
-enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_max_num_sub_groups(Fun fun, Args... args)
+__ALWAYS_INLINE enable_if_t<!__details::__verify<Fun, __details::__params<Args...>>::value, uint> get_kernel_max_num_sub_groups(Fun fun, Args... args)
 {
     _ENQUEUE_VALIDATION_ERROR(Fun, Args);
     return 0;

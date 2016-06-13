@@ -3,6 +3,7 @@ set(files
   opencl_atomic
   opencl_common
   opencl_convert
+  opencl_def
   opencl_device_queue
   opencl_functional
   opencl_geometric
@@ -14,20 +15,21 @@ set(files
   opencl_math
   opencl_math_constants
   opencl_marker
+  opencl_memory
   opencl_pipe
   opencl_printf
+  opencl_range
   opencl_reinterpret
   opencl_relational
   opencl_synchronization
   opencl_tuple
   opencl_type_traits
+  opencl_utility
+  opencl_vec
   opencl_vector_load_store
   opencl_vector_utility
   opencl_work_group
   opencl_work_item
-  opencl_range
-  opencl_memory
-  opencl_def
   __ocl_array.h
   __ocl_atomic.h
   __ocl_atomic_enum.h
@@ -65,10 +67,13 @@ set(files
   __ocl_spirv_pipe_opcodes.h
   __ocl_spirv_printf_opcode.h
   __ocl_spirv_sampler_opcodes.h
+  __ocl_swizzle_engine.h
+  __ocl_swizzle_macros.h
   __ocl_type_traits.h
   __ocl_type_traits_address_spaces.h
   __ocl_type_traits_base.h
   __ocl_type_traits_cv_ref_ptr.h
+  __ocl_type_traits_declval.h
   __ocl_type_traits_extents.h
   __ocl_type_traits_helpers.h
   __ocl_type_traits_property_queries.h
@@ -80,6 +85,7 @@ set(files
   __ocl_type_traits_type_relations.h
   __ocl_type_traits_vectors.h
   __ocl_utility.h
+  __ocl_vec.h
   __ocl_vector_utility.h
   )
 

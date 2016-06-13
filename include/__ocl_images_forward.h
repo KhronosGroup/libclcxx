@@ -134,15 +134,15 @@ namespace __details
 
             template<class BaseType = base_type, class = enable_if_t<!BaseType::is_ms &&
                 !__is_same_image_access<access, image_access::write>::value, void>>
-            operator T( ) const __NOEXCEPT { return static_cast<image_type&>( image_reference ).read( coord ); }
+            __ALWAYS_INLINE operator T( ) const __NOEXCEPT { return static_cast<image_type&>( image_reference ).read( coord ); }
 
             template<class BaseType = base_type, class = enable_if_t<!BaseType::is_ms &&
                 ( __is_same_image_access<access, image_access::write>::value || __is_same_image_access<access, image_access::read_write>::value ), void >>
-            pixel &operator=( T color ) __NOEXCEPT{ static_cast<image_type&>( image_reference ).write( coord, color ); return *this; }
+            __ALWAYS_INLINE pixel &operator=( T color ) __NOEXCEPT{ static_cast<image_type&>( image_reference ).write( coord, color ); return *this; }
         };
 
-        pixel operator[]( integer_coord coord ) __NOEXCEPT{ return pixel( *this, coord ); }
-        pixel operator[]( integer_coord coord ) const __NOEXCEPT{ return pixel( *this, coord ); }
+        __ALWAYS_INLINE pixel operator[]( integer_coord coord ) __NOEXCEPT{ return pixel( *this, coord ); }
+        __ALWAYS_INLINE pixel operator[]( integer_coord coord ) const __NOEXCEPT{ return pixel( *this, coord ); }
 
         template <typename _ElemType, typename _ImageType>
         friend struct __image_sample_trait;

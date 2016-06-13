@@ -187,15 +187,15 @@ public:
     /// \brief template copy assignment operator that just copies current iterator
     ///
     template <class U>
-    reverse_iterator& operator=(const reverse_iterator<U>& other) __NOEXCEPT { current(other.current); return *this; }
+    __ALWAYS_INLINE reverse_iterator& operator=(const reverse_iterator<U>& other) __NOEXCEPT { current(other.current); return *this; }
 
     /// \brief returns current
     ///
-    Iterator base( ) const __NOEXCEPT{ return current; }
+    __ALWAYS_INLINE Iterator base( ) const __NOEXCEPT{ return current; }
 
     /// \brief returns value prior to current iterator
     ///
-    reference operator*( ) const __NOEXCEPT
+    __ALWAYS_INLINE reference operator*( ) const __NOEXCEPT
     {
         Iterator tmp = current;
         return *--tmp;
@@ -203,18 +203,18 @@ public:
 
     /// \brief returns iterator prior to current iterator
     ///
-    pointer operator->( ) const __NOEXCEPT
+    __ALWAYS_INLINE pointer operator->( ) const __NOEXCEPT
     {
         return addressof(operator*());
     }
 
     /// \brief returns value one prior to n in reversed sequence
     ///
-    reference operator[ ](difference_type n) __NOEXCEPT { return current[-n - 1]; }
+    __ALWAYS_INLINE reference operator[ ](difference_type n) __NOEXCEPT { return current[-n - 1]; }
 
     /// \brief decrements current, which advances the reverse iterator
     ///
-    reverse_iterator& operator++( ) __NOEXCEPT
+    __ALWAYS_INLINE reverse_iterator& operator++( ) __NOEXCEPT
     {
         --current;
         return *this;
@@ -222,7 +222,7 @@ public:
 
     /// \brief increments current, which decreases the reverse iterator
     ///
-    reverse_iterator& operator--( ) __NOEXCEPT
+    __ALWAYS_INLINE reverse_iterator& operator--( ) __NOEXCEPT
     {
         ++current;
         return *this;
@@ -230,7 +230,7 @@ public:
 
     /// \brief decrements current, which advances the reverse iterator
     ///
-    reverse_iterator operator++(int) __NOEXCEPT
+    __ALWAYS_INLINE reverse_iterator operator++(int) __NOEXCEPT
     {
         reverse_iterator tmp = *this;
         --current;
@@ -239,7 +239,7 @@ public:
 
     /// \brief increments current, which decreases the reverse iterator
     ///
-    reverse_iterator operator--(int) __NOEXCEPT
+    __ALWAYS_INLINE reverse_iterator operator--(int) __NOEXCEPT
     {
         reverse_iterator tmp = *this;
         ++current;
@@ -248,7 +248,7 @@ public:
 
     /// \brief decrements current by n, which advances the reverse iterator by n
     ///
-    reverse_iterator& operator+=(difference_type n) __NOEXCEPT
+    __ALWAYS_INLINE reverse_iterator& operator+=(difference_type n) __NOEXCEPT
     {
         current -= n;
         return *this;
@@ -256,7 +256,7 @@ public:
 
     /// \brief increments current by n, which decreases the reverse iterator by n
     ///
-    reverse_iterator& operator-=(difference_type n) __NOEXCEPT
+    __ALWAYS_INLINE reverse_iterator& operator-=(difference_type n) __NOEXCEPT
     {
         current += n;
         return *this;
@@ -264,7 +264,7 @@ public:
 
     /// \brief returns reverse iterator increased by n, which means that current is actually decreased
     ///
-    reverse_iterator operator+(difference_type n) const __NOEXCEPT
+    __ALWAYS_INLINE reverse_iterator operator+(difference_type n) const __NOEXCEPT
     {
         reverse_iterator tmp = *this;
         return tmp -= n;
@@ -272,7 +272,7 @@ public:
 
     /// \brief returns reverse iterator decreased by n, which means that current is actually increased
     ///
-    reverse_iterator operator-(difference_type n) const __NOEXCEPT
+    __ALWAYS_INLINE reverse_iterator operator-(difference_type n) const __NOEXCEPT
     {
         reverse_iterator tmp = *this;
         return tmp += n;
@@ -282,7 +282,7 @@ public:
 /// \brief returns lhs.base( ) == rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator==(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator==(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) == rhs.base( );
 }
@@ -290,7 +290,7 @@ bool operator==(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& r
 /// \brief returns lhs.base( ) != rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator!=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator!=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) != rhs.base( );
 }
@@ -298,7 +298,7 @@ bool operator!=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& r
 /// \brief returns lhs.base( ) > rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator<(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator<(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) > rhs.base( );
 }
@@ -306,7 +306,7 @@ bool operator<(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rh
 /// \brief returns lhs.base( ) >= rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator<=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator<=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) >= rhs.base( );
 }
@@ -314,7 +314,7 @@ bool operator<=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& r
 /// \brief returns lhs.base( ) < rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator>(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator>(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) < rhs.base( );
 }
@@ -322,7 +322,7 @@ bool operator>(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rh
 /// \brief returns lhs.base( ) <= rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator>=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator>=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) <= rhs.base( );
 }
@@ -330,7 +330,7 @@ bool operator>=(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& r
 /// \brief returns it - n
 ///
 template< class Iterator >
-reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& it) __NOEXCEPT
+__ALWAYS_INLINE reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& it) __NOEXCEPT
 {
     return it - n;
 }
@@ -338,7 +338,7 @@ reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::differ
 /// \brief returns rhs.base( ) + lhs.base( )
 ///
 template< class Lhs, class Rhs >
-auto operator-(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT -> decltype(rhs.base( ) - lhs.base( ))
+__ALWAYS_INLINE auto operator-(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rhs) __NOEXCEPT -> decltype(rhs.base( ) - lhs.base( ))
 {
     return rhs.base( ) - lhs.base( );
 }
@@ -346,7 +346,7 @@ auto operator-(const reverse_iterator<Lhs>& lhs, const reverse_iterator<Rhs>& rh
 /// \brief returns reverse iterator constructed from i with deduced type of Iterator
 ///
 template <class Iterator>
-reverse_iterator<Iterator> make_reverse_iterator(Iterator i) __NOEXCEPT { return reverse_iterator<Iterator>(i); }
+__ALWAYS_INLINE reverse_iterator<Iterator> make_reverse_iterator(Iterator i) __NOEXCEPT { return reverse_iterator<Iterator>(i); }
 
 #endif
 
@@ -393,30 +393,30 @@ public:
     /// \brief template copy assignment operator
     ///
     template <class U>
-    move_iterator& operator=(const move_iterator<U>& other) __NOEXCEPT{ current(other.current); return *this; }
+    __ALWAYS_INLINE move_iterator& operator=(const move_iterator<U>& other) __NOEXCEPT{ current(other.current); return *this; }
 
     /// \brief returns current
     ///
-    Iterator base( ) const __NOEXCEPT { return current; }
+    __ALWAYS_INLINE Iterator base( ) const __NOEXCEPT { return current; }
 
     /// \brief returns rvalue reference to value pointed by current
     ///
-    reference operator*() const __NOEXCEPT { return move(*current); }
+    __ALWAYS_INLINE reference operator*() const __NOEXCEPT { return move(*current); }
 
     /// \brief returns current
     ///
-    pointer operator->()  const __NOEXCEPT
+    __ALWAYS_INLINE pointer operator->()  const __NOEXCEPT
     {
         return current;
     }
 
     /// \brief returns rvalue reference to current[n]
     ///
-    reference operator[ ](difference_type n) __NOEXCEPT{ return move(current[n]); }
+    __ALWAYS_INLINE reference operator[ ](difference_type n) __NOEXCEPT{ return move(current[n]); }
 
     /// \brief advances iterator
     ///
-    move_iterator& operator++( ) __NOEXCEPT
+    __ALWAYS_INLINE move_iterator& operator++( ) __NOEXCEPT
     {
         ++current;
         return *this;
@@ -424,7 +424,7 @@ public:
 
     /// \brief decrements iterator
     ///
-    move_iterator& operator--( ) __NOEXCEPT
+    __ALWAYS_INLINE move_iterator& operator--( ) __NOEXCEPT
     {
         --current;
         return *this;
@@ -432,7 +432,7 @@ public:
 
     /// \brief advances iterator
     ///
-    move_iterator operator++(int) __NOEXCEPT
+    __ALWAYS_INLINE move_iterator operator++(int) __NOEXCEPT
     {
         move_iterator tmp = *this;
         ++current;
@@ -441,7 +441,7 @@ public:
 
     /// \brief decrements iterator
     ///
-    move_iterator operator--(int) __NOEXCEPT
+    __ALWAYS_INLINE move_iterator operator--(int) __NOEXCEPT
     {
         move_iterator tmp = *this;
         --current;
@@ -450,7 +450,7 @@ public:
 
     /// \brief advances iterator by n
     ///
-    move_iterator& operator+=(difference_type n) __NOEXCEPT
+    __ALWAYS_INLINE move_iterator& operator+=(difference_type n) __NOEXCEPT
     {
         current += n;
         return *this;
@@ -458,7 +458,7 @@ public:
 
     /// \brief decrements iterator by n
     ///
-    move_iterator& operator-=(difference_type n) __NOEXCEPT
+    __ALWAYS_INLINE move_iterator& operator-=(difference_type n) __NOEXCEPT
     {
         current -= n;
         return *this;
@@ -466,7 +466,7 @@ public:
 
     /// \brief returns iterator advanced by n
     ///
-    move_iterator operator+(difference_type n) const __NOEXCEPT
+    __ALWAYS_INLINE move_iterator operator+(difference_type n) const __NOEXCEPT
     {
         move_iterator tmp = *this;
         return tmp += n;
@@ -474,7 +474,7 @@ public:
 
     /// \brief returns iterator decremented by n
     ///
-    move_iterator operator-(difference_type n) const __NOEXCEPT
+    __ALWAYS_INLINE move_iterator operator-(difference_type n) const __NOEXCEPT
     {
         move_iterator tmp = *this;
         return tmp -= n;
@@ -484,7 +484,7 @@ public:
 /// \brief returns lhs.base( ) == rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator==(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator==(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) == rhs.base( );
 }
@@ -492,7 +492,7 @@ bool operator==(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __
 /// \brief returns lhs.base( ) != rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator!=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator!=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) != rhs.base( );
 }
@@ -500,7 +500,7 @@ bool operator!=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __
 /// \brief returns lhs.base( ) < rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator<(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator<(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) < rhs.base( );
 }
@@ -508,7 +508,7 @@ bool operator<(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __N
 /// \brief returns lhs.base( ) <= rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator<=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator<=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) <= rhs.base( );
 }
@@ -516,7 +516,7 @@ bool operator<=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __
 /// \brief returns lhs.base( ) > rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator>(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator>(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) > rhs.base( );
 }
@@ -524,7 +524,7 @@ bool operator>(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __N
 /// \brief returns lhs.base( ) >= rhs.base( )
 ///
 template< class Lhs, class Rhs >
-bool operator>=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
+__ALWAYS_INLINE bool operator>=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT
 {
     return lhs.base( ) >= rhs.base( );
 }
@@ -532,7 +532,7 @@ bool operator>=(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __
 /// \brief returns it + n
 ///
 template< class Iterator >
-move_iterator<Iterator> operator+(typename move_iterator<Iterator>::difference_type n, const move_iterator<Iterator>& it) __NOEXCEPT
+__ALWAYS_INLINE move_iterator<Iterator> operator+(typename move_iterator<Iterator>::difference_type n, const move_iterator<Iterator>& it) __NOEXCEPT
 {
     return it + n;
 }
@@ -540,7 +540,7 @@ move_iterator<Iterator> operator+(typename move_iterator<Iterator>::difference_t
 /// \brief returns rhs.base( ) - lhs.base( )
 ///
 template< class Lhs, class Rhs >
-auto operator-(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT -> decltype(rhs.base( ) - lhs.base( ))
+__ALWAYS_INLINE auto operator-(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __NOEXCEPT -> decltype(rhs.base( ) - lhs.base( ))
 {
     return rhs.base( ) - lhs.base( );
 }
@@ -548,7 +548,7 @@ auto operator-(const move_iterator<Lhs>& lhs, const move_iterator<Rhs>& rhs) __N
 /// \brief returns move iterator adapter constructed from i with deduced Iterator type
 ///
 template <class Iterator>
-move_iterator<Iterator> make_move_iterator(Iterator i) __NOEXCEPT { return move_iterator<Iterator>(i); }
+__ALWAYS_INLINE move_iterator<Iterator> make_move_iterator(Iterator i) __NOEXCEPT { return move_iterator<Iterator>(i); }
 
 #endif
 
@@ -566,7 +566,7 @@ public:
 
     /// \brief performs push_back(value) on stored container
     ///
-    back_insert_iterator<Container> & operator=(const typename Container::value_type& value) __NOEXCEPT
+    __ALWAYS_INLINE back_insert_iterator<Container> & operator=(const typename Container::value_type& value) __NOEXCEPT
     {
         container->push_back(value);
         return *this;
@@ -574,7 +574,7 @@ public:
 
     /// \brief performs push_back(move(value)) on stored container
     ///
-    back_insert_iterator<Container> & operator=(typename Container::value_type&& value) __NOEXCEPT
+    __ALWAYS_INLINE back_insert_iterator<Container> & operator=(typename Container::value_type&& value) __NOEXCEPT
     {
         container->push_back(move(value));
         return *this;
@@ -582,15 +582,15 @@ public:
 
     /// \brief no op
     ///
-    back_insert_iterator& operator*( ) __NOEXCEPT { return *this; }
+    __ALWAYS_INLINE back_insert_iterator& operator*( ) __NOEXCEPT { return *this; }
 
     /// \brief no op
     ///
-    back_insert_iterator& operator++( ) __NOEXCEPT { return *this; }
+    __ALWAYS_INLINE back_insert_iterator& operator++( ) __NOEXCEPT { return *this; }
 
     /// \brief no op
     ///
-    back_insert_iterator& operator++(int) __NOEXCEPT { return *this; }
+    __ALWAYS_INLINE back_insert_iterator& operator++(int) __NOEXCEPT { return *this; }
 
 protected:
     /// \brief stored container
@@ -601,7 +601,7 @@ protected:
 /// \brief returns back_insert_iterator constructed from container correctly deducing container type
 ///
 template <class Container>
-back_insert_iterator<Container> back_inserter(Container& c) __NOEXCEPT
+__ALWAYS_INLINE back_insert_iterator<Container> back_inserter(Container& c) __NOEXCEPT
 {
     return back_insert_iterator<Container>(c);
 }
@@ -622,7 +622,7 @@ public:
 
     /// \brief performs push_front(value) on stored container
     ///
-    front_insert_iterator<Container> & operator=(const typename Container::value_type& value) __NOEXCEPT
+    __ALWAYS_INLINE front_insert_iterator<Container> & operator=(const typename Container::value_type& value) __NOEXCEPT
     {
         container->push_front(value);
         return *this;
@@ -630,7 +630,7 @@ public:
 
     /// \brief performs push_front(move(value)) on stored container
     ///
-    front_insert_iterator<Container> & operator=(typename Container::value_type&& value) __NOEXCEPT
+    __ALWAYS_INLINE front_insert_iterator<Container> & operator=(typename Container::value_type&& value) __NOEXCEPT
     {
         container->push_front(move(value));
         return *this;
@@ -638,15 +638,15 @@ public:
 
     /// \brief no op
     ///
-    front_insert_iterator& operator*( ) __NOEXCEPT { return *this; }
+    __ALWAYS_INLINE front_insert_iterator& operator*( ) __NOEXCEPT { return *this; }
 
     /// \brief no op
     ///
-    front_insert_iterator& operator++( ) __NOEXCEPT { return *this; }
+    __ALWAYS_INLINE front_insert_iterator& operator++( ) __NOEXCEPT { return *this; }
 
     /// \brief no op
     ///
-    front_insert_iterator& operator++(int) __NOEXCEPT { return *this; }
+    __ALWAYS_INLINE front_insert_iterator& operator++(int) __NOEXCEPT { return *this; }
 
 protected:
     /// \brief stored container
@@ -657,7 +657,7 @@ protected:
 /// \brief returns front_insert_iterator constructed from container correctly deducing container type
 ///
 template <class Container>
-front_insert_iterator<Container> front_inserter(Container& c) __NOEXCEPT
+__ALWAYS_INLINE front_insert_iterator<Container> front_inserter(Container& c) __NOEXCEPT
 {
     return front_insert_iterator<Container>(c);
 }
@@ -687,7 +687,7 @@ public:
 
     /// \brief inserts value into the container at the position pointed by iterator and increments iterator
     ///
-    insert_iterator<Container> & operator=(const typename Container::value_type& value) __NOEXCEPT
+    __ALWAYS_INLINE insert_iterator<Container> & operator=(const typename Container::value_type& value) __NOEXCEPT
     {
         iter = container->insert(iter, value);
         ++iter;
@@ -696,7 +696,7 @@ public:
 
     /// \brief inserts value, converted into rvalue reference, into the container at the position pointed by iterator and increments iterator
     ///
-    insert_iterator<Container> & operator=(typename Container::value_type&& value) __NOEXCEPT
+    __ALWAYS_INLINE insert_iterator<Container> & operator=(typename Container::value_type&& value) __NOEXCEPT
     {
         iter = container->insert(iter, move(value));
         ++iter;
@@ -705,11 +705,11 @@ public:
 
     /// \brief no op
     ///
-    insert_iterator& operator*( ) __NOEXCEPT { return *this; }
+    __ALWAYS_INLINE insert_iterator& operator*( ) __NOEXCEPT { return *this; }
 
     /// \brief no op
     ///
-    insert_iterator& operator++( ) __NOEXCEPT { return *this; }
+    __ALWAYS_INLINE insert_iterator& operator++( ) __NOEXCEPT { return *this; }
 
     /// \brief no op
     ///
@@ -731,7 +731,7 @@ insert_iterator<Container> inserter(Container& c, typename Container::iterator i
 /// \brief Advances the iterator forward if the distance is positive, otherwise recedes iterator backwards
 ///
 template <class Iterator, class Distance>
-void advance(Iterator& it, Distance n) __NOEXCEPT
+__ALWAYS_INLINE void advance(Iterator& it, Distance n) __NOEXCEPT
 {
     if (is_same<typename Iterator::iterator_category, random_access_iterator_tag>::value)
     {
@@ -760,7 +760,7 @@ void advance(Iterator& it, Distance n) __NOEXCEPT
 /// \brief Calculates the distance between two iterators, if last cannot be reached from first by incrementing first the behavior is undefined
 ///
 template <class Iterator>
-typename iterator_traits<Iterator>::difference_type distance(Iterator first, Iterator last) __NOEXCEPT
+__ALWAYS_INLINE typename iterator_traits<Iterator>::difference_type distance(Iterator first, Iterator last) __NOEXCEPT
 {
 //##todo - type czy category? category -> porownujemy tagi
     if (is_same<typename Iterator::iterator_category, random_access_iterator_tag>::value)
@@ -778,7 +778,7 @@ typename iterator_traits<Iterator>::difference_type distance(Iterator first, Ite
 /// \brief Returns iterator following it by n
 ///
 template <class Iterator>
-Iterator next(Iterator it, typename iterator_traits<Iterator>::difference_type n = 1) __NOEXCEPT
+__ALWAYS_INLINE Iterator next(Iterator it, typename iterator_traits<Iterator>::difference_type n = 1) __NOEXCEPT
 {
     advance(it, n);
     return it;
@@ -787,7 +787,7 @@ Iterator next(Iterator it, typename iterator_traits<Iterator>::difference_type n
 /// \brief Returns iterator preceding it by n
 ///
 template <class Iterator>
-Iterator prev(Iterator it, typename iterator_traits<Iterator>::difference_type n = 1) __NOEXCEPT
+__ALWAYS_INLINE Iterator prev(Iterator it, typename iterator_traits<Iterator>::difference_type n = 1) __NOEXCEPT
 {
     advance(it, -n);
     return it;
@@ -800,86 +800,85 @@ Iterator prev(Iterator it, typename iterator_traits<Iterator>::difference_type n
 /// \brief Returns iterator to the beginning of the container or a pointer to begin of a bound array
 ///
 template <class Container>
-auto begin(Container& container) __NOEXCEPT -> decltype(container.begin( )) { return container.begin( ); }
+__ALWAYS_INLINE auto begin(Container& container) __NOEXCEPT -> decltype(container.begin( )) { return container.begin( ); }
 
 /// \brief Returns iterator to the beginning of the container or a pointer to begin of a bound array
 ///
 template <class Container>
-auto begin(const Container& container) __NOEXCEPT -> decltype(container.begin( )) { return container.begin( ); }
+__ALWAYS_INLINE auto begin(const Container& container) __NOEXCEPT -> decltype(container.begin( )) { return container.begin( ); }
 
 /// \brief Returns iterator to the beginning of the container or a pointer to begin of a bound array
 ///
 template <class T, size_t N>
-constexpr T* begin(T (&arr)[N]) __NOEXCEPT { return addressof(arr); }
+__ALWAYS_INLINE constexpr T* begin(T (&arr)[N]) __NOEXCEPT { return addressof(arr); }
 
 /// \brief Returns const iterator to the beginning of the container or a const pointer to begin of a bound array
 ///
 template <class Container>
-constexpr auto cbegin( const Container& container ) __NOEXCEPT -> decltype(begin(container)) { return begin(container); }
+__ALWAYS_INLINE constexpr auto cbegin( const Container& container ) __NOEXCEPT -> decltype(begin(container)) { return begin(container); }
 
 /// \brief Returns iterator to the end of the container or a pointer to end of a bound array
 ///
 template <class Container>
-auto end(Container& container) __NOEXCEPT -> decltype(container.end( )) { return container.end( ); }
+__ALWAYS_INLINE auto end(Container& container) __NOEXCEPT -> decltype(container.end( )) { return container.end( ); }
 
 /// \brief Returns iterator to the end of the container or a pointer to end of a bound array
 ///
 template <class Container>
-auto end(const Container& container) __NOEXCEPT -> decltype(container.end( )) { return container.end( ); }
+__ALWAYS_INLINE auto end(const Container& container) __NOEXCEPT -> decltype(container.end( )) { return container.end( ); }
 
 /// \brief Returns iterator to the end of the container or a pointer to end of a bound array
 ///
 template <class T, size_t N>
-constexpr T* end(T (&arr)[N]) __NOEXCEPT { return addressof(arr) + N; }
+__ALWAYS_INLINE constexpr T* end(T (&arr)[N]) __NOEXCEPT { return addressof(arr) + N; }
 
 /// \brief Returns const iterator to the end of the container or a const pointer to end of a bound array
 ///
 template <class Container>
-constexpr auto cend(const Container& container) __NOEXCEPT -> decltype(end(container)) { return end(container); }
+__ALWAYS_INLINE constexpr auto cend(const Container& container) __NOEXCEPT -> decltype(end(container)) { return end(container); }
 
 /// \brief Returns reverse iterator to the beginning of the container or a pointer to end - 1 of a bound array
 ///
 template <class Container>
-auto rbegin(Container& container) __NOEXCEPT -> decltype(container.rbegin( )) { return container.rbegin( ); }
+__ALWAYS_INLINE auto rbegin(Container& container) __NOEXCEPT -> decltype(container.rbegin( )) { return container.rbegin( ); }
 
 /// \brief Returns reverse iterator to the beginning of the container or a pointer to end - 1 of a bound array
 ///
 template <class Container>
-auto rbegin(const Container& container) __NOEXCEPT -> decltype(container.rbegin( )) { return container.rbegin( ); }
+__ALWAYS_INLINE auto rbegin(const Container& container) __NOEXCEPT -> decltype(container.rbegin( )) { return container.rbegin( ); }
 
 /// \brief Returns reverse iterator to the beginning of the container or a pointer to end - 1 of a bound array
 ///
 template <class T, size_t N>
-reverse_iterator<T*> rbegin(T (&arr)[N]) __NOEXCEPT { return reverse_iterator<T*>(end(arr)); }
+__ALWAYS_INLINE reverse_iterator<T*> rbegin(T (&arr)[N]) __NOEXCEPT { return reverse_iterator<T*>(end(arr)); }
 
 /// \brief Returns const reverse iterator to the beginning of the container or a const pointer to end - 1 of a bound array
 ///
 template <class Container>
-auto crbegin(const Container& container) __NOEXCEPT -> decltype(rbegin(container)) { return rbegin(container); }
+__ALWAYS_INLINE auto crbegin(const Container& container) __NOEXCEPT -> decltype(rbegin(container)) { return rbegin(container); }
 
 /// \brief Returns reverse iterator to the end of the container or a pointer to begin of a bound array
 ///
 template <class Container>
-auto rend(Container& container) __NOEXCEPT -> decltype(container.rend( )) { return container.rend( ); }
+__ALWAYS_INLINE auto rend(Container& container) __NOEXCEPT -> decltype(container.rend( )) { return container.rend( ); }
 
 /// \brief Returns reverse iterator to the end of the container or a pointer to begin of a bound array
 ///
 template <class Container>
-auto rend(const Container& container) __NOEXCEPT -> decltype(container.rend( )) { return container.rend( ); }
+__ALWAYS_INLINE auto rend(const Container& container) __NOEXCEPT -> decltype(container.rend( )) { return container.rend( ); }
 
 /// \brief Returns reverse iterator to the end of the container or a pointer to begin of a bound array
 ///
 template <class T, size_t N>
-reverse_iterator<T*> rend(T (&arr)[N]) __NOEXCEPT { return reverse_iterator<T*>(begin(arr)); }
+__ALWAYS_INLINE reverse_iterator<T*> rend(T (&arr)[N]) __NOEXCEPT { return reverse_iterator<T*>(begin(arr)); }
 
 /// \brief Returns const reverse iterator to the end of the container or a const pointer to begin of a bound array
 ///
 template <class Container>
-auto crend(const Container& container) __NOEXCEPT -> decltype(rend(container)) { return rend(container); }
+__ALWAYS_INLINE auto crend(const Container& container) __NOEXCEPT -> decltype(rend(container)) { return rend(container); }
 
 #endif
 
 }
-
 
 #undef Region

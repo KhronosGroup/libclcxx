@@ -20,10 +20,6 @@ int * func2(cl::constant<int> var) { // expected-error{{parameter may not be qua
 cl::constant<int> func3() { // expected-error{{return value cannot be qualified with address space}}*
   cl::constant<int> a = { 1 };
   return a; //expected-error{{no matching constructor for initialization of}}*
-  //expected-note@__ocl_data.h:* {{candidate constructor not viable}}*
-  //expected-note@__ocl_data.h:* {{candidate constructor not viable}}*
-  //expected-note@__ocl_data.h:* {{candidate constructor}}*
-  //expected-note@__ocl_data.h:* {{candidate constructor}}*
-  //expected-note@__ocl_data.h:* {{candidate constructor}}*
-  //expected-note@__ocl_data.h:* {{candidate constructor not viable}}*
+  //expected-note@__ocl_data.h:* 0+ {{candidate constructor not viable}}
+  //expected-note@__ocl_data.h:* 0+ {{candidate constructor}}
 }

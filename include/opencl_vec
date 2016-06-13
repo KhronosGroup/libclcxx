@@ -1,0 +1,3 @@
+#pragma once
+
+#include <__ocl_vec.h>
