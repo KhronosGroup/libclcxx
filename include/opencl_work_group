@@ -129,273 +129,273 @@ template <work_group_op op> double      sub_group_scan_inclusive(double x)  { st
 
 
 
-bool        __ALWAYS_INLINE work_group_all                                      (bool predicate)                                                    { return __spirv::__make_OpGroupAll_call           <bool>(__spirv::Workgroup, predicate); }
-bool        __ALWAYS_INLINE work_group_any                                      (bool predicate)                                                    { return __spirv::__make_OpGroupAny_call           <bool>(__spirv::Workgroup, predicate); }
-int         __ALWAYS_INLINE work_group_broadcast                                (int a, size_t local_id)                                            { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Workgroup, a, local_id); }
-uint        __ALWAYS_INLINE work_group_broadcast                                (uint a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Workgroup, a, local_id); }
-long        __ALWAYS_INLINE work_group_broadcast                                (long a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Workgroup, a, local_id); }
-ulong       __ALWAYS_INLINE work_group_broadcast                                (ulong a, size_t local_id)                                          { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Workgroup, a, local_id); }
-float       __ALWAYS_INLINE work_group_broadcast                                (float a, size_t local_id)                                          { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Workgroup, a, local_id); }
+__ALWAYS_INLINE bool         work_group_all                                      (bool predicate)                                                    { return __spirv::__make_OpGroupAll_call           <bool>(__spirv::Workgroup, predicate); }
+__ALWAYS_INLINE bool         work_group_any                                      (bool predicate)                                                    { return __spirv::__make_OpGroupAny_call           <bool>(__spirv::Workgroup, predicate); }
+__ALWAYS_INLINE int          work_group_broadcast                                (int a, size_t local_id)                                            { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Workgroup, a, local_id); }
+__ALWAYS_INLINE uint         work_group_broadcast                                (uint a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Workgroup, a, local_id); }
+__ALWAYS_INLINE long         work_group_broadcast                                (long a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Workgroup, a, local_id); }
+__ALWAYS_INLINE ulong        work_group_broadcast                                (ulong a, size_t local_id)                                          { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Workgroup, a, local_id); }
+ __ALWAYS_INLINE float       work_group_broadcast                                (float a, size_t local_id)                                          { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Workgroup, a, local_id); }
 #ifdef cl_khr_fp16
-half        __ALWAYS_INLINE work_group_broadcast                                (half a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Workgroup, a, local_id); }
+__ALWAYS_INLINE half         work_group_broadcast                                (half a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Workgroup, a, local_id); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-double      __ALWAYS_INLINE work_group_broadcast                                (double a, size_t local_id)                                         { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Workgroup, a, local_id); }
+__ALWAYS_INLINE double       work_group_broadcast                                (double a, size_t local_id)                                         { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Workgroup, a, local_id); }
 #endif //cl_khr_fp64
-int         __ALWAYS_INLINE work_group_broadcast                                (int a, size_t local_id_x, size_t local_id_y)                       { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
-uint        __ALWAYS_INLINE work_group_broadcast                                (uint a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
-long        __ALWAYS_INLINE work_group_broadcast                                (long a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
-ulong       __ALWAYS_INLINE work_group_broadcast                                (ulong a, size_t local_id_x, size_t local_id_y)                     { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
-float       __ALWAYS_INLINE work_group_broadcast                                (float a, size_t local_id_x, size_t local_id_y)                     { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE int          work_group_broadcast                                (int a, size_t local_id_x, size_t local_id_y)                       { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE uint         work_group_broadcast                                (uint a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE long         work_group_broadcast                                (long a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE ulong        work_group_broadcast                                (ulong a, size_t local_id_x, size_t local_id_y)                     { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+ __ALWAYS_INLINE float       work_group_broadcast                                (float a, size_t local_id_x, size_t local_id_y)                     { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
 #ifdef cl_khr_fp16
-half        __ALWAYS_INLINE work_group_broadcast                                (half a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE half         work_group_broadcast                                (half a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-double      __ALWAYS_INLINE work_group_broadcast                                (double a, size_t local_id_x, size_t local_id_y)                    { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE double       work_group_broadcast                                (double a, size_t local_id_x, size_t local_id_y)                    { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Workgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
 #endif //cl_khr_fp64
-int         __ALWAYS_INLINE work_group_broadcast                                (int a, size_t local_id_x, size_t local_id_y, size_t local_id_z)    { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
-uint        __ALWAYS_INLINE work_group_broadcast                                (uint a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
-long        __ALWAYS_INLINE work_group_broadcast                                (long a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
-ulong       __ALWAYS_INLINE work_group_broadcast                                (ulong a, size_t local_id_x, size_t local_id_y, size_t local_id_z)  { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
-float       __ALWAYS_INLINE work_group_broadcast                                (float a, size_t local_id_x, size_t local_id_y, size_t local_id_z)  { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE int          work_group_broadcast                                (int a, size_t local_id_x, size_t local_id_y, size_t local_id_z)    { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE uint         work_group_broadcast                                (uint a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE long         work_group_broadcast                                (long a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE ulong        work_group_broadcast                                (ulong a, size_t local_id_x, size_t local_id_y, size_t local_id_z)  { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+ __ALWAYS_INLINE float       work_group_broadcast                                (float a, size_t local_id_x, size_t local_id_y, size_t local_id_z)  { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
 #ifdef cl_khr_fp16
-half        __ALWAYS_INLINE work_group_broadcast                                (half a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE half         work_group_broadcast                                (half a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-double      __ALWAYS_INLINE work_group_broadcast                                (double a, size_t local_id_x, size_t local_id_y, size_t local_id_z) { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE double       work_group_broadcast                                (double a, size_t local_id_x, size_t local_id_y, size_t local_id_z) { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Workgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_reduce<work_group_op::add>               (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> uint        __ALWAYS_INLINE work_group_reduce<work_group_op::add>               (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> long        __ALWAYS_INLINE work_group_reduce<work_group_op::add>               (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> ulong       __ALWAYS_INLINE work_group_reduce<work_group_op::add>               (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> float       __ALWAYS_INLINE work_group_reduce<work_group_op::add>               (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE int          work_group_reduce<work_group_op::add>               (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE uint         work_group_reduce<work_group_op::add>               (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE long         work_group_reduce<work_group_op::add>               (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE ulong        work_group_reduce<work_group_op::add>               (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <>  __ALWAYS_INLINE float       work_group_reduce<work_group_op::add>               (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Workgroup, __spirv::Reduce, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_reduce<work_group_op::add>               (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE half         work_group_reduce<work_group_op::add>               (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Workgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_reduce<work_group_op::add>               (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE double       work_group_reduce<work_group_op::add>               (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Workgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_reduce<work_group_op::min>               (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> uint        __ALWAYS_INLINE work_group_reduce<work_group_op::min>               (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> long        __ALWAYS_INLINE work_group_reduce<work_group_op::min>               (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> ulong       __ALWAYS_INLINE work_group_reduce<work_group_op::min>               (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> float       __ALWAYS_INLINE work_group_reduce<work_group_op::min>               (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE int          work_group_reduce<work_group_op::min>               (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE uint         work_group_reduce<work_group_op::min>               (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE long         work_group_reduce<work_group_op::min>               (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE ulong        work_group_reduce<work_group_op::min>               (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <>  __ALWAYS_INLINE float       work_group_reduce<work_group_op::min>               (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Workgroup, __spirv::Reduce, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_reduce<work_group_op::min>               (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE half         work_group_reduce<work_group_op::min>               (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Workgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_reduce<work_group_op::min>               (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE double       work_group_reduce<work_group_op::min>               (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Workgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_reduce<work_group_op::max>               (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> uint        __ALWAYS_INLINE work_group_reduce<work_group_op::max>               (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> long        __ALWAYS_INLINE work_group_reduce<work_group_op::max>               (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> ulong       __ALWAYS_INLINE work_group_reduce<work_group_op::max>               (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Workgroup, __spirv::Reduce, x); }
-template <> float       __ALWAYS_INLINE work_group_reduce<work_group_op::max>               (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE int          work_group_reduce<work_group_op::max>               (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE uint         work_group_reduce<work_group_op::max>               (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE long         work_group_reduce<work_group_op::max>               (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE ulong        work_group_reduce<work_group_op::max>               (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <>  __ALWAYS_INLINE float       work_group_reduce<work_group_op::max>               (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Workgroup, __spirv::Reduce, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_reduce<work_group_op::max>               (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE half         work_group_reduce<work_group_op::max>               (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Workgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_reduce<work_group_op::max>               (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Workgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE double       work_group_reduce<work_group_op::max>               (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Workgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::add>       (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::add>       (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> long        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::add>       (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::add>       (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> float       __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::add>       (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE int          work_group_scan_exclusive<work_group_op::add>       (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         work_group_scan_exclusive<work_group_op::add>       (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE long         work_group_scan_exclusive<work_group_op::add>       (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        work_group_scan_exclusive<work_group_op::add>       (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       work_group_scan_exclusive<work_group_op::add>       (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::add>       (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE half         work_group_scan_exclusive<work_group_op::add>       (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::add>       (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE double       work_group_scan_exclusive<work_group_op::add>       (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::min>       (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::min>       (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> long        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::min>       (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::min>       (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> float       __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::min>       (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE int          work_group_scan_exclusive<work_group_op::min>       (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         work_group_scan_exclusive<work_group_op::min>       (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE long         work_group_scan_exclusive<work_group_op::min>       (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        work_group_scan_exclusive<work_group_op::min>       (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       work_group_scan_exclusive<work_group_op::min>       (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::min>       (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE half         work_group_scan_exclusive<work_group_op::min>       (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::min>       (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE double       work_group_scan_exclusive<work_group_op::min>       (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::max>       (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::max>       (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> long        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::max>       (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::max>       (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
-template <> float       __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::max>       (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE int          work_group_scan_exclusive<work_group_op::max>       (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         work_group_scan_exclusive<work_group_op::max>       (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE long         work_group_scan_exclusive<work_group_op::max>       (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        work_group_scan_exclusive<work_group_op::max>       (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       work_group_scan_exclusive<work_group_op::max>       (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::max>       (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE half         work_group_scan_exclusive<work_group_op::max>       (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_scan_exclusive<work_group_op::max>       (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE double       work_group_scan_exclusive<work_group_op::max>       (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Workgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::add>       (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::add>       (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> long        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::add>       (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::add>       (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> float       __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::add>       (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE int          work_group_scan_inclusive<work_group_op::add>       (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         work_group_scan_inclusive<work_group_op::add>       (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE long         work_group_scan_inclusive<work_group_op::add>       (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        work_group_scan_inclusive<work_group_op::add>       (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       work_group_scan_inclusive<work_group_op::add>       (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::add>       (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE half         work_group_scan_inclusive<work_group_op::add>       (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::add>       (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE double       work_group_scan_inclusive<work_group_op::add>       (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::min>       (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::min>       (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> long        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::min>       (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::min>       (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> float       __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::min>       (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE int          work_group_scan_inclusive<work_group_op::min>       (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         work_group_scan_inclusive<work_group_op::min>       (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE long         work_group_scan_inclusive<work_group_op::min>       (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        work_group_scan_inclusive<work_group_op::min>       (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       work_group_scan_inclusive<work_group_op::min>       (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::min>       (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE half         work_group_scan_inclusive<work_group_op::min>       (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::min>       (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE double       work_group_scan_inclusive<work_group_op::min>       (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::max>       (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::max>       (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> long        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::max>       (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::max>       (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
-template <> float       __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::max>       (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE int          work_group_scan_inclusive<work_group_op::max>       (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         work_group_scan_inclusive<work_group_op::max>       (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE long         work_group_scan_inclusive<work_group_op::max>       (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        work_group_scan_inclusive<work_group_op::max>       (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       work_group_scan_inclusive<work_group_op::max>       (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::max>       (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE half         work_group_scan_inclusive<work_group_op::max>       (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE work_group_scan_inclusive<work_group_op::max>       (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE double       work_group_scan_inclusive<work_group_op::max>       (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Workgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp64
-bool        __ALWAYS_INLINE sub_group_all                                       (bool predicate)                                                    { return __spirv::__make_OpGroupAll_call           <bool>(__spirv::Subgroup, predicate); }
-bool        __ALWAYS_INLINE sub_group_any                                       (bool predicate)                                                    { return __spirv::__make_OpGroupAny_call           <bool>(__spirv::Subgroup, predicate); }
-int         __ALWAYS_INLINE sub_group_broadcast                                 (int a, size_t local_id)                                            { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Subgroup, a, local_id); }
-uint        __ALWAYS_INLINE sub_group_broadcast                                 (uint a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Subgroup, a, local_id); }
-long        __ALWAYS_INLINE sub_group_broadcast                                 (long a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Subgroup, a, local_id); }
-ulong       __ALWAYS_INLINE sub_group_broadcast                                 (ulong a, size_t local_id)                                          { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Subgroup, a, local_id); }
-float       __ALWAYS_INLINE sub_group_broadcast                                 (float a, size_t local_id)                                          { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Subgroup, a, local_id); }
+__ALWAYS_INLINE bool         sub_group_all                                       (bool predicate)                                                    { return __spirv::__make_OpGroupAll_call           <bool>(__spirv::Subgroup, predicate); }
+__ALWAYS_INLINE bool         sub_group_any                                       (bool predicate)                                                    { return __spirv::__make_OpGroupAny_call           <bool>(__spirv::Subgroup, predicate); }
+__ALWAYS_INLINE int          sub_group_broadcast                                 (int a, size_t local_id)                                            { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Subgroup, a, local_id); }
+__ALWAYS_INLINE uint         sub_group_broadcast                                 (uint a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Subgroup, a, local_id); }
+__ALWAYS_INLINE long         sub_group_broadcast                                 (long a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Subgroup, a, local_id); }
+__ALWAYS_INLINE ulong        sub_group_broadcast                                 (ulong a, size_t local_id)                                          { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Subgroup, a, local_id); }
+ __ALWAYS_INLINE float       sub_group_broadcast                                 (float a, size_t local_id)                                          { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Subgroup, a, local_id); }
 #ifdef cl_khr_fp16
-half        __ALWAYS_INLINE sub_group_broadcast                                 (half a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Subgroup, a, local_id); }
+__ALWAYS_INLINE half         sub_group_broadcast                                 (half a, size_t local_id)                                           { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Subgroup, a, local_id); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-double      __ALWAYS_INLINE sub_group_broadcast                                 (double a, size_t local_id)                                         { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Subgroup, a, local_id); }
+__ALWAYS_INLINE double       sub_group_broadcast                                 (double a, size_t local_id)                                         { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Subgroup, a, local_id); }
 #endif //cl_khr_fp64
-int         __ALWAYS_INLINE sub_group_broadcast                                 (int a, size_t local_id_x, size_t local_id_y)                       { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
-uint        __ALWAYS_INLINE sub_group_broadcast                                 (uint a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
-long        __ALWAYS_INLINE sub_group_broadcast                                 (long a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
-ulong       __ALWAYS_INLINE sub_group_broadcast                                 (ulong a, size_t local_id_x, size_t local_id_y)                     { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
-float       __ALWAYS_INLINE sub_group_broadcast                                 (float a, size_t local_id_x, size_t local_id_y)                     { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE int          sub_group_broadcast                                 (int a, size_t local_id_x, size_t local_id_y)                       { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE uint         sub_group_broadcast                                 (uint a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE long         sub_group_broadcast                                 (long a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE ulong        sub_group_broadcast                                 (ulong a, size_t local_id_x, size_t local_id_y)                     { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+ __ALWAYS_INLINE float       sub_group_broadcast                                 (float a, size_t local_id_x, size_t local_id_y)                     { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
 #ifdef cl_khr_fp16
-half        __ALWAYS_INLINE sub_group_broadcast                                 (half a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE half         sub_group_broadcast                                 (half a, size_t local_id_x, size_t local_id_y)                      { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-double      __ALWAYS_INLINE sub_group_broadcast                                 (double a, size_t local_id_x, size_t local_id_y)                    { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
+__ALWAYS_INLINE double       sub_group_broadcast                                 (double a, size_t local_id_x, size_t local_id_y)                    { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Subgroup, a, __details::__size_t_vector_t<2>{ local_id_x, local_id_y }); }
 #endif //cl_khr_fp64
-int         __ALWAYS_INLINE sub_group_broadcast                                 (int a, size_t local_id_x, size_t local_id_y, size_t local_id_z)    { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
-uint        __ALWAYS_INLINE sub_group_broadcast                                 (uint a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
-long        __ALWAYS_INLINE sub_group_broadcast                                 (long a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
-ulong       __ALWAYS_INLINE sub_group_broadcast                                 (ulong a, size_t local_id_x, size_t local_id_y, size_t local_id_z)  { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
-float       __ALWAYS_INLINE sub_group_broadcast                                 (float a, size_t local_id_x, size_t local_id_y, size_t local_id_z)  { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE int          sub_group_broadcast                                 (int a, size_t local_id_x, size_t local_id_y, size_t local_id_z)    { return __spirv::__make_OpGroupBroadcast_call      <int>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE uint         sub_group_broadcast                                 (uint a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <uint>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE long         sub_group_broadcast                                 (long a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <long>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE ulong        sub_group_broadcast                                 (ulong a, size_t local_id_x, size_t local_id_y, size_t local_id_z)  { return __spirv::__make_OpGroupBroadcast_call    <ulong>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+ __ALWAYS_INLINE float       sub_group_broadcast                                 (float a, size_t local_id_x, size_t local_id_y, size_t local_id_z)  { return __spirv::__make_OpGroupBroadcast_call    <float>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
 #ifdef cl_khr_fp16
-half        __ALWAYS_INLINE sub_group_broadcast                                 (half a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE half         sub_group_broadcast                                 (half a, size_t local_id_x, size_t local_id_y, size_t local_id_z)   { return __spirv::__make_OpGroupBroadcast_call     <half>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-double      __ALWAYS_INLINE sub_group_broadcast                                 (double a, size_t local_id_x, size_t local_id_y, size_t local_id_z) { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
+__ALWAYS_INLINE double       sub_group_broadcast                                 (double a, size_t local_id_x, size_t local_id_y, size_t local_id_z) { return __spirv::__make_OpGroupBroadcast_call   <double>(__spirv::Subgroup, a, __details::__size_t_vector_t<3>{ local_id_x, local_id_y, local_id_z }); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_reduce<work_group_op::add>                (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> uint        __ALWAYS_INLINE sub_group_reduce<work_group_op::add>                (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> long        __ALWAYS_INLINE sub_group_reduce<work_group_op::add>                (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_reduce<work_group_op::add>                (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> float       __ALWAYS_INLINE sub_group_reduce<work_group_op::add>                (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE int          sub_group_reduce<work_group_op::add>                (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE uint         sub_group_reduce<work_group_op::add>                (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE long         sub_group_reduce<work_group_op::add>                (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_reduce<work_group_op::add>                (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <>  __ALWAYS_INLINE float       sub_group_reduce<work_group_op::add>                (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Subgroup, __spirv::Reduce, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_reduce<work_group_op::add>                (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE half         sub_group_reduce<work_group_op::add>                (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Subgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_reduce<work_group_op::add>                (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE double       sub_group_reduce<work_group_op::add>                (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Subgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_reduce<work_group_op::min>                (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> uint        __ALWAYS_INLINE sub_group_reduce<work_group_op::min>                (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> long        __ALWAYS_INLINE sub_group_reduce<work_group_op::min>                (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_reduce<work_group_op::min>                (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> float       __ALWAYS_INLINE sub_group_reduce<work_group_op::min>                (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE int          sub_group_reduce<work_group_op::min>                (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE uint         sub_group_reduce<work_group_op::min>                (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE long         sub_group_reduce<work_group_op::min>                (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_reduce<work_group_op::min>                (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <>  __ALWAYS_INLINE float       sub_group_reduce<work_group_op::min>                (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Subgroup, __spirv::Reduce, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_reduce<work_group_op::min>                (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE half         sub_group_reduce<work_group_op::min>                (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Subgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_reduce<work_group_op::min>                (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE double       sub_group_reduce<work_group_op::min>                (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Subgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_reduce<work_group_op::max>                (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> uint        __ALWAYS_INLINE sub_group_reduce<work_group_op::max>                (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> long        __ALWAYS_INLINE sub_group_reduce<work_group_op::max>                (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_reduce<work_group_op::max>                (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Subgroup, __spirv::Reduce, x); }
-template <> float       __ALWAYS_INLINE sub_group_reduce<work_group_op::max>                (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE int          sub_group_reduce<work_group_op::max>                (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE uint         sub_group_reduce<work_group_op::max>                (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE long         sub_group_reduce<work_group_op::max>                (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_reduce<work_group_op::max>                (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <>  __ALWAYS_INLINE float       sub_group_reduce<work_group_op::max>                (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Subgroup, __spirv::Reduce, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_reduce<work_group_op::max>                (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE half         sub_group_reduce<work_group_op::max>                (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Subgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_reduce<work_group_op::max>                (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Subgroup, __spirv::Reduce, x); }
+template <> __ALWAYS_INLINE double       sub_group_reduce<work_group_op::max>                (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Subgroup, __spirv::Reduce, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::add>        (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::add>        (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> long        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::add>        (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::add>        (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> float       __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::add>        (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE int          sub_group_scan_exclusive<work_group_op::add>        (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         sub_group_scan_exclusive<work_group_op::add>        (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE long         sub_group_scan_exclusive<work_group_op::add>        (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_scan_exclusive<work_group_op::add>        (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       sub_group_scan_exclusive<work_group_op::add>        (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::add>        (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE half         sub_group_scan_exclusive<work_group_op::add>        (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::add>        (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE double       sub_group_scan_exclusive<work_group_op::add>        (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::min>        (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::min>        (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> long        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::min>        (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::min>        (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> float       __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::min>        (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE int          sub_group_scan_exclusive<work_group_op::min>        (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         sub_group_scan_exclusive<work_group_op::min>        (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE long         sub_group_scan_exclusive<work_group_op::min>        (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_scan_exclusive<work_group_op::min>        (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       sub_group_scan_exclusive<work_group_op::min>        (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::min>        (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE half         sub_group_scan_exclusive<work_group_op::min>        (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::min>        (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE double       sub_group_scan_exclusive<work_group_op::min>        (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::max>        (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::max>        (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> long        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::max>        (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::max>        (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
-template <> float       __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::max>        (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE int          sub_group_scan_exclusive<work_group_op::max>        (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         sub_group_scan_exclusive<work_group_op::max>        (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE long         sub_group_scan_exclusive<work_group_op::max>        (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_scan_exclusive<work_group_op::max>        (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       sub_group_scan_exclusive<work_group_op::max>        (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::max>        (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE half         sub_group_scan_exclusive<work_group_op::max>        (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_scan_exclusive<work_group_op::max>        (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
+template <> __ALWAYS_INLINE double       sub_group_scan_exclusive<work_group_op::max>        (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Subgroup, __spirv::ExclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::add>        (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::add>        (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> long        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::add>        (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::add>        (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> float       __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::add>        (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE int          sub_group_scan_inclusive<work_group_op::add>        (int x)    { return __spirv::__make_OpGroupIAdd_call           <int>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         sub_group_scan_inclusive<work_group_op::add>        (uint x)   { return __spirv::__make_OpGroupIAdd_call          <uint>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE long         sub_group_scan_inclusive<work_group_op::add>        (long x)   { return __spirv::__make_OpGroupIAdd_call          <long>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_scan_inclusive<work_group_op::add>        (ulong x)  { return __spirv::__make_OpGroupIAdd_call         <ulong>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       sub_group_scan_inclusive<work_group_op::add>        (float x)  { return __spirv::__make_OpGroupFAdd_call         <float>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::add>        (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE half         sub_group_scan_inclusive<work_group_op::add>        (half x)   { return __spirv::__make_OpGroupFAdd_call          <half>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::add>        (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE double       sub_group_scan_inclusive<work_group_op::add>        (double x) { return __spirv::__make_OpGroupFAdd_call        <double>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::min>        (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::min>        (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> long        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::min>        (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::min>        (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> float       __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::min>        (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE int          sub_group_scan_inclusive<work_group_op::min>        (int x)    { return __spirv::__make_OpGroupSMin_call           <int>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         sub_group_scan_inclusive<work_group_op::min>        (uint x)   { return __spirv::__make_OpGroupUMin_call          <uint>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE long         sub_group_scan_inclusive<work_group_op::min>        (long x)   { return __spirv::__make_OpGroupSMin_call          <long>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_scan_inclusive<work_group_op::min>        (ulong x)  { return __spirv::__make_OpGroupUMin_call         <ulong>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       sub_group_scan_inclusive<work_group_op::min>        (float x)  { return __spirv::__make_OpGroupFMin_call         <float>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::min>        (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE half         sub_group_scan_inclusive<work_group_op::min>        (half x)   { return __spirv::__make_OpGroupFMin_call          <half>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::min>        (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE double       sub_group_scan_inclusive<work_group_op::min>        (double x) { return __spirv::__make_OpGroupFMin_call        <double>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp64
-template <> int         __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::max>        (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> uint        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::max>        (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> long        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::max>        (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> ulong       __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::max>        (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
-template <> float       __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::max>        (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE int          sub_group_scan_inclusive<work_group_op::max>        (int x)    { return __spirv::__make_OpGroupSMax_call           <int>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE uint         sub_group_scan_inclusive<work_group_op::max>        (uint x)   { return __spirv::__make_OpGroupUMax_call          <uint>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE long         sub_group_scan_inclusive<work_group_op::max>        (long x)   { return __spirv::__make_OpGroupSMax_call          <long>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE ulong        sub_group_scan_inclusive<work_group_op::max>        (ulong x)  { return __spirv::__make_OpGroupUMax_call         <ulong>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <>  __ALWAYS_INLINE float       sub_group_scan_inclusive<work_group_op::max>        (float x)  { return __spirv::__make_OpGroupFMax_call         <float>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #ifdef cl_khr_fp16
-template <> half        __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::max>        (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE half         sub_group_scan_inclusive<work_group_op::max>        (half x)   { return __spirv::__make_OpGroupFMax_call          <half>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp16
 #ifdef cl_khr_fp64
-template <> double      __ALWAYS_INLINE sub_group_scan_inclusive<work_group_op::max>        (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
+template <> __ALWAYS_INLINE double       sub_group_scan_inclusive<work_group_op::max>        (double x) { return __spirv::__make_OpGroupFMax_call        <double>(__spirv::Subgroup, __spirv::InclusiveScan, x); }
 #endif //cl_khr_fp64
 
 

@@ -19,6 +19,6 @@ int * func2(cl::local<int> var) { // expected-error{{parameter may not be qualif
 }
 
 cl::local<int> func3() { // expected-error{{return value cannot be qualified with address space}}*
-  cl::local<int> a;
+  cl::local<int> a; // expected-error{{variable declaration with local storage (local address space) is only allowed at program scope, at kernel scope or as a static data member}}
   return a;
 }

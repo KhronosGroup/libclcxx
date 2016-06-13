@@ -68,7 +68,6 @@ class ndrange;
 
 namespace __spirv
 {
-
 /// \brief Forward declaration of SPIRV Queue type
 ///
 class OpTypeQueue;
@@ -79,75 +78,75 @@ class OpTypeDeviceEvent;
 
 /// \brief SPIRV opcode used for enqueueing markers
 ///
-enqueue_status OpEnqueueMarker( OpTypeQueue * queue,
-                                uint num_events,
-                                const OpTypeDeviceEvent * const * wait_events,
-                                OpTypeDeviceEvent ** ret_event );
+extern enqueue_status OpEnqueueMarker( __global OpTypeQueue * queue,
+                                       uint num_events,
+                                       __global const OpTypeDeviceEvent * const * wait_events,
+                                       __global OpTypeDeviceEvent ** ret_event );
 
 /// \brief SPIRV opcode used for enqueueing kernels
 ///
 template <typename... LocalPtrs, typename... LocalPtrsSizes>
-enqueue_status OpEnqueueKernel( OpTypeQueue * queue,
-                                int flags,
-                                const ndrange & ndrange,
-                                uint num_events,
-                                const OpTypeDeviceEvent * const * wait_events,
-                                OpTypeDeviceEvent ** ret_event,
-                                void (&invoke)(void*, LocalPtrs...),
-                                void* data,
-                                uint data_size,
-                                uint data_align,
-                                LocalPtrsSizes... );
+extern enqueue_status OpEnqueueKernel( __global OpTypeQueue * queue,
+                                       int flags,
+                                       const ndrange& nd,
+                                       uint num_events,
+                                       const OpTypeDeviceEvent * const * wait_events,
+                                       __global OpTypeDeviceEvent ** ret_event,
+                                       void (&invoke)(__private void*, LocalPtrs...),
+                                       __private void* data,
+                                       uint data_size,
+                                       uint data_align,
+                                       LocalPtrsSizes... );
 
 
 template <typename... LocalPtrs>
-int OpGetKernelNDrangeSubGroupCount( const ndrange & ndrange,
-                                     void (&invoke)(void*, LocalPtrs...),
-                                     void* data,
+extern int OpGetKernelNDrangeSubGroupCount( const ndrange &nd,
+                                            void (&invoke)(__private void*, LocalPtrs...),
+                                            __private void* data,
+                                            uint data_size,
+                                            uint data_align );
+
+template <typename... LocalPtrs>
+extern int OpGetKernelNDrangeMaxSubGroupSize( const ndrange &nd,
+                                              void (&invoke)(__private void*, LocalPtrs...),
+                                              __private void* data,
+                                              uint data_size,
+                                              uint data_align );
+
+template <typename... LocalPtrs>
+extern int OpGetKernelWorkGroupSize( void (&invoke)(__private void*, LocalPtrs...),
+                                     __private void* data,
                                      uint data_size,
                                      uint data_align );
 
 template <typename... LocalPtrs>
-int OpGetKernelNDrangeMaxSubGroupSize( const ndrange & ndrange,
-                                       void (&invoke)(void*, LocalPtrs...),
-                                       void* data,
+extern int OpGetKernelPreferredWorkGroupSizeMultiple( void (&invoke)(__private void*, LocalPtrs...),
+                                                      __private void* data,
+                                                      uint data_size,
+                                                      uint data_align );
+
+template <typename... LocalPtrs>
+extern int OpGetKernelLocalSizeForSubgroupCount( int subgroup_count,
+                                                 void (&invoke)(__private void*, LocalPtrs...),
+                                                 __private void* data,
+                                                 uint data_size,
+                                                 uint data_align );
+
+template <typename... LocalPtrs>
+extern int OpGetKernelMaxNumSubgroups( void (&invoke)(__private void*, LocalPtrs...),
+                                       __private void* data,
                                        uint data_size,
                                        uint data_align );
 
-template <typename... LocalPtrs>
-int OpGetKernelWorkGroupSize( void (&)(void*, LocalPtrs...),
-                                       void* data,
-                                       uint data_size,
-                                       uint data_align );
 
-template <typename... LocalPtrs>
-int OpGetKernelPreferredWorkGroupSizeMultiple( void (&invoke)(void*, LocalPtrs...),
-                                               void* data,
-                                               uint data_size,
-                                               uint data_align );
+extern void OpRetainEvent( __global OpTypeDeviceEvent * event );
+extern void OpReleaseEvent( __global OpTypeDeviceEvent * event );
+extern __global OpTypeDeviceEvent* OpCreateUserEvent();
+extern bool OpIsValidEvent( __global const OpTypeDeviceEvent * event );
+extern void OpSetUserEventStatus( __global OpTypeDeviceEvent * event, int status );
+extern void OpCaptureEventProfilingInfo( __global OpTypeDeviceEvent * event, int profiling_info, __global int8* value );
 
-template <typename... LocalPtrs>
-int OpGetKernelLocalSizeForSubgroupCount( int subgroup_count,
-                                          void (&invoke)(void*, LocalPtrs...),
-                                          void* data,
-                                          uint data_size,
-                                          uint data_align );
-
-template <typename... LocalPtrs>
-int OpGetKernelMaxNumSubgroups( void (&invoke)(void*, LocalPtrs...),
-                                void* data,
-                                uint data_size,
-                                uint data_align );
-
-
-void OpRetainEvent( OpTypeDeviceEvent * event );
-void OpReleaseEvent( OpTypeDeviceEvent * event );
-__global OpTypeDeviceEvent* OpCreateUserEvent();
-bool OpIsValidEvent( const OpTypeDeviceEvent * event );
-void OpSetUserEventStatus( OpTypeDeviceEvent * event, int status );
-void OpCaptureEventProfilingInfo( OpTypeDeviceEvent * event, int profiling_info, __global int8* value );
-
-__global OpTypeQueue* OpGetDefaultQueue();
+extern __global OpTypeQueue* OpGetDefaultQueue();
 
 #undef _VALIDATE_INVOKE
 #undef _VALIDATE_ENQUEUE

@@ -36,7 +36,7 @@ namespace __details
 /// \brief different types => perform OpBitcast
 ///
 template <typename To, typename From>
-To __ALWAYS_INLINE __as_type(From const& arg)
+__ALWAYS_INLINE To __as_type(From const& arg)
 {
     return __spirv::__make_OpBitcast_call<To>(arg);
 }
@@ -44,7 +44,7 @@ To __ALWAYS_INLINE __as_type(From const& arg)
 /// \brief same types => NoOp
 ///
 template <typename To, typename From>
-To __ALWAYS_INLINE __as_type(To const& t)
+__ALWAYS_INLINE To __as_type(To const& t)
 {
     return t;
 }
@@ -52,7 +52,7 @@ To __ALWAYS_INLINE __as_type(To const& t)
 }
 
 template <typename To, typename From>
-To __ALWAYS_INLINE as_type(From const& arg)
+__ALWAYS_INLINE To as_type(From const& arg)
 {
     static_assert(!cl::is_void<To>::value && !cl::is_void<From>::value, "void type is not valid destination/source type for reinterpreting data with as_type operator.");
     static_assert(!cl::__details::__is_bool<To>::value && !cl::__details::__is_bool<From>::value, "bool type is not valid destination/source type for reinterpreting data with as_type operator.");

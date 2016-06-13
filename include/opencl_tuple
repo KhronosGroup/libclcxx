@@ -162,7 +162,7 @@ struct __tuple_impl<__params<Elements...>> : public Elements...
     __ALWAYS_INLINE void __dummy(T...) {}
 
     template <typename... Elements2>
-    void __copy(__tuple_impl<__params<Elements2...>> const& other)
+    __ALWAYS_INLINE void __copy(__tuple_impl<__params<Elements2...>> const& other)
     {
         //why do we use __dummy here?
         // since we'd like to expand expression 'get<Elements>() = get<Elements2>()' for each (Elements, Elements2) pair
@@ -175,13 +175,13 @@ struct __tuple_impl<__params<Elements...>> : public Elements...
     }
 
     template <typename... Elements2>
-    void __move(__tuple_impl<__params<Elements2...>>&& other)
+    __ALWAYS_INLINE void __move(__tuple_impl<__params<Elements2...>>&& other)
     {
         __dummy((((void)(static_cast<Elements&>(*this)._data = forward<typename Elements2::type&&>(static_cast<Elements2&&>(other)._data))), 0)...);
     }
 
     template <typename... Elements2>
-    void __swap(__tuple_impl<__params<Elements2...>>& other)
+    __ALWAYS_INLINE void __swap(__tuple_impl<__params<Elements2...>>& other)
     {
         __dummy((((void)::cl::swap(static_cast<Elements&>(*this)._data, static_cast<Elements2&>(other)._data)), 0)...);
     }
@@ -396,7 +396,7 @@ public:
     }
 
     //20.4.2.3 swap [tuple.swap]
-    void swap(tuple& rhs) noexcept(__details::__all<noexcept(::cl::swap(declval<T&>(), declval<T&>()))...>::value)
+    __ALWAYS_INLINE void swap(tuple& rhs) noexcept(__details::__all<noexcept(::cl::swap(declval<T&>(), declval<T&>()))...>::value)
     {
         Impl::__swap(rhs);
     }

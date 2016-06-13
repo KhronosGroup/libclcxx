@@ -23,12 +23,14 @@
 
 #pragma once
 
-#include <opencl_def>
+#include <__ocl_type_traits_cv_ref_ptr.h>
 
-#define __NOEXCEPT noexcept
-#define __ALWAYS_INLINE inline __attribute__((always_inline))
-#define __LOCAL_QUALIFIER __local
-#define __GLOBAL_QUALIFIER __global
-#define __CONSTANT_QUALIFIER __constant
-#define __PRIVATE_QUALIFIER __private
-#define __GENERIC_QUALIFIER __generic
+namespace cl
+{
+
+/// \brief Converts any type to rvalue reference type which allows to use it in decltype expressions even if constructors are unavailable
+///
+template<class T>
+add_rvalue_reference_t<T> declval( );
+
+}

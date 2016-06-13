@@ -36,7 +36,10 @@ kernel void test0(cl::global_ptr<int> arg) {
 
 //////////////////////////////////////////////
 struct TestClass10 {
-  TestClass10(cl::global_ptr<int> &arg): _m(arg) { }
+  constexpr TestClass10(): _m(nullptr) { }
+  constexpr TestClass10(const cl::global_ptr<int> &arg): _m(arg) { }
+  TestClass10& operator=(const cl::global_ptr<int> &arg) { _m = arg; return *this; }
+
   cl::global_ptr<int> &get() { return _m; }
   
   cl::global_ptr<int> _m;
@@ -51,19 +54,22 @@ kernel void test1(cl::global_ptr<int> arg) {
   const int* ptr1 = &var1;
   const int& ref1 = var1;
 
-  static cl::global<TestClass10> obj0(arg);
+  static cl::global<TestClass10> obj0;
+  obj0 = arg;
+
   TestClass10* ptr2 = &obj0;
   TestClass10& ref2 = obj0;
   cl::global_ptr<TestClass10> gptr2 = obj0.ptr();
   cl::global_ptr<int> gcptr20 = obj0.get();
   cl::global_ptr<int> gcptr21 = gptr2->get();
-  
+
   TestClass10 val = obj0;
-  
-  static const cl::global<TestClass10> var2 = { obj0 };
+
+  static cl::global<TestClass10> var2;
+  var2 = { obj0 };
   const TestClass10* ptr3 = &var2;
   const TestClass10& ref3 = var2;
-  cl::global_ptr<const TestClass10> gptr3 = var2.ptr();
+  cl::global_ptr<TestClass10> gptr3 = var2.ptr();
 }
 
 //////////////////////////////////////////////

@@ -2,6 +2,7 @@
 // RUN: %clang_cc1 %s -triple spir-unknown-unknown -cl-std=c++ -fsyntax-only -pedantic -verify -O3 -emit-llvm  -o - | FileCheck %s
 // expected-no-diagnostics
 // CHECK-NOT: @llvm.global_ctors*
+// CHECK-NOT: define spir_kernel void @_SPIRV_GLOBAL__I_{{(.*)}}
 
 #include <opencl_image>
 using namespace cl;

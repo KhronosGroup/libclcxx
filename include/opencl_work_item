@@ -69,73 +69,73 @@ extern size_t VarSubgroupLocalInvocationId;
 
 /// \brief Returns number of dimensions passed as argument to clEnqueueNDRangeKernel
 ///
-uint __ALWAYS_INLINE get_work_dim() { return __spirv::VarWorkDim; }
+__ALWAYS_INLINE uint get_work_dim() { return __spirv::VarWorkDim; }
 
 /// \brief Returns number of work-items specified for given dimension or 1 if dimindx >= get_work_dim()
 ///
-size_t __ALWAYS_INLINE get_global_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalSize, dimindx, 1); }
+__ALWAYS_INLINE size_t get_global_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalSize, dimindx, 1); }
 
 /// \brief Returns work-item's unique global id within given dimension or 0 if dimindx >= get_work_dim()
 ///
-size_t __ALWAYS_INLINE get_global_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalInvocationId, dimindx, 0); }
+__ALWAYS_INLINE size_t get_global_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalInvocationId, dimindx, 0); }
 
 /// \brief Returns number of local work-items specified for given dimension or 1 if dimindx >= get_work_dim()
 ///
-size_t __ALWAYS_INLINE get_local_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarWorkgroupSize, dimindx, 1); }
+__ALWAYS_INLINE size_t get_local_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarWorkgroupSize, dimindx, 1); }
 
 /// \brief Returns get_local_size[dimindx] for uniform work-group size or total number of work-items within work-groups that make uniform region in specified dimension.
 ///         Returns 1 if dimindx >= get_work_dim()
 ///
-size_t __ALWAYS_INLINE get_enqueued_local_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarEnqueuedWorkgroupSize, dimindx, 1); }
+__ALWAYS_INLINE size_t get_enqueued_local_size(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarEnqueuedWorkgroupSize, dimindx, 1); }
 
 /// \brief Return work-item's unique local id within given dimension or 0 if dimindx >= get_work_dim()
 ///
-size_t __ALWAYS_INLINE get_local_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarLocalInvocationId, dimindx, 0); }
+__ALWAYS_INLINE size_t get_local_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarLocalInvocationId, dimindx, 0); }
 
 /// \brief Returns number of work-groups specified for given dimension or 1 if dimindx >= get_work_dim()
 ///
-size_t __ALWAYS_INLINE get_num_groups(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarNumWorkgroups, dimindx, 1); }
+__ALWAYS_INLINE size_t get_num_groups(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarNumWorkgroups, dimindx, 1); }
 
 /// \brief Returns work-group's unique id within given dimension or 0 if dimindx >= get_work_dim()
 ///
-size_t __ALWAYS_INLINE get_group_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarWorkgroupId, dimindx, 0); }
+__ALWAYS_INLINE size_t get_group_id(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarWorkgroupId, dimindx, 0); }
 
 /// \brief Returns global offset value passed to clEnqueueNDRangeKernel for given dimension or 0 if dimindx >= get_work_dim()
 ///
-size_t __ALWAYS_INLINE get_global_offset(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalOffset, dimindx, 0); }
+__ALWAYS_INLINE size_t get_global_offset(uint dimindx) { __GET_VEC_BY_IDX(__spirv::VarGlobalOffset, dimindx, 0); }
 
 /// \brief Returns work-item's unique global id across all dimensions
 ///
-size_t __ALWAYS_INLINE get_global_linear_id() { return __spirv::VarGlobalLinearId; }
+__ALWAYS_INLINE size_t get_global_linear_id() { return __spirv::VarGlobalLinearId; }
 
 /// \brief Return work-item's unique local id across all dimensions
 ///
-size_t __ALWAYS_INLINE get_local_linear_id() { return __spirv::VarLocalInvocationIndex; }
+__ALWAYS_INLINE size_t get_local_linear_id() { return __spirv::VarLocalInvocationIndex; }
 
 /// \brief Returns number of work-items in subgroup
 ///
-size_t __ALWAYS_INLINE get_sub_group_size() { return __spirv::VarSubgroupSize; }
+__ALWAYS_INLINE size_t get_sub_group_size() { return __spirv::VarSubgroupSize; }
 
 /// \brief Returns maximum size of a subgroup within the dispatch
 ///
 ///
-size_t __ALWAYS_INLINE get_max_sub_group_size() { return __spirv::VarSubgroupMaxSize; }
+__ALWAYS_INLINE size_t get_max_sub_group_size() { return __spirv::VarSubgroupMaxSize; }
 
 /// \brief Returns number of subgroups that the current work-group is divided into
 ///
-size_t __ALWAYS_INLINE get_num_sub_groups() { return __spirv::VarNumSubgroups; }
+__ALWAYS_INLINE size_t get_num_sub_groups() { return __spirv::VarNumSubgroups; }
 
 /// \brief Returns get_num_sub_groups() for uniform work-group size or total number of sub-groups in work-groups which make uniform region
 ///
-size_t __ALWAYS_INLINE get_enqueued_num_sub_groups() { return __spirv::VarNumEnqueuedSubgroups; }
+__ALWAYS_INLINE size_t get_enqueued_num_sub_groups() { return __spirv::VarNumEnqueuedSubgroups; }
 
 /// \brief Returns sub-group's id
 ///
-size_t __ALWAYS_INLINE get_sub_group_id() { return __spirv::VarSubgroupId; }
+__ALWAYS_INLINE size_t get_sub_group_id() { return __spirv::VarSubgroupId; }
 
 /// \brief Returns work-item's id within current subgroup
 ///
-size_t __ALWAYS_INLINE get_sub_group_local_id() { return __spirv::VarSubgroupLocalInvocationId; }
+__ALWAYS_INLINE size_t get_sub_group_local_id() { return __spirv::VarSubgroupLocalInvocationId; }
 
 #undef __GET_VEC_BY_IDX
 

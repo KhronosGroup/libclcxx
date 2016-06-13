@@ -26,6 +26,7 @@
 #include <__ocl_atomic_traits.h>
 #include <__ocl_atomic_enum.h>
 #include <__ocl_spirv_atomic_opcodes.h>
+#include <__ocl_type_traits_type_properties.h>
 
 namespace cl
 {
@@ -49,54 +50,60 @@ struct __atomic_base
 {
     static_assert(sizeof(T) == sizeof(_SPIRV_T), "SPIRV atomic type should have same size as T");
 
-    /// \brief Compare exchange strong overloads
-    ///
-    bool __ALWAYS_INLINE compare_exchange_strong(T & expected, T value, _MEM_ORD) __NOEXCEPT { return __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, asSPIRV(value), asSPIRV(expected)) == asSPIRV(expected); }
-    bool __ALWAYS_INLINE compare_exchange_strong(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { return __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, asSPIRV(value), asSPIRV(expected)) == asSPIRV(expected); }
-    bool __ALWAYS_INLINE compare_exchange_strong(T & expected, T value, _MEM_ORD2) __NOEXCEPT { return __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, failure, asSPIRV(value), asSPIRV(expected)) == asSPIRV(expected); } //SPIRV doesn't support CompareExchange with two Semantics (success/failuer), bug?
-    bool __ALWAYS_INLINE compare_exchange_strong(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { return __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, failure, asSPIRV(value), asSPIRV(expected)) == asSPIRV(expected); } //as above
+    T _value;
 
     /// \brief Compare exchange strong overloads
     ///
-    bool __ALWAYS_INLINE compare_exchange_weak(T & expected, T value, _MEM_ORD) __NOEXCEPT { return __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, asSPIRV(value), asSPIRV(expected)) == asSPIRV(expected); }
-    bool __ALWAYS_INLINE compare_exchange_weak(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { return __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, asSPIRV(value), asSPIRV(expected)) == asSPIRV(expected); }
-    bool __ALWAYS_INLINE compare_exchange_weak(T & expected, T value, _MEM_ORD2) __NOEXCEPT { return __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, failure, asSPIRV(value), asSPIRV(expected)) == asSPIRV(expected); } //as above
-    bool __ALWAYS_INLINE compare_exchange_weak(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { return __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, failure, asSPIRV(value), asSPIRV(expected)) == asSPIRV(expected); } //as above
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+
+    /// \brief Compare exchange weak overloads
+    ///
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
 
     /// \brief Exchange overloads
     ///
-    T __ALWAYS_INLINE exchange(T value, _MEM_ORD) __NOEXCEPT { return asT(__spirv::OpAtomicExchange((_SPIRV_T*)&_value, scope, order, asSPIRV(value))); }
-    T __ALWAYS_INLINE exchange(T value, _MEM_ORD) volatile __NOEXCEPT { return asT(__spirv::OpAtomicExchange((_SPIRV_T*)&_value, scope, order, asSPIRV(value))); }
+    __ALWAYS_INLINE T exchange(T value, _MEM_ORD) __NOEXCEPT { return asT(__spirv::OpAtomicExchange((_SPIRV_T*)&_value, scope, order, asSPIRV(value))); }
+    __ALWAYS_INLINE T exchange(T value, _MEM_ORD) volatile __NOEXCEPT { return asT(__spirv::OpAtomicExchange((_SPIRV_T*)&_value, scope, order, asSPIRV(value))); }
 
     /// \brief Load overloads
     ///
-    T __ALWAYS_INLINE load(_MEM_ORD) const __NOEXCEPT { return asT(__spirv::OpAtomicLoad((_SPIRV_T*)&_value, scope, order)); }
-    T __ALWAYS_INLINE load(_MEM_ORD) const volatile __NOEXCEPT { return asT(__spirv::OpAtomicLoad((_SPIRV_T*)&_value, scope, order)); }
+    __ALWAYS_INLINE T load(_MEM_ORD) const __NOEXCEPT { return asT(__spirv::OpAtomicLoad((_SPIRV_T*)&_value, scope, order)); }
+    __ALWAYS_INLINE T load(_MEM_ORD) const volatile __NOEXCEPT { return asT(__spirv::OpAtomicLoad((_SPIRV_T*)&_value, scope, order)); }
 
     /// \brief Store overloads
     ///
-    void __ALWAYS_INLINE store(T value, _MEM_ORD) __NOEXCEPT { __spirv::OpAtomicStore((_SPIRV_T*)&_value, scope, order, asSPIRV(value)); }
-    void __ALWAYS_INLINE store(T value, _MEM_ORD) volatile __NOEXCEPT { __spirv::OpAtomicStore((_SPIRV_T*)&_value, scope, order, asSPIRV(value)); }
+    __ALWAYS_INLINE void store(T value, _MEM_ORD) __NOEXCEPT { __spirv::OpAtomicStore((_SPIRV_T*)&_value, scope, order, asSPIRV(value)); }
+    __ALWAYS_INLINE void store(T value, _MEM_ORD) volatile __NOEXCEPT { __spirv::OpAtomicStore((_SPIRV_T*)&_value, scope, order, asSPIRV(value)); }
+
+    __atomic_base() __NOEXCEPT = default;
+    constexpr __atomic_base(T v) __NOEXCEPT: _value(v) {}
+    __atomic_base(const __atomic_base&) = delete;
+    __atomic_base &operator=(const __atomic_base&) = delete;
+    __atomic_base &operator=(const __atomic_base&) volatile = delete;
 
     __ALWAYS_INLINE operator T( ) const __NOEXCEPT { return load( ); }
     __ALWAYS_INLINE operator T( ) const volatile __NOEXCEPT { return load( ); }
 
-    T __ALWAYS_INLINE operator=(T value) __NOEXCEPT { store(value); return value; }
-    T __ALWAYS_INLINE operator=(T value) volatile __NOEXCEPT { store(value); return value; }
+    __ALWAYS_INLINE T operator=(T value) __NOEXCEPT { store(value); return value; }
+    __ALWAYS_INLINE T operator=(T value) volatile __NOEXCEPT { store(value); return value; }
 
 protected:
-    T _value;
+    __ALWAYS_INLINE T const& asT(_SPIRV_T const& S) const volatile __NOEXCEPT { return reinterpret_cast<T const&>(S); }
 
-    T const& __ALWAYS_INLINE asT(_SPIRV_T const& S) const volatile __NOEXCEPT { return reinterpret_cast<T const&>(S); }
-
-    _SPIRV_T __ALWAYS_INLINE const& asSPIRV(T const& t) const volatile __NOEXCEPT { return reinterpret_cast<_SPIRV_T const&>(t); }
+    __ALWAYS_INLINE _SPIRV_T const& asSPIRV(T const& t) const volatile __NOEXCEPT { return reinterpret_cast<_SPIRV_T const&>(t); }
 };
 
 #define ATOMIC_ARITHMETIC_OPERATION(symbol, name, spirv_opcode) \
-    T __ALWAYS_INLINE fetch_##name(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(spirv_opcode((_SPIRV_T*)&this->_value, scope, order, value)); } \
-    T __ALWAYS_INLINE fetch_##name(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(spirv_opcode((_SPIRV_T*)&this->_value, scope, order, value)); } \
-    T __ALWAYS_INLINE operator symbol##=(result_type value) __NOEXCEPT { return fetch_##name(value) symbol value; } \
-    T __ALWAYS_INLINE operator symbol##=(result_type value) volatile __NOEXCEPT { return fetch_##name(value) symbol value; }
+    __ALWAYS_INLINE auto fetch_##name(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(spirv_opcode((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    __ALWAYS_INLINE auto fetch_##name(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(spirv_opcode((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    __ALWAYS_INLINE auto operator symbol##=(result_type value) __NOEXCEPT { return fetch_##name(value) symbol value; } \
+    __ALWAYS_INLINE auto operator symbol##=(result_type value) volatile __NOEXCEPT { return fetch_##name(value) symbol value; }
 
 /// \brief Class containing atomic arithmetic operations
 ///
@@ -108,31 +115,43 @@ private:
     typedef typename __details::__atomic_types<T>::arithmetic_result_type result_type;
 
 public:
+    using __atomic_base<T, _SPIRV_T>::__atomic_base;
+    using __atomic_base<T, _SPIRV_T>::operator=;
+
     ATOMIC_ARITHMETIC_OPERATION(+, add, __spirv::OpAtomicIAdd);
     ATOMIC_ARITHMETIC_OPERATION(-, sub, __spirv::OpAtomicISub);
     ATOMIC_ARITHMETIC_OPERATION(&, and, __spirv::OpAtomicAnd);
     ATOMIC_ARITHMETIC_OPERATION(| , or, __spirv::OpAtomicOr);
     ATOMIC_ARITHMETIC_OPERATION(^, xor, __spirv::OpAtomicXor);
 
+    template<class U = T>
+    __ALWAYS_INLINE enable_if_t<is_unsigned<U>::value, U>  fetch_min(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(__spirv::OpAtomicUMin((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    template<class U = T>
+    __ALWAYS_INLINE enable_if_t<!is_unsigned<U>::value, U> fetch_min(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(__spirv::OpAtomicSMin((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    template<class U = T>
+    __ALWAYS_INLINE enable_if_t<is_unsigned<U>::value, U> fetch_max(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(__spirv::OpAtomicUMax((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    template<class U = T>
+    __ALWAYS_INLINE enable_if_t<!is_unsigned<U>::value, U> fetch_max(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(__spirv::OpAtomicSMax((_SPIRV_T*)&this->_value, scope, order, value)); } \
+
     /// \brief operator++ overloads
     ///
-    T __ALWAYS_INLINE operator++(int) __NOEXCEPT { return fetch_add(1); }
-    T __ALWAYS_INLINE operator++(int) volatile __NOEXCEPT { return fetch_add(1); }
+    __ALWAYS_INLINE T operator++(int) __NOEXCEPT { return fetch_add(1); }
+    __ALWAYS_INLINE T operator++(int) volatile __NOEXCEPT { return fetch_add(1); }
 
     /// \brief operator-- overloads
     ///
-    T __ALWAYS_INLINE operator--(int) __NOEXCEPT { return fetch_sub(1); }
-    T __ALWAYS_INLINE operator--(int) volatile __NOEXCEPT { return fetch_sub(1); }
+    __ALWAYS_INLINE T operator--(int) __NOEXCEPT { return fetch_sub(1); }
+    __ALWAYS_INLINE T operator--(int) volatile __NOEXCEPT { return fetch_sub(1); }
 
     /// \brief operator++ overloads
     ///
-    T __ALWAYS_INLINE operator++( ) __NOEXCEPT { return fetch_add(1) + 1; }
-    T __ALWAYS_INLINE operator++( ) volatile __NOEXCEPT { return fetch_add(1) + 1; }
+    __ALWAYS_INLINE T operator++( ) __NOEXCEPT { return fetch_add(1) + 1; }
+    __ALWAYS_INLINE T operator++( ) volatile __NOEXCEPT { return fetch_add(1) + 1; }
 
     /// \brief operator-- overloads
     ///
-    T __ALWAYS_INLINE operator--( ) __NOEXCEPT { return fetch_sub(1) - 1; }
-    T __ALWAYS_INLINE operator--( ) volatile __NOEXCEPT { return fetch_sub(1) - 1; }
+    __ALWAYS_INLINE T operator--( ) __NOEXCEPT { return fetch_sub(1) - 1; }
+    __ALWAYS_INLINE T operator--( ) volatile __NOEXCEPT { return fetch_sub(1) - 1; }
 };
 
 #undef ATOMIC_ARITHMETIC_OPERATION

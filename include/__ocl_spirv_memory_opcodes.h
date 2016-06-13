@@ -52,7 +52,7 @@ enum class StorageClass
 /// \brief Forward declaration to OpGenericCastToPtrExplicit_ToGlobal SPIR-V function
 ///
 template<class T>
-static __global T* __ALWAYS_INLINE __make_OpGenericCastToPtrExplicit_ToGlobal_call(__generic T* ptr) __NOEXCEPT
+__ALWAYS_INLINE static __global T* __make_OpGenericCastToPtrExplicit_ToGlobal_call(__generic T* ptr) __NOEXCEPT
 {
     extern __global T*  OpGenericCastToPtrExplicit_ToGlobal(__generic T* ptr, StorageClass sc) __NOEXCEPT;
     return OpGenericCastToPtrExplicit_ToGlobal(ptr, StorageClass::WorkgroupGlobal);
@@ -61,7 +61,7 @@ static __global T* __ALWAYS_INLINE __make_OpGenericCastToPtrExplicit_ToGlobal_ca
 /// \brief Forward declaration to OpGenericCastToPtrExplicit_ToLocal SPIR-V function
 ///
 template<class T>
-static __local T* __ALWAYS_INLINE __make_OpGenericCastToPtrExplicit_ToLocal_call(__generic T* ptr) __NOEXCEPT
+__ALWAYS_INLINE static __local T* __make_OpGenericCastToPtrExplicit_ToLocal_call(__generic T* ptr) __NOEXCEPT
 {
     extern __local T*  OpGenericCastToPtrExplicit_ToLocal(__generic T* ptr, StorageClass sc) __NOEXCEPT;
     return OpGenericCastToPtrExplicit_ToLocal(ptr, StorageClass::WorkgroupLocal);
@@ -70,7 +70,7 @@ static __local T* __ALWAYS_INLINE __make_OpGenericCastToPtrExplicit_ToLocal_call
 /// \brief Forward declaration to __make_GenericCastToPtrExplicit_ToPrivate_call SPIR-V function
 ///
 template<class T>
-static __private T* __ALWAYS_INLINE __make_GenericCastToPtrExplicit_ToPrivate_call(__generic T* ptr) __NOEXCEPT
+__ALWAYS_INLINE static __private T* __make_GenericCastToPtrExplicit_ToPrivate_call(__generic T* ptr) __NOEXCEPT
 {
     extern __private T*  OpGenericCastToPtrExplicit_ToPrivate(__generic T* ptr, StorageClass sc) __NOEXCEPT;
     return OpGenericCastToPtrExplicit_ToPrivate(ptr, StorageClass::Function);

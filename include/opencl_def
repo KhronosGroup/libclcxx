@@ -219,4 +219,6 @@ typedef double8  cl_double8;
 typedef double16 cl_double16;
 #endif
 
+typedef long16 max_allign_t; 
+
 typedef int  mem_type;

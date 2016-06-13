@@ -33,85 +33,91 @@ namespace cl
 /// The class methods perform implicit vload_half and vload_store operations if cl_khr_fp16 extension is not supported
 struct fp16
 {
-    half __m; //exposition only
+
 
     __ALWAYS_INLINE fp16() = default;
     __ALWAYS_INLINE fp16(const fp16 &) = default;
     __ALWAYS_INLINE fp16(fp16 &&) = default;
-    fp16& __ALWAYS_INLINE operator=(const fp16 &) = default;
-    fp16& __ALWAYS_INLINE operator=(fp16 &&) = default;
-
-    __ALWAYS_INLINE fp16(half r) __NOEXCEPT: __m(r) { }
-    fp16& __ALWAYS_INLINE operator=(half r) __NOEXCEPT { __m = r; return *this; }
-    __ALWAYS_INLINE operator half() const __NOEXCEPT { return __m;  }
+    __ALWAYS_INLINE fp16& operator=(const fp16 &) = default;
+    __ALWAYS_INLINE fp16& operator=(fp16 &&) = default;
 
 #ifdef cl_khr_fp16
+    __ALWAYS_INLINE fp16(half r) __NOEXCEPT: __m(r) { }
+    __ALWAYS_INLINE fp16& operator=(half r) __NOEXCEPT { __m = r; return *this; }
+    __ALWAYS_INLINE operator half() const __NOEXCEPT { return __m;  }
+
     __ALWAYS_INLINE operator bool() const __NOEXCEPT {return __m; }
 
     __ALWAYS_INLINE fp16(float r) __NOEXCEPT : __m(r) { }
-    fp16& __ALWAYS_INLINE operator=(float r) __NOEXCEPT { __m = r; return *this; }
+    __ALWAYS_INLINE fp16& operator=(float r) __NOEXCEPT { __m = r; return *this; }
     __ALWAYS_INLINE operator float() const __NOEXCEPT { return __m; }
 
 #ifdef cl_khr_fp64
     __ALWAYS_INLINE fp16(double r) __NOEXCEPT : __m(r) { }
-    fp16& __ALWAYS_INLINE operator=(double r) __NOEXCEPT { __m = r; return *this; }
+    __ALWAYS_INLINE fp16& operator=(double r) __NOEXCEPT { __m = r; return *this; }
     __ALWAYS_INLINE operator double() const __NOEXCEPT { return __m; }
 #endif
 
-    fp16& __ALWAYS_INLINE operator++() __NOEXCEPT { ++__m; return *this; }
-    fp16 __ALWAYS_INLINE operator++(int)__NOEXCEPT { fp16 t(*this); ++__m; return t; }
-    fp16& __ALWAYS_INLINE operator--() __NOEXCEPT { --__m; return *this; };
-    fp16 __ALWAYS_INLINE operator--(int)__NOEXCEPT { fp16 t(*this); --__m; return t; }
-    fp16& __ALWAYS_INLINE operator+=(const fp16 &r) __NOEXCEPT { __m += r.__m; return *this; }
-    fp16& __ALWAYS_INLINE operator-=(const fp16 &r) __NOEXCEPT { __m -= r.__m; return *this; }
-    fp16& __ALWAYS_INLINE operator*=(const fp16 &r) __NOEXCEPT { __m *= r.__m; return *this; }
-    fp16& __ALWAYS_INLINE operator/=(const fp16 &r) __NOEXCEPT { __m /= r.__m; return *this; }
+    __ALWAYS_INLINE fp16& operator++() __NOEXCEPT { ++__m; return *this; }
+    __ALWAYS_INLINE fp16 operator++(int)__NOEXCEPT { fp16 t(*this); ++__m; return t; }
+    __ALWAYS_INLINE fp16& operator--() __NOEXCEPT { --__m; return *this; };
+    __ALWAYS_INLINE fp16 operator--(int)__NOEXCEPT { fp16 t(*this); --__m; return t; }
+    __ALWAYS_INLINE fp16& operator+=(const fp16 &r) __NOEXCEPT { __m += r.__m; return *this; }
+    __ALWAYS_INLINE fp16& operator-=(const fp16 &r) __NOEXCEPT { __m -= r.__m; return *this; }
+    __ALWAYS_INLINE fp16& operator*=(const fp16 &r) __NOEXCEPT { __m *= r.__m; return *this; }
+    __ALWAYS_INLINE fp16& operator/=(const fp16 &r) __NOEXCEPT { __m /= r.__m; return *this; }
 #else
-    __ALWAYS_INLINE operator bool() const __NOEXCEPT { return cl::vload_half<1>(0, &__m); }
+    __ALWAYS_INLINE operator bool() const __NOEXCEPT { return cl::vload_half<1>(0, reinterpret_cast<const half *>(&__m)); }
 
-    __ALWAYS_INLINE fp16(float r) __NOEXCEPT { cl::vstore_half(r, 0, &__m); }
-    fp16& __ALWAYS_INLINE operator=(float r) __NOEXCEPT { cl::vstore_half(r, 0, &__m); return *this; }
-    __ALWAYS_INLINE operator float() const __NOEXCEPT { return cl::vload_half<1>(0, &__m); }
+    __ALWAYS_INLINE fp16(float r) __NOEXCEPT { cl::vstore_half(r, 0, reinterpret_cast<half *>(&__m)); }
+    __ALWAYS_INLINE fp16& operator=(float r) __NOEXCEPT { cl::vstore_half(r, 0, reinterpret_cast<half *>(&__m)); return *this; }
+    __ALWAYS_INLINE operator float() const __NOEXCEPT { return cl::vload_half<1>(0, reinterpret_cast<const half *>(&__m)); }
 
 #ifdef cl_khr_fp64
-    __ALWAYS_INLINE fp16(double r) __NOEXCEPT { cl::vstore_half(r, 0, &__m); }
-    fp16& __ALWAYS_INLINE operator=(double r) __NOEXCEPT { cl::vstore_half(r, 0, &__m); return *this; }
-    __ALWAYS_INLINE operator double() const __NOEXCEPT { return cl::vload_half<1>(0, &__m); }
+    __ALWAYS_INLINE fp16(double r) __NOEXCEPT { cl::vstore_half(r, 0, reinterpret_cast<half *>(&__m)); }
+    __ALWAYS_INLINE fp16& operator=(double r) __NOEXCEPT { cl::vstore_half(r, 0, reinterpret_cast<half *>(&__m)); return *this; }
+    __ALWAYS_INLINE operator double() const __NOEXCEPT { return cl::vload_half<1>(0, reinterpret_cast<const half *>(&__m)); }
 #endif
 
-    fp16& __ALWAYS_INLINE operator++() __NOEXCEPT { float f = *this; ++f; *this = f; return *this; }
-    fp16 __ALWAYS_INLINE operator++(int)__NOEXCEPT { fp16 t(*this); float f = *this; ++f; *this = f; return t; };
-    fp16& __ALWAYS_INLINE operator--() __NOEXCEPT { float f = *this; --f; *this = f; return *this; }
-    fp16 __ALWAYS_INLINE operator--(int)__NOEXCEPT { fp16 t(*this); float f = *this; --f; *this = f; return t; };
-    fp16& __ALWAYS_INLINE operator+=(const fp16 &r) __NOEXCEPT { float f0 = *this; float f1 = r; f0 += f1; *this = f0; return *this; }
-    fp16& __ALWAYS_INLINE operator-=(const fp16 &r) __NOEXCEPT { float f0 = *this; float f1 = r; f0 -= f1; *this = f0; return *this; }
-    fp16& __ALWAYS_INLINE operator*=(const fp16 &r) __NOEXCEPT { float f0 = *this; float f1 = r; f0 *= f1; *this = f0; return *this; }
-    fp16& __ALWAYS_INLINE operator/=(const fp16 &r) __NOEXCEPT { float f0 = *this; float f1 = r; f0 /= f1; *this = f0; return *this; }
+    __ALWAYS_INLINE fp16& operator++() __NOEXCEPT { float f = *this; ++f; *this = f; return *this; }
+    __ALWAYS_INLINE fp16 operator++(int)__NOEXCEPT { fp16 t(*this); float f = *this; ++f; *this = f; return t; };
+    __ALWAYS_INLINE fp16& operator--() __NOEXCEPT { float f = *this; --f; *this = f; return *this; }
+    __ALWAYS_INLINE fp16 operator--(int)__NOEXCEPT { fp16 t(*this); float f = *this; --f; *this = f; return t; };
+    __ALWAYS_INLINE fp16& operator+=(const fp16 &r) __NOEXCEPT { float f0 = *this; float f1 = r; f0 += f1; *this = f0; return *this; }
+    __ALWAYS_INLINE fp16& operator-=(const fp16 &r) __NOEXCEPT { float f0 = *this; float f1 = r; f0 -= f1; *this = f0; return *this; }
+    __ALWAYS_INLINE fp16& operator*=(const fp16 &r) __NOEXCEPT { float f0 = *this; float f1 = r; f0 *= f1; *this = f0; return *this; }
+    __ALWAYS_INLINE fp16& operator/=(const fp16 &r) __NOEXCEPT { float f0 = *this; float f1 = r; f0 /= f1; *this = f0; return *this; }
+#endif
+
+#ifdef cl_khr_fp16
+    half __m;
+#else
+    ushort __m;
 #endif
 };
 
 #ifdef cl_khr_fp16
-bool __ALWAYS_INLINE operator==(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m == rhs.__m; }
-bool __ALWAYS_INLINE operator!=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m != rhs.__m; }
-bool __ALWAYS_INLINE operator< (const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m < rhs.__m; }
-bool __ALWAYS_INLINE operator>(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m > rhs.__m; }
-bool __ALWAYS_INLINE operator<=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m <= rhs.__m; }
-bool __ALWAYS_INLINE operator>=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m >= rhs.__m; }
-fp16 __ALWAYS_INLINE operator+(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return{ lhs.__m + rhs.__m }; }
-fp16 __ALWAYS_INLINE operator-(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return{ lhs.__m - rhs.__m }; }
-fp16 __ALWAYS_INLINE operator*(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return{ lhs.__m * rhs.__m }; }
-fp16 __ALWAYS_INLINE operator/(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return{ lhs.__m / rhs.__m }; }
+__ALWAYS_INLINE bool operator==(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m == rhs.__m; }
+__ALWAYS_INLINE bool operator!=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m != rhs.__m; }
+__ALWAYS_INLINE bool operator< (const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m < rhs.__m; }
+__ALWAYS_INLINE bool operator>(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m > rhs.__m; }
+__ALWAYS_INLINE bool operator<=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m <= rhs.__m; }
+__ALWAYS_INLINE bool operator>=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return lhs.__m >= rhs.__m; }
+__ALWAYS_INLINE fp16 operator+(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return{ lhs.__m + rhs.__m }; }
+__ALWAYS_INLINE fp16 operator-(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return{ lhs.__m - rhs.__m }; }
+__ALWAYS_INLINE fp16 operator*(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return{ lhs.__m * rhs.__m }; }
+__ALWAYS_INLINE fp16 operator/(const fp16& lhs, const fp16& rhs) __NOEXCEPT { return{ lhs.__m / rhs.__m }; }
 #else
-bool __ALWAYS_INLINE operator==(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 == f1; }
-bool __ALWAYS_INLINE operator!=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 != f1; }
-bool __ALWAYS_INLINE operator< (const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 < f1; }
-bool __ALWAYS_INLINE operator> (const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 > f1; }
-bool __ALWAYS_INLINE operator<=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 <= f1; }
-bool __ALWAYS_INLINE operator>=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 >= f1; }
-fp16 __ALWAYS_INLINE operator+(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return {f0 + f1}; }
-fp16 __ALWAYS_INLINE operator-(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return {f0 - f1}; }
-fp16 __ALWAYS_INLINE operator*(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return {f0 * f1}; }
-fp16 __ALWAYS_INLINE operator/(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return {f0 / f1}; }
+__ALWAYS_INLINE bool operator==(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 == f1; }
+__ALWAYS_INLINE bool operator!=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 != f1; }
+__ALWAYS_INLINE bool operator< (const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 < f1; }
+__ALWAYS_INLINE bool operator> (const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 > f1; }
+__ALWAYS_INLINE bool operator<=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 <= f1; }
+__ALWAYS_INLINE bool operator>=(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return f0 >= f1; }
+__ALWAYS_INLINE fp16 operator+(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return {f0 + f1}; }
+__ALWAYS_INLINE fp16 operator-(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return {f0 - f1}; }
+__ALWAYS_INLINE fp16 operator*(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return {f0 * f1}; }
+__ALWAYS_INLINE fp16 operator/(const fp16& lhs, const fp16& rhs) __NOEXCEPT { float f0 = lhs; float f1 = rhs; return {f0 / f1}; }
 #endif
 
 }

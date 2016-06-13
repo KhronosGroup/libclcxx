@@ -123,7 +123,7 @@ __ALWAYS_INLINE mem_fence operator^(mem_fence lhs, mem_fence rhs)
 /// \brief Returns the mem_fence value for a given const generic ptr.
 ///
 template<class T>
-mem_fence get_mem_fence(const volatile T *ptr)
+__ALWAYS_INLINE mem_fence get_mem_fence(const volatile T *ptr)
 {
     return static_cast<mem_fence>(__spirv::OpGenericPtrMemSemantics(ptr));
 }

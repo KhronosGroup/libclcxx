@@ -38,28 +38,28 @@ extern void OpControlBarrier(memory_scope execution, memory_scope memory, Memory
 
 /// \brief assures that all work-items in work-group will execute this function before any of them proceeding further and simultaneously synchronizes memory within work-group's scope
 ///
-void __ALWAYS_INLINE work_group_barrier(mem_fence flags) __NOEXCEPT
+__ALWAYS_INLINE void work_group_barrier(mem_fence flags) __NOEXCEPT
 {
     __spirv::OpControlBarrier(memory_scope_work_group, memory_scope_work_group, static_cast<__spirv::MemorySemantics>(flags));
 }
 
 /// \brief assures that all work-items in work-group will execute this function before any of them proceeding further and simultaneously provides memory synchronization on 'scope' level
 ///
-void __ALWAYS_INLINE work_group_barrier(mem_fence flags, memory_scope scope) __NOEXCEPT
+__ALWAYS_INLINE void work_group_barrier(mem_fence flags, memory_scope scope) __NOEXCEPT
 {
     __spirv::OpControlBarrier(memory_scope_work_group, scope, static_cast<__spirv::MemorySemantics>(flags));
 }
 
 /// \brief assures that all work-items in sub-group will execute this function before any of them proceeding further and simultaneously synchronizes memory within sub-group's scope
 ///
-void __ALWAYS_INLINE sub_group_barrier(mem_fence flags) __NOEXCEPT
+__ALWAYS_INLINE void sub_group_barrier(mem_fence flags) __NOEXCEPT
 {
     return __spirv::OpControlBarrier(memory_scope_sub_group, memory_scope_sub_group, static_cast<__spirv::MemorySemantics>(flags));
 }
 
 /// \brief assures that all work-items in sub-group will execute this function before any of them proceeding further and simultaneously provides memory synchronization on 'scope' level
 ///
-void __ALWAYS_INLINE sub_group_barrier(mem_fence flags, memory_scope scope) __NOEXCEPT
+__ALWAYS_INLINE void sub_group_barrier(mem_fence flags, memory_scope scope) __NOEXCEPT
 {
     return __spirv::OpControlBarrier(memory_scope_sub_group, scope, static_cast<__spirv::MemorySemantics>(flags));
 }
