@@ -166,7 +166,7 @@ kernel void test3() {
 //////////////////////////////////////////////
 kernel void test4(cl::local_ptr<int> arg) {
    int* ptr0 = arg.get();
-   cl::local_ptr<int> ptr1 = cl::dynamic_as_cast<cl::local_ptr<int>>(ptr0);
+   cl::local_ptr<int> ptr1 = cl::dynamic_asptr_cast<cl::local_ptr<int>>(ptr0);
    if(ptr1) { }
 }
 }

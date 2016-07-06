@@ -140,7 +140,7 @@ struct event
     template <typename T>
     __ALWAYS_INLINE void profiling_info(event_profiling_info name, global_ptr<T> value) __NOEXCEPT
     {
-        return __spirv::OpCaptureEventProfilingInfo(__this, static_cast<int>(name), reinterpret_cast<__global int8*>(value.get()));
+        return __spirv::OpCaptureEventProfilingInfo(__this, static_cast<int>(name), reinterpret_cast<__global void*>(value.get()));
     }
 
 private:

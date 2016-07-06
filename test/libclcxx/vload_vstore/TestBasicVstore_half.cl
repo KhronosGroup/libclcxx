@@ -7,11 +7,11 @@ using namespace cl;
 kernel void worker()
 {
     vstore_half(float3{ 0, 0, 0 }, 0, (half*)nullptr);
-    // CHECK: call spir_func void @_Z{{[1-9][0-9]*}}__spirv_ocl_vstore_halfn__rte{{[a-zA-Z0-9_]+}}(<3 x float> {{.*}})
+    // CHECK: call spir_func void @_Z{{[1-9][0-9]*}}__spirv_ocl_vstore_halfn_r{{[a-zA-Z0-9_]+}}(<3 x float> {{.*}})
 
     vstore_half<rounding_mode::rtp>(float3{ 0, 0, 0 }, 0, (half*)nullptr);
-    // CHECK: call spir_func void @_Z{{[1-9][0-9]*}}__spirv_ocl_vstore_halfn__rtp{{[a-zA-Z0-9_]+}}(<3 x float> {{.*}})
+    // CHECK: call spir_func void @_Z{{[1-9][0-9]*}}__spirv_ocl_vstore_halfn_r{{[a-zA-Z0-9_]+}}(<3 x float> {{.*}})
     
     vstore_half<rounding_mode::rtn>(float{ 0 }, 0, (half*)nullptr);
-    // CHECK: call spir_func void @_Z{{[1-9][0-9]*}}__spirv_ocl_vstore_half__rtn{{[a-zA-Z0-9_]+}}(float {{.*}})
+    // CHECK: call spir_func void @_Z{{[1-9][0-9]*}}__spirv_ocl_vstore_half_r{{[a-zA-Z0-9_]+}}(float {{.*}})
 }

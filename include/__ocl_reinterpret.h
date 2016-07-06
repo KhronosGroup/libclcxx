@@ -36,19 +36,18 @@ namespace __details
 /// \brief different types => perform OpBitcast
 ///
 template <typename To, typename From>
-__ALWAYS_INLINE To __as_type(From const& arg)
+struct __choose_as_type
 {
-    return __spirv::__make_OpBitcast_call<To>(arg);
-}
+    __ALWAYS_INLINE static To __make_call(From const& arg)      { return __spirv::__make_OpBitcast_call<To>(arg); }
+};
 
 /// \brief same types => NoOp
 ///
-template <typename To, typename From>
-__ALWAYS_INLINE To __as_type(To const& t)
+template <typename To>
+struct __choose_as_type<To, To>
 {
-    return t;
-}
-
+    __ALWAYS_INLINE static To __make_call(To const& arg)      { return arg; }
+};
 }
 
 template <typename To, typename From>
@@ -59,6 +58,6 @@ __ALWAYS_INLINE To as_type(From const& arg)
     static_assert(cl::is_fundamental<To>::value && cl::is_fundamental<From>::value, "as_type operator may be used only for reinterpreting data from/to builtin scalar or vector types (except void and bool).");
     static_assert(sizeof(To) == sizeof(From), "It is an error to use the as_type<T> operator to reinterpret data to a type of a different number of bytes.");
 
-    return __details::__as_type<remove_attrs_t<To>, remove_attrs_t<From>>(arg);
+    return __details::__choose_as_type<remove_attrs_t<To>, remove_attrs_t<From>>::__make_call(arg);
 }
 }
