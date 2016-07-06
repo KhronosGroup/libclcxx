@@ -144,7 +144,7 @@ extern void OpReleaseEvent( __global OpTypeDeviceEvent * event );
 extern __global OpTypeDeviceEvent* OpCreateUserEvent();
 extern bool OpIsValidEvent( __global const OpTypeDeviceEvent * event );
 extern void OpSetUserEventStatus( __global OpTypeDeviceEvent * event, int status );
-extern void OpCaptureEventProfilingInfo( __global OpTypeDeviceEvent * event, int profiling_info, __global int8* value );
+extern void OpCaptureEventProfilingInfo( __global OpTypeDeviceEvent * event, int profiling_info, __global void* value );
 
 extern __global OpTypeQueue* OpGetDefaultQueue();
 

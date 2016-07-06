@@ -90,11 +90,7 @@ template <size_t N> struct __vstore_half_helper
     template <rounding_mode Rmode, typename T>
     __ALWAYS_INLINE static auto __make_call(T data, size_t offset, const half* ptr)
     {
-#ifdef __CL_USE_UNDECORATED_VSTORE
         return __spirv::__make_vstore_halfn_r_call<void>(data, offset, ptr, Rmode);
-#else
-        return __spirv::vstore_halfn<Rmode>(data, offset, ptr);
-#endif
     }
 };
 
@@ -103,11 +99,7 @@ template <> struct __vstore_half_helper<1>
     template <rounding_mode Rmode, typename T>
     __ALWAYS_INLINE static auto __make_call(T data, size_t offset, const half* ptr)
     {
-#ifdef __CL_USE_UNDECORATED_VSTORE
         return __spirv::__make_vstore_half_r_call<void>(data, offset, ptr, Rmode);
-#else
-        return __spirv::vstore_half<Rmode>(data, offset, ptr);
-#endif
     }
 };
 
@@ -195,11 +187,7 @@ __ALWAYS_INLINE enable_if_t<
                             ), void>
 vstorea_half(T data, size_t offset, half* ptr)
 {
-#ifdef __CL_USE_UNDECORATED_VSTORE
     return __spirv::__make_vstorea_halfn_r_call<void>(data, offset, ptr, Rmode);
-#else
-    return __spirv::vstorea_halfn<Rmode>(data, offset, ptr);
-#endif
 
 }
 
