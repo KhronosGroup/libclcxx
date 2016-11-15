@@ -33,31 +33,59 @@ namespace cl
 namespace __details
 {
 
-/// \brief different types => perform OpBitcast
-///
-template <typename To, typename From>
+template <typename To, typename From, size_t ToSize, size_t FromSize>
 struct __choose_as_type
 {
-    __ALWAYS_INLINE static To __make_call(From const& arg)      { return __spirv::__make_OpBitcast_call<To>(arg); }
+    __ALWAYS_INLINE static To __make_call(From const& arg)
+    {
+        return __spirv::__make_OpBitcast_call<To>(arg);
+    }
 };
-
-/// \brief same types => NoOp
-///
-template <typename To>
-struct __choose_as_type<To, To>
-{
-    __ALWAYS_INLINE static To __make_call(To const& arg)      { return arg; }
-};
-}
 
 template <typename To, typename From>
-__ALWAYS_INLINE To as_type(From const& arg)
+struct __choose_as_type<To, From, 3, 4>
+{
+    using _new_to = make_vector_t<vector_element_t<To>, 4>;
+
+    __ALWAYS_INLINE static To __make_call(From const& arg)
+    {
+        return __spirv::__make_OpBitcast_call<_new_to>(arg).xyz;
+    }
+};
+
+template <typename To, typename From>
+struct __choose_as_type<To, From, 4, 3>
+{
+    __ALWAYS_INLINE static To __make_call(From const& arg)
+    {
+        make_vector_t<vector_element_t<From>, 4> tmp(arg, 0);
+        return __spirv::__make_OpBitcast_call<To>(tmp);
+    }
+};
+
+template <typename To, typename From>
+__ALWAYS_INLINE To __as_type(From const& arg)
 {
     static_assert(!cl::is_void<To>::value && !cl::is_void<From>::value, "void type is not valid destination/source type for reinterpreting data with as_type operator.");
     static_assert(!cl::__details::__is_bool<To>::value && !cl::__details::__is_bool<From>::value, "bool type is not valid destination/source type for reinterpreting data with as_type operator.");
     static_assert(cl::is_fundamental<To>::value && cl::is_fundamental<From>::value, "as_type operator may be used only for reinterpreting data from/to builtin scalar or vector types (except void and bool).");
     static_assert(sizeof(To) == sizeof(From), "It is an error to use the as_type<T> operator to reinterpret data to a type of a different number of bytes.");
 
-    return __details::__choose_as_type<remove_attrs_t<To>, remove_attrs_t<From>>::__make_call(arg);
+    return __details::__choose_as_type<remove_attrs_t<To>, remove_attrs_t<From>, vector_size<To>::value, vector_size<From>::value>::__make_call(arg);
 }
+
+template <typename To, typename From>
+__ALWAYS_INLINE To __as_type(To const& t)
+{
+    return t;
+}
+
+}
+
+template <typename To, typename From>
+__ALWAYS_INLINE To as_type(From const& arg)
+{
+    return __details::__as_type<To>(arg);
+}
+
 }
