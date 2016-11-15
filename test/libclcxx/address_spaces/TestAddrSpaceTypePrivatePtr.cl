@@ -166,7 +166,7 @@ kernel void test3() {
 //////////////////////////////////////////////
 void test4(cl::private_ptr<int> arg) {
    int* ptr0 = arg.get();
-   cl::private_ptr<int> ptr1 = cl::dynamic_as_cast<cl::private_ptr<int>>(ptr0);
+   cl::private_ptr<int> ptr1 = cl::dynamic_asptr_cast<cl::private_ptr<int>>(ptr0);
    if(ptr1) { }
 }
 }

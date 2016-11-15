@@ -224,39 +224,42 @@ namespace __details
     /// \brief convert_cast base implementation which only chooses right spirv conversion instruction. Any decorations are handled outside of it
     ///
     template <typename To, typename From, rounding_mode Rmode, saturate Smode>
-    __ALWAYS_INLINE To __convert_cast(From const& arg)
+    struct __choose_convert_cast
     {
-        _CHECK_VECTOR_SIZE;
-        _CHECK_TYPE(To);
-        _CHECK_TYPE(From);
+        __ALWAYS_INLINE static To __make_call(From const& arg)
+        {
+            _CHECK_VECTOR_SIZE;
+            _CHECK_TYPE(To);
+            _CHECK_TYPE(From);
 
-        return __details::__choose_convert<To, From,
-            //calculate OR of all __is_* values and pass it as __choose_convert param
-            //  -> if TO-FROM pair of types match more than one conversion type (which would be an error in implementation)
-            //      OR-ed value will not match any of __convert_type values and __choose_convert will fire static_assert
-            __details::__is_utof<To,From>::value |
-            __details::__is_stof<To,From>::value |
-            __details::__is_ftou<To,From>::value |
-            __details::__is_ftos<To,From>::value |
-            __details::__is_utou<To,From>::value |
-            __details::__is_stos<To,From>::value |
-            __details::__is_ftof<To,From>::value |
-            __details::__is_stou<To,From>::value |
-            __details::__is_utos<To,From>::value |
-            __details::__is_bton<To,From>::value |
-            __details::__is_itob<To,From>::value |
-            __details::__is_ftob<To,From>::value,
-            Rmode, Smode
-        >::__make_call(arg);
+            return __details::__choose_convert<To, From,
+                //calculate OR of all __is_* values and pass it as __choose_convert param
+                //  -> if TO-FROM pair of types match more than one conversion type (which would be an error in implementation)
+                //      OR-ed value will not match any of __convert_type values and __choose_convert will fire static_assert
+                __details::__is_utof<To,From>::value |
+                __details::__is_stof<To,From>::value |
+                __details::__is_ftou<To,From>::value |
+                __details::__is_ftos<To,From>::value |
+                __details::__is_utou<To,From>::value |
+                __details::__is_stos<To,From>::value |
+                __details::__is_ftof<To,From>::value |
+                __details::__is_stou<To,From>::value |
+                __details::__is_utos<To,From>::value |
+                __details::__is_bton<To,From>::value |
+                __details::__is_itob<To,From>::value |
+                __details::__is_ftob<To,From>::value,
+                Rmode, Smode
+            >::__make_call(arg);
+        }
     };
 
     /// \brief Target and destination types are the same => NoOp
     ///
-    template <typename To, typename From, rounding_mode Rmode, saturate Smode>
-    __ALWAYS_INLINE To __convert_cast(To const& t)
+    template <typename To, rounding_mode Rmode, saturate Smode>
+    struct __choose_convert_cast<To, To, Rmode, Smode>
     {
-        return t;
-    }
+        __ALWAYS_INLINE static To __make_call(To const& arg)      { return arg; }
+    };
 
     template <typename To, typename From>
     struct __default_rmode : public integral_constant<rounding_mode, (is_floating_point<To>::value ? rounding_mode::rte : rounding_mode::rtz)> { };
@@ -269,7 +272,7 @@ template <typename To, typename From>
 __ALWAYS_INLINE To convert_cast(From const& arg)
 {
     // just plain convert_cast without decorations
-    return __details::__convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, __details::__default_rmode<To, From>::value, __details::__default_smode<To, From>::value>(arg);
+    return __details::__choose_convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, __details::__default_rmode<To, From>::value, __details::__default_smode<To, From>::value>::__make_call(arg);
 }
 
 template <typename To, rounding_mode Rmode, typename From>
@@ -278,7 +281,7 @@ __ALWAYS_INLINE To convert_cast(From const& arg)
     static_assert(is_floating_point<To>::value || is_floating_point<From>::value, "convert_cast with rounding mode option can be used only in conversions to/from floating point types.");
     static_assert(!__details::__is_bool<To>::value && !__details::__is_bool<From>::value, "rounding mode cannot be used while converting to/from bool.");
 
-    return __details::__convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, Rmode, __details::__default_smode<To, From>::value>(arg);
+    return __details::__choose_convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, Rmode, __details::__default_smode<To, From>::value>::__make_call(arg);
 }
 
 template <typename To, saturate Smode, typename From>
@@ -287,7 +290,7 @@ __ALWAYS_INLINE To convert_cast(From const& arg)
     static_assert(Smode == saturate::off || is_integral<To>::value, "convert_cast with saturate option can be used only in conversions to integer types.");
     static_assert(Smode == saturate::off || (!__details::__is_bool<To>::value && !__details::__is_bool<From>::value), "convert_cast with saturate option cannot be used in conversions to/from bool.");
 
-    return __details::__convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, __details::__default_rmode<To, From>::value, Smode>(arg);
+    return __details::__choose_convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, __details::__default_rmode<To, From>::value, Smode>::__make_call(arg);
 }
 
 template <typename To, rounding_mode Rmode, saturate Smode, typename From>
@@ -298,7 +301,7 @@ __ALWAYS_INLINE To convert_cast(From const& arg)
     static_assert(Smode == saturate::off || is_integral<To>::value, "convert_cast with saturate option can be used only in conversions to integer types.");
     static_assert(Smode == saturate::off || (!__details::__is_bool<To>::value && !__details::__is_bool<From>::value), "convert_cast with saturate option cannot be used in conversions to/from bool.");
 
-    return __details::__convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, Rmode, Smode>(arg);
+    return __details::__choose_convert_cast<remove_attrs_t<To>, remove_attrs_t<From>, Rmode, Smode>::__make_call(arg);
 }
 
 #undef _CHECK_VECTOR_SIZE
