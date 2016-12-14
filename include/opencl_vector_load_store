@@ -110,7 +110,7 @@ template <size_t N, class T>
 __ALWAYS_INLINE enable_if_t<!is_same<make_vector_t<T, N>, T>::value, make_vector_t<T, N>>
 vload(size_t offset, const T* ptr)
 {
-    return __spirv::__make_vloadn_call<make_vector_t<T,N>>(offset, ptr, N);
+    return __spirv::__make_vloadn_call<make_vector_t<remove_as_t<T>,N>>(offset, ptr, N);
 }
 
 template <size_t N, class T>
