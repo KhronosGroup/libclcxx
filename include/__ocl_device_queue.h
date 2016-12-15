@@ -26,6 +26,7 @@
 #include <__ocl_config.h>
 #include <__ocl_enqueue_verify.h>
 #include <__ocl_enqueue_helpers.h>
+#include <__ocl_marker_type.h>
 #include <__ocl_spirv_enqueue_opcodes.h>
 #include <opencl_tuple>
 
@@ -85,7 +86,7 @@ struct ndrange
             dimension{ N },
             global_work_offset{ 0, 0, 0 },
             global_work_size{ global_work_size[0], global_work_size[1], N == 3 ? global_work_size[2] : 0 },
-            local_work_size{ local_work_size[0], local_work_size[1], N == 3 ? global_work_size[2] : 0 }
+            local_work_size{ local_work_size[0], local_work_size[1], N == 3 ? local_work_size[2] : 0 }
     { static_assert( N == 2 || N == 3, "Invalid dimension" ); }
 
     /// \brief Creates representation of N-dimensional ndrange, with given global size, local size and global offset
@@ -94,9 +95,9 @@ struct ndrange
     template <size_t N>
     ndrange( const size_t (&global_work_offset)[N], const size_t (&global_work_size)[N], const size_t (&local_work_size)[N] ) :
             dimension{ N },
-            global_work_offset{ global_work_offset[0], global_work_offset[1], N == 3 ? global_work_size[2] : 0 },
+            global_work_offset{ global_work_offset[0], global_work_offset[1], N == 3 ? global_work_offset[2] : 0 },
             global_work_size{ global_work_size[0], global_work_size[1], N == 3 ? global_work_size[2] : 0 },
-            local_work_size{ local_work_size[0], local_work_size[1], N == 3 ? global_work_size[2] : 0 }
+            local_work_size{ local_work_size[0], local_work_size[1], N == 3 ? local_work_size[2] : 0 }
     { static_assert( N == 2 || N == 3, "Invalid dimension" ); }
 
 private:
@@ -152,7 +153,7 @@ private:
 
 /// \brief Class representing device enqueue queue
 ///
-struct device_queue
+struct device_queue: marker_type
 {
     /// \brief deleted default constructor, as defined in OpenCL C++ spec
     ///
@@ -208,7 +209,7 @@ struct device_queue
 
     /// \brief device enqueue function which enqueues given callable object 'fun' with set of arguments 'args...'
     ///
-    /// If 'fun' expects local_ptr<T> argument, it should be given in 'args...' as local_ptr<T>::size (size_t value). During enqueueing memory necessary for holding up to
+    /// If 'fun' expects local_ptr<T> argument, it should be given in 'args...' as local_ptr<T>::size_type (size_t value). During enqueueing memory necessary for holding up to
     /// given number of objects of type T will be allocated in local memory and passed as valid pointer to enqueued function. Passing local_ptr<T> value directly is
     /// forbidden.
     ///

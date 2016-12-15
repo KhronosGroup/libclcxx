@@ -141,6 +141,30 @@ namespace __details
             __ALWAYS_INLINE pixel &operator=( T color ) __NOEXCEPT{ static_cast<image_type&>( image_reference ).write( coord, color ); return *this; }
         };
 
+        /// \brief Default constructor of image class must be deleted per OpenCL C++ spec.
+        ///
+        __image_base() = delete;
+
+        /// \brief Copy constructor of image class must be defaulted per OpenCL C++ spec.
+        ///
+        __image_base(const __image_base&) = default;
+
+        /// \brief Move constructor of image class must be defaulted per OpenCL C++ spec.
+        ///
+        __image_base(__image_base&&) = default;
+
+        /// \brief Copy assignment operator of image class must be deleted per OpenCL C++ spec.
+        ///
+        __image_base& operator=(const __image_base&) = delete;
+
+        /// \brief Move assignment operator of image class must be deleted per OpenCL C++ spec.
+        ///
+        __image_base& operator=(__image_base&&) = delete;
+
+        /// \brief Address-of operator of image class must be deleted per OpenCL C++ spec.
+        ///
+        __image_base* operator&() = delete;
+
         __ALWAYS_INLINE pixel operator[]( integer_coord coord ) __NOEXCEPT{ return pixel( *this, coord ); }
         __ALWAYS_INLINE pixel operator[]( integer_coord coord ) const __NOEXCEPT{ return pixel( *this, coord ); }
 

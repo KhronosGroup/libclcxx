@@ -92,6 +92,7 @@ public:
 
     sampler& operator=(const sampler&) = delete;
     sampler& operator=(sampler&&) = delete;
+    sampler* operator&() = delete;
 
 private:
     template<addressing_mode A, normalized_coordinates C, filtering_mode F>
