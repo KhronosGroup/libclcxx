@@ -49,17 +49,28 @@ struct __choose_as_type<To, From, 3, 4>
 
     __ALWAYS_INLINE static To __make_call(From const& arg)
     {
-        return __spirv::__make_OpBitcast_call<_new_to>(arg).xyz;
+        return __choose_as_type<_new_to, From, 4, 4>::__make_call(arg).xyz;
     }
 };
 
 template <typename To, typename From>
 struct __choose_as_type<To, From, 4, 3>
 {
+    using _new_from = make_vector_t<vector_element_t<From>, 4>;
+
     __ALWAYS_INLINE static To __make_call(From const& arg)
     {
-        make_vector_t<vector_element_t<From>, 4> tmp(arg, 0);
-        return __spirv::__make_OpBitcast_call<To>(tmp);
+        _new_from tmp(arg, 0);
+        return __choose_as_type<To, _new_from, 4, 4>::__make_call(tmp);
+    }
+};
+
+template <typename To, size_t ToSize, size_t FromSize>
+struct __choose_as_type<To, To, ToSize, FromSize>
+{
+    __ALWAYS_INLINE static To __make_call(To const& arg)
+    {
+        return arg;
     }
 };
 
@@ -72,12 +83,6 @@ __ALWAYS_INLINE To __as_type(From const& arg)
     static_assert(sizeof(To) == sizeof(From), "It is an error to use the as_type<T> operator to reinterpret data to a type of a different number of bytes.");
 
     return __details::__choose_as_type<remove_attrs_t<To>, remove_attrs_t<From>, vector_size<To>::value, vector_size<From>::value>::__make_call(arg);
-}
-
-template <typename To, typename From>
-__ALWAYS_INLINE To __as_type(To const& t)
-{
-    return t;
 }
 
 }

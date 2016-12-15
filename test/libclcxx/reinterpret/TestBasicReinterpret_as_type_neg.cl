@@ -45,4 +45,6 @@ kernel void worker()
     tmp = as_type<int8>(Test{ 0 });
     //expected-error@__ocl_reinterpret.h:* {{static_assert failed "as_type operator may be used only for reinterpreting data from/to builtin scalar or vector types (except void and bool)."}}
     //expected-note@45 {{in instantiation of function template specialization 'cl::as_type}}
+
+    //expected-note@__ocl_reinterpret.h:* 0+ {{in instantiation}}
 }
