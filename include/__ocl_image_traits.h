@@ -204,7 +204,7 @@ struct __image_write_trait
 
     /// \brief Implementation of write method
     ///
-    /// @param coord coordinates from where value will be read
+    /// @param coord coordinates where value will be written
     /// @param color value to which pixel pointed by coords will be set
     __ALWAYS_INLINE void write( _Coord coord, _ElemType color ) __NOEXCEPT
     {
@@ -214,7 +214,7 @@ struct __image_write_trait
 #if cl_khr_mipmap_image_writes
     /// \brief Implementation of write method with lod
     ///
-    /// @param coord coordinates from where value will be read
+    /// @param coord coordinates where value will be written
     /// @param color value to which pixel pointed by coords will be set
 	/// @param lod level of detail for images having mipmaps
     __ALWAYS_INLINE void write( _Coord coord, _ElemType color, int lod ) __NOEXCEPT
@@ -388,7 +388,7 @@ struct __image_common_traits
 #endif
 };
 
-/// \brief Image trait implementing array_size interface via static polymorphism
+/// \brief Image trait implementing size interface via static polymorphism
 ///
 template <typename _ElemType, typename _ImageType>
 struct __image_size_trait

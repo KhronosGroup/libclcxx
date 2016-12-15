@@ -72,7 +72,7 @@ __spirv::OpConstantPipeStorage OpConstantPipeStorage_Creator<S, A, C>::value(S, 
 /// \brief Class representing pipe storages / program scope pipes
 ///
 template<class T, size_t N>
-class pipe_storage
+class pipe_storage: marker_type
 {
 public:
     static_assert(is_pod<T>::value, "Template parameter T in pipe_storage does not satisfy POD type requirements.");
@@ -98,9 +98,9 @@ public:
 
     /// \brief Move assignment operator of pipe storage class must be deleted per OpenCL C++ spec.
     ///
-    pipe_storage& operator=(pipe_storage&) = delete;
+    pipe_storage& operator=(pipe_storage&&) = delete;
 
-    /// \brief Address-of assignment operator of pipe storage class must be deleted per OpenCL C++ spec.
+    /// \brief Address-of operator of pipe storage class must be deleted per OpenCL C++ spec.
     ///
     pipe_storage* operator&() = delete;
 
@@ -226,7 +226,7 @@ public:
 
     /// \brief Move assignment operator of pipe class must be deleted per OpenCL C++ spec.
     ///
-    pipe& operator=(pipe&) = delete;
+    pipe& operator=(pipe&&) = delete;
 
     /// \brief Address-of operator of pipe class must be deleted per OpenCL C++ spec.
     ///
@@ -398,9 +398,9 @@ public:
 
     /// \brief Move assignment operator of pipe class must be deleted per OpenCL C++ spec.
     ///
-    pipe& operator=(pipe&) = delete;
+    pipe& operator=(pipe&&) = delete;
 
-    /// \brief Address-of assignment operator of pipe class must be deleted per OpenCL C++ spec.
+    /// \brief Address-of operator of pipe class must be deleted per OpenCL C++ spec.
     ///
     pipe* operator&() = delete;
 
