@@ -21,6 +21,7 @@ set(files
   opencl_range
   opencl_reinterpret
   opencl_relational
+  opencl_spec_constant
   opencl_synchronization
   opencl_tuple
   opencl_type_traits
