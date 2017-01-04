@@ -37,15 +37,15 @@ struct OpSpecConstant
     OpSpecConstant() = delete;
     OpSpecConstant(const OpSpecConstant &) = default;
     OpSpecConstant(OpSpecConstant&&) = default;
- 
+
     OpSpecConstant& operator=(const OpSpecConstant&) = delete;
     OpSpecConstant& operator=(OpSpecConstant&&) = delete;
-	
+
     __ALWAYS_INLINE const __CONSTANT_QUALIFIER T& get() const __CONSTANT_QUALIFIER
     {
       return *(__CONSTANT_QUALIFIER T *)this;
     }
-    
+
     T _m;
 };
 
@@ -53,5 +53,11 @@ struct OpSpecConstant
 
 template<class T, unsigned int I>
 using spec_constant = __CONSTANT_QUALIFIER __spirv::OpSpecConstant<T, I>;
+
+template<class T, unsigned int ID>
+const __CONSTANT_QUALIFIER T& get(const spec_constant<T, ID> &r) noexcept
+{
+    return r.get();
+}
 
 } //end namespace cl
