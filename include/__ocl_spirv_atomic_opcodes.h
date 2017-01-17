@@ -50,11 +50,11 @@ extern auto OpAtomicExchange(int* Pointer, memory_scope Scope, memory_order Sema
 extern auto OpAtomicExchange(unsigned int* Pointer, memory_scope Scope, memory_order Semantics, unsigned int Value) -> unsigned int;
 extern auto OpAtomicExchange(float* Pointer, memory_scope Scope, memory_order Semantics, float Value) -> float;
 
-extern auto OpAtomicCompareExchange(int* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, int Value , int Comparator) -> int;
-extern auto OpAtomicCompareExchange(unsigned int* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, unsigned int Value , unsigned int Comparator) -> unsigned int;
+extern auto OpAtomicCompareExchange(int* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, int Value, int Comparator) -> int;
+extern auto OpAtomicCompareExchange(unsigned int* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, unsigned int Value, unsigned int Comparator) -> unsigned int;
 
-extern auto OpAtomicCompareExchangeWeak(int* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, int Value , int Comparator) -> int;
-extern auto OpAtomicCompareExchangeWeak(unsigned int* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, unsigned int Value , unsigned int Comparator) -> unsigned int;
+extern auto OpAtomicCompareExchangeWeak(int* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, int Value, int Comparator) -> int;
+extern auto OpAtomicCompareExchangeWeak(unsigned int* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, unsigned int Value, unsigned int Comparator) -> unsigned int;
 
 extern auto OpAtomicIAdd(int* Pointer, memory_scope Scope, memory_order Semantics, int Value) -> int;
 extern auto OpAtomicIAdd(unsigned int* Pointer, memory_scope Scope, memory_order Semantics, unsigned int Value) -> unsigned int;
@@ -78,10 +78,10 @@ extern auto OpAtomicXor(int* Pointer, memory_scope Scope, memory_order Semantics
 extern auto OpAtomicXor(unsigned int* Pointer, memory_scope Scope, memory_order Semantics, unsigned int Value) -> unsigned int;
 
 #if (__INTPTR_WIDTH__ == 32) || (defined(cl_khr_int64_base_atomics) && defined(cl_khr_int64_extended_atomics))
-extern auto OpAtomicLoad(intptr_t* Pointer, memory_scope Scope, memory_order Semantics ) -> intptr_t;
-extern auto OpAtomicLoad(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics ) -> uintptr_t;
-extern auto OpAtomicLoad(size_t* Pointer, memory_scope Scope, memory_order Semantics ) -> size_t;
-extern auto OpAtomicLoad(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics ) -> ptrdiff_t;
+extern auto OpAtomicLoad(intptr_t* Pointer, memory_scope Scope, memory_order Semantics) -> intptr_t;
+extern auto OpAtomicLoad(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics) -> uintptr_t;
+extern auto OpAtomicLoad(size_t* Pointer, memory_scope Scope, memory_order Semantics) -> size_t;
+extern auto OpAtomicLoad(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics) -> ptrdiff_t;
 
 extern auto OpAtomicStore(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> void;
 extern auto OpAtomicStore(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> void;
@@ -93,15 +93,15 @@ extern auto OpAtomicExchange(uintptr_t* Pointer, memory_scope Scope, memory_orde
 extern auto OpAtomicExchange(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
 extern auto OpAtomicExchange(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
 
-extern auto OpAtomicCompareExchange(intptr_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, intptr_t Value , intptr_t Comparator) -> intptr_t;
-extern auto OpAtomicCompareExchange(uintptr_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, uintptr_t Value , uintptr_t Comparator) -> uintptr_t;
-extern auto OpAtomicCompareExchange(size_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, size_t Value , size_t Comparator) -> size_t;
-extern auto OpAtomicCompareExchange(ptrdiff_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, ptrdiff_t Value , ptrdiff_t Comparator) -> ptrdiff_t;
+extern auto OpAtomicCompareExchange(intptr_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, intptr_t Value, intptr_t Comparator) -> intptr_t;
+extern auto OpAtomicCompareExchange(uintptr_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, uintptr_t Value, uintptr_t Comparator) -> uintptr_t;
+extern auto OpAtomicCompareExchange(size_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, size_t Value, size_t Comparator) -> size_t;
+extern auto OpAtomicCompareExchange(ptrdiff_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, ptrdiff_t Value, ptrdiff_t Comparator) -> ptrdiff_t;
 
-extern auto OpAtomicCompareExchangeWeak(intptr_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, intptr_t Value , intptr_t Comparator) -> intptr_t;
-extern auto OpAtomicCompareExchangeWeak(uintptr_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, uintptr_t Value , uintptr_t Comparator) -> uintptr_t;
-extern auto OpAtomicCompareExchangeWeak(size_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, size_t Value , size_t Comparator) -> size_t;
-extern auto OpAtomicCompareExchangeWeak(ptrdiff_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, ptrdiff_t Value , ptrdiff_t Comparator) -> ptrdiff_t;
+extern auto OpAtomicCompareExchangeWeak(intptr_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, intptr_t Value, intptr_t Comparator) -> intptr_t;
+extern auto OpAtomicCompareExchangeWeak(uintptr_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, uintptr_t Value, uintptr_t Comparator) -> uintptr_t;
+extern auto OpAtomicCompareExchangeWeak(size_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, size_t Value, size_t Comparator) -> size_t;
+extern auto OpAtomicCompareExchangeWeak(ptrdiff_t* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, ptrdiff_t Value, ptrdiff_t Comparator) -> ptrdiff_t;
 
 extern auto OpAtomicIAdd(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
 extern auto OpAtomicIAdd(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
@@ -116,22 +116,12 @@ extern auto OpAtomicISub(ptrdiff_t* Pointer, memory_scope Scope, memory_order Se
 extern auto OpAtomicSMin(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
 extern auto OpAtomicUMin(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
 extern auto OpAtomicUMin(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
-extern auto OpAtomicUMin(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
+extern auto OpAtomicSMin(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
 
 extern auto OpAtomicSMax(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
 extern auto OpAtomicUMax(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
 extern auto OpAtomicUMax(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
-extern auto OpAtomicUMax(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
-
-extern auto OpAtomicAnd(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
-extern auto OpAtomicAnd(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
-extern auto OpAtomicAnd(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
-extern auto OpAtomicAnd(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
-
-extern auto OpAtomicAnd(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
-extern auto OpAtomicAnd(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
-extern auto OpAtomicAnd(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
-extern auto OpAtomicAnd(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
+extern auto OpAtomicSMax(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
 
 extern auto OpAtomicAnd(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
 extern auto OpAtomicAnd(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
@@ -147,21 +137,11 @@ extern auto OpAtomicXor(intptr_t* Pointer, memory_scope Scope, memory_order Sema
 extern auto OpAtomicXor(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
 extern auto OpAtomicXor(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
 extern auto OpAtomicXor(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
-
-extern auto OpAtomicIMin(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
-extern auto OpAtomicIMin(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
-extern auto OpAtomicIMin(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
-extern auto OpAtomicIMin(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
-
-extern auto OpAtomicIMax(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
-extern auto OpAtomicIMax(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
-extern auto OpAtomicIMax(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
-extern auto OpAtomicIMax(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
 #endif
 
 #if defined(cl_khr_int64_base_atomics) && defined(cl_khr_int64_extended_atomics)
-extern auto OpAtomicLoad(long* Pointer, memory_scope Scope, memory_order Semantics ) -> long;
-extern auto OpAtomicLoad(unsigned long* Pointer, memory_scope Scope, memory_order Semantics ) -> unsigned long;
+extern auto OpAtomicLoad(long* Pointer, memory_scope Scope, memory_order Semantics) -> long;
+extern auto OpAtomicLoad(unsigned long* Pointer, memory_scope Scope, memory_order Semantics) -> unsigned long;
 
 extern auto OpAtomicStore(long* Pointer, memory_scope Scope, memory_order Semantics, long Value) -> void;
 extern auto OpAtomicStore(unsigned long* Pointer, memory_scope Scope, memory_order Semantics, unsigned long Value) -> void;
@@ -169,11 +149,11 @@ extern auto OpAtomicStore(unsigned long* Pointer, memory_scope Scope, memory_ord
 extern auto OpAtomicExchange(long* Pointer, memory_scope Scope, memory_order Semantics, long Value) -> long;
 extern auto OpAtomicExchange(unsigned long* Pointer, memory_scope Scope, memory_order Semantics, unsigned long Value) -> unsigned long;
 
-extern auto OpAtomicCompareExchange(long* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, long Value , long Comparator) -> long;
-extern auto OpAtomicCompareExchange(unsigned long* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, unsigned long Value , unsigned long Comparator) -> unsigned long;
+extern auto OpAtomicCompareExchange(long* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, long Value, long Comparator) -> long;
+extern auto OpAtomicCompareExchange(unsigned long* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, unsigned long Value, unsigned long Comparator) -> unsigned long;
 
-extern auto OpAtomicCompareExchangeWeak(long* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, long Value , long Comparator) -> long;
-extern auto OpAtomicCompareExchangeWeak(unsigned long* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, unsigned long Value , unsigned long Comparator) -> unsigned long;
+extern auto OpAtomicCompareExchangeWeak(long* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, long Value, long Comparator) -> long;
+extern auto OpAtomicCompareExchangeWeak(unsigned long* Pointer, memory_scope Scope, memory_order Equal, memory_order Unequal, unsigned long Value, unsigned long Comparator) -> unsigned long;
 
 extern auto OpAtomicIAdd(long* Pointer, memory_scope Scope, memory_order Semantics, long Value) -> long;
 extern auto OpAtomicIAdd(unsigned long* Pointer, memory_scope Scope, memory_order Semantics, unsigned long Value) -> unsigned long;
@@ -197,7 +177,7 @@ extern auto OpAtomicXor(long* Pointer, memory_scope Scope, memory_order Semantic
 extern auto OpAtomicXor(unsigned long* Pointer, memory_scope Scope, memory_order Semantics, unsigned long Value) -> unsigned long;
 
 #if defined(cl_khr_fp64)
-extern auto OpAtomicLoad(double* Pointer, memory_scope Scope, memory_order Semantics ) -> double;
+extern auto OpAtomicLoad(double* Pointer, memory_scope Scope, memory_order Semantics) -> double;
 extern auto OpAtomicStore(double* Pointer, memory_scope Scope, memory_order Semantics, double Value) -> void;
 extern auto OpAtomicExchange(double* Pointer, memory_scope Scope, memory_order Semantics, double Value) -> double;
 #endif

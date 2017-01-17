@@ -33,24 +33,34 @@ namespace __details
 /// \brief Trait checking if type is valid atomic type
 ///
 template <typename T>
-struct __is_valid_atomic_type : integral_constant<bool, __is_one_of<T, int, uint,
+struct __is_valid_atomic_type : integral_constant<bool, __is_one_of<T
+    , int, uint
 #if defined(cl_khr_int64_base_atomics) && defined(cl_khr_int64_extended_atomics)
-    long, ulong,
-#if defined(cl_khr_fp64)
-    double,
+    , long, ulong
 #endif
+    , float
+#if defined(cl_khr_fp64) && defined(cl_khr_int64_base_atomics) && defined(cl_khr_int64_extended_atomics)
+    , double
 #endif
-    float, intptr_t, uintptr_t, size_t, ptrdiff_t>::value> { };
+#if (defined(cl_khr_int64_base_atomics) && defined(cl_khr_int64_extended_atomics) && __INTPTR_WIDTH__ == 64) || __INTPTR_WIDTH__ == 32
+    , intptr_t, uintptr_t
+#endif
+#if (defined(cl_khr_int64_base_atomics) && defined(cl_khr_int64_extended_atomics) && __SIZE_WIDTH__ == 64) || __SIZE_WIDTH__ == 32
+    , size_t
+#endif
+#if (defined(cl_khr_int64_base_atomics) && defined(cl_khr_int64_extended_atomics) && __PTRDIFF_WIDTH__ == 64) || __PTRDIFF_WIDTH__ == 32
+    , ptrdiff_t
+#endif
+>::value> { };
 
 /// \brief Trait checking if type is valid atomic type
 ///
-/// Always true for pointer types
 template <typename T>
 struct __is_valid_atomic_type<T*> : integral_constant<bool,
 #if (__INTPTR_WIDTH__ == 32) || (defined(cl_khr_int64_base_atomics) && defined(cl_khr_int64_extended_atomics))
-true
+    true
 #else
-false
+    false
 #endif
 > { };
 
@@ -61,9 +71,8 @@ struct __is_atomic_integer_type : integral_constant<bool, is_integral<T>::value 
 
 /// \brief Trait checking if type is valid atomic integral type
 ///
-/// Always true for pointer types
 template <typename T>
-struct __is_atomic_integer_type<T*> : true_type { };
+struct __is_atomic_integer_type<T*> : __is_valid_atomic_type<T*> { };
 
 /// \brief Trait generating pair of types used for matching between OCL C++ and SPIRV types
 ///

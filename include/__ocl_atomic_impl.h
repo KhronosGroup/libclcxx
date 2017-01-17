@@ -54,17 +54,17 @@ struct __atomic_base
 
     /// \brief Compare exchange strong overloads
     ///
-    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
 
     /// \brief Compare exchange weak overloads
     ///
-    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
 
     /// \brief Exchange overloads
     ///
@@ -121,17 +121,26 @@ public:
     ATOMIC_ARITHMETIC_OPERATION(+, add, __spirv::OpAtomicIAdd);
     ATOMIC_ARITHMETIC_OPERATION(-, sub, __spirv::OpAtomicISub);
     ATOMIC_ARITHMETIC_OPERATION(&, and, __spirv::OpAtomicAnd);
-    ATOMIC_ARITHMETIC_OPERATION(| , or, __spirv::OpAtomicOr);
+    ATOMIC_ARITHMETIC_OPERATION(|,  or, __spirv::OpAtomicOr);
     ATOMIC_ARITHMETIC_OPERATION(^, xor, __spirv::OpAtomicXor);
 
     template<class U = T>
-    __ALWAYS_INLINE enable_if_t<is_unsigned<U>::value, U>  fetch_min(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(__spirv::OpAtomicUMin((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    __ALWAYS_INLINE enable_if_t<is_unsigned<U>::value, U> fetch_min(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(__spirv::OpAtomicUMin((_SPIRV_T*)&this->_value, scope, order, value)); }
     template<class U = T>
-    __ALWAYS_INLINE enable_if_t<!is_unsigned<U>::value, U> fetch_min(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(__spirv::OpAtomicSMin((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    __ALWAYS_INLINE enable_if_t<is_unsigned<U>::value, U> fetch_min(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(__spirv::OpAtomicUMin((_SPIRV_T*)&this->_value, scope, order, value)); }
     template<class U = T>
-    __ALWAYS_INLINE enable_if_t<is_unsigned<U>::value, U> fetch_max(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(__spirv::OpAtomicUMax((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    __ALWAYS_INLINE enable_if_t<!is_unsigned<U>::value, U> fetch_min(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(__spirv::OpAtomicSMin((_SPIRV_T*)&this->_value, scope, order, value)); }
     template<class U = T>
-    __ALWAYS_INLINE enable_if_t<!is_unsigned<U>::value, U> fetch_max(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(__spirv::OpAtomicSMax((_SPIRV_T*)&this->_value, scope, order, value)); } \
+    __ALWAYS_INLINE enable_if_t<!is_unsigned<U>::value, U> fetch_min(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(__spirv::OpAtomicSMin((_SPIRV_T*)&this->_value, scope, order, value)); }
+
+    template<class U = T>
+    __ALWAYS_INLINE enable_if_t<is_unsigned<U>::value, U> fetch_max(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(__spirv::OpAtomicUMax((_SPIRV_T*)&this->_value, scope, order, value)); }
+    template<class U = T>
+    __ALWAYS_INLINE enable_if_t<is_unsigned<U>::value, U> fetch_max(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(__spirv::OpAtomicUMax((_SPIRV_T*)&this->_value, scope, order, value)); }
+    template<class U = T>
+    __ALWAYS_INLINE enable_if_t<!is_unsigned<U>::value, U> fetch_max(result_type value, _MEM_ORD) __NOEXCEPT { return this->asT(__spirv::OpAtomicSMax((_SPIRV_T*)&this->_value, scope, order, value)); }
+    template<class U = T>
+    __ALWAYS_INLINE enable_if_t<!is_unsigned<U>::value, U> fetch_max(result_type value, _MEM_ORD) volatile __NOEXCEPT { return this->asT(__spirv::OpAtomicSMax((_SPIRV_T*)&this->_value, scope, order, value)); }
 
     /// \brief operator++ overloads
     ///
