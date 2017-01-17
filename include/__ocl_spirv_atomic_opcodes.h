@@ -116,12 +116,12 @@ extern auto OpAtomicISub(ptrdiff_t* Pointer, memory_scope Scope, memory_order Se
 extern auto OpAtomicSMin(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
 extern auto OpAtomicUMin(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
 extern auto OpAtomicUMin(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
-extern auto OpAtomicUMin(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
+extern auto OpAtomicSMin(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
 
 extern auto OpAtomicSMax(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
 extern auto OpAtomicUMax(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
 extern auto OpAtomicUMax(size_t* Pointer, memory_scope Scope, memory_order Semantics, size_t Value) -> size_t;
-extern auto OpAtomicUMax(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
+extern auto OpAtomicSMax(ptrdiff_t* Pointer, memory_scope Scope, memory_order Semantics, ptrdiff_t Value) -> ptrdiff_t;
 
 extern auto OpAtomicAnd(intptr_t* Pointer, memory_scope Scope, memory_order Semantics, intptr_t Value) -> intptr_t;
 extern auto OpAtomicAnd(uintptr_t* Pointer, memory_scope Scope, memory_order Semantics, uintptr_t Value) -> uintptr_t;
