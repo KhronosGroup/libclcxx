@@ -54,17 +54,17 @@ struct __atomic_base
 
     /// \brief Compare exchange strong overloads
     ///
-    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_strong(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchange((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
 
     /// \brief Compare exchange weak overloads
     ///
-    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
-    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = (T)org; return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, order, order, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
+    __ALWAYS_INLINE bool compare_exchange_weak(T & expected, T value, _MEM_ORD2) volatile __NOEXCEPT { _SPIRV_T org = __spirv::OpAtomicCompareExchangeWeak((_SPIRV_T*)&_value, scope, success, failure, asSPIRV(value), asSPIRV(expected)); bool r = org == asSPIRV(expected); if(!r) expected = asT(org); return r; }
 
     /// \brief Exchange overloads
     ///
