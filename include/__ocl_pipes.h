@@ -177,7 +177,7 @@ public:
         ///
         __ALWAYS_INLINE bool read(uint index, T& ref) const __NOEXCEPT
         {
-            return __spirv::__make_OpReservedReadPipe_call<int>(_pipe, _reserve_id, index, (void *)&ref, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
+            return __spirv::__make_OpReservedReadPipe_call<int>(_pipe, _reserve_id, index, (void *)&ref, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) == 0;
         }
 
         /// \brief Commits read associated with reservation
@@ -234,9 +234,9 @@ public:
 
     /// \brief Performs read on a pipe, returns true on success and false on failure
     ///
-    __ALWAYS_INLINE bool read(T & ret) const __NOEXCEPT
+    __ALWAYS_INLINE bool read(T & ref) const __NOEXCEPT
     {
-        return __spirv::__make_OpReadPipe_call<int>(_handle, (void *)&ret, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
+        return __spirv::__make_OpReadPipe_call<int>(_handle, (void *)&ref, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) == 0;
     }
 
     /// \brief Reserves read on a pipe, returns valid reservation object if operation succeeded
@@ -349,7 +349,7 @@ public:
         ///
         __ALWAYS_INLINE bool write(uint index, const T& ref) __NOEXCEPT
         {
-            return __spirv::__make_OpReservedWritePipe_call<int>(_pipe, _reserve_id, index, (void *)&ref, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
+            return __spirv::__make_OpReservedWritePipe_call<int>(_pipe, _reserve_id, index, (void *)&ref, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) == 0;
         }
 
         /// \brief Commits write associated with reservation object
@@ -406,9 +406,9 @@ public:
 
     /// \brief Performs write on a pipe, returns true on success and false on failure
     ///
-    __ALWAYS_INLINE bool write(const T & ret) const __NOEXCEPT
+    __ALWAYS_INLINE bool write(const T & ref) const __NOEXCEPT
     {
-        return __spirv::__make_OpWritePipe_call<int>(_handle, (void *)&ret, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T)));
+        return __spirv::__make_OpWritePipe_call<int>(_handle, (void *)&ref, static_cast<unsigned int>(sizeof(T)), static_cast<unsigned int>(alignof(T))) == 0;
     }
 
     /// \brief Reserves write on a pipe, returns valid reservation object if operation succeeded
