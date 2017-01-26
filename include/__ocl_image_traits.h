@@ -69,8 +69,8 @@ public:
     /// @param s sampler that will be used for sampling
     /// @param coord integral coordinates from where value will be sampled
     /// @return result of sampling
-    template<class CoordType, class Img = _ImageType>
-    __ALWAYS_INLINE auto sample( const sampler& s, CoordType coord ) const __NOEXCEPT -> enable_if_t<is_integral<CoordType>::value && !__make_image_base_t<Img>::is_depth, _ElemType>
+    template<class Img = _ImageType>
+    __ALWAYS_INLINE auto sample( const sampler& s, _integer_coord coord ) const __NOEXCEPT -> enable_if_t<!__make_image_base_t<Img>::is_depth, _ElemType>
     {
         auto SampledImage = __spirv::__make_OpSampledImage_call<__global typename _ImageType::sampled_image_type *>( static_cast<const _ImageType*>( this )->_handle, s._handle );
         return __spirv::__make_OpImageSampleExplicitLod_call<_ret_type>( SampledImage, coord, static_cast<underlying_type_t<__spirv::ImageOperands>>(__spirv::ImageOperands::Lod), 0.0f );
@@ -81,8 +81,8 @@ public:
     /// @param s sampler that will be used for sampling
     /// @param coord integral coordinates from where value will be sampled
     /// @return result of sampling
-    template<class CoordType, class Img = _ImageType>
-    __ALWAYS_INLINE auto sample( const sampler& s, CoordType coord ) const __NOEXCEPT -> enable_if_t<is_integral<CoordType>::value && __make_image_base_t<Img>::is_depth, _ElemType>
+    template<class Img = _ImageType>
+    __ALWAYS_INLINE auto sample( const sampler& s, _integer_coord coord ) const __NOEXCEPT -> enable_if_t<__make_image_base_t<Img>::is_depth, _ElemType>
     {
         auto SampledImage = __spirv::__make_OpSampledImage_call<__global typename _ImageType::sampled_image_type *>( static_cast<const _ImageType*>( this )->_handle, s._handle );
         return get<0>( __spirv::__make_OpImageSampleExplicitLod_call<_ret_type>( SampledImage, coord, static_cast<underlying_type_t<__spirv::ImageOperands>>(__spirv::ImageOperands::Lod), 0.0f ) );
@@ -93,8 +93,8 @@ public:
     /// @param s sampler that will be used for sampling
     /// @param coord floating point coordinates from where value will be sampled
     /// @return result of sampling
-    template<class CoordType, class Img = _ImageType>
-    __ALWAYS_INLINE auto sample( const sampler& s, CoordType coord ) const __NOEXCEPT -> enable_if_t<is_floating_point<CoordType>::value && !__make_image_base_t<Img>::is_depth, _ElemType>
+    template<class Img = _ImageType>
+    __ALWAYS_INLINE auto sample( const sampler& s, _float_coord coord ) const __NOEXCEPT -> enable_if_t<!__make_image_base_t<Img>::is_depth, _ElemType>
     {
         auto SampledImage = __spirv::__make_OpSampledImage_call<__global typename _ImageType::sampled_image_type *>( static_cast<const _ImageType*>( this )->_handle, s._handle );
         return __spirv::__make_OpImageSampleExplicitLod_call<_ret_type>( SampledImage, coord, static_cast<underlying_type_t<__spirv::ImageOperands>>(__spirv::ImageOperands::Lod), 0.0f);
@@ -105,8 +105,8 @@ public:
     /// @param s sampler that will be used for sampling
     /// @param coord floating point coordinates from where value will be sampled
     /// @return result of sampling
-    template<class CoordType, class Img = _ImageType>
-    __ALWAYS_INLINE auto sample( const sampler& s, CoordType coord ) const __NOEXCEPT -> enable_if_t<is_floating_point<CoordType>::value && __make_image_base_t<Img>::is_depth, _ElemType>
+    template<class Img = _ImageType>
+    __ALWAYS_INLINE auto sample( const sampler& s, _float_coord coord ) const __NOEXCEPT -> enable_if_t<__make_image_base_t<Img>::is_depth, _ElemType>
     {
         auto SampledImage = __spirv::__make_OpSampledImage_call<__global typename _ImageType::sampled_image_type *>( static_cast<const _ImageType*>( this )->_handle, s._handle );
         return get<0>( __spirv::__make_OpImageSampleExplicitLod_call<_ret_type>( SampledImage, coord, static_cast<underlying_type_t<__spirv::ImageOperands>>(__spirv::ImageOperands::Lod), 0.0f) );
