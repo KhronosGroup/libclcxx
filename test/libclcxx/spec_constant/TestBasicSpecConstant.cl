@@ -4,7 +4,7 @@
 #include <opencl_spec_constant>
 using namespace cl;
 
-constexpr spec_constant<int, 1> test{ 10 };
+spec_constant<int, 1> test{ 10 };
 
 void foo(int);
 
