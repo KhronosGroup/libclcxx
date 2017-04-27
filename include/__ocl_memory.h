@@ -266,7 +266,7 @@ struct __choose_as_ptr_impl_type : public integral_constant<__as_ptr_type, ((is_
 template <class T>
 struct __local_ptr_size
 {
-    explicit constexpr __local_ptr_size(size_t size) : my_size(size) {}
+    explicit constexpr __local_ptr_size(size_t size) : my_size(sizeof(T) * size) {}
     constexpr operator size_t() { return my_size; }
 
     size_t my_size;
