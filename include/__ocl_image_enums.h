@@ -48,14 +48,14 @@ enum class image_channel_type
     unorm_short555      = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnormShort555),
     unorm_short101010   = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnormInt101010),
     unorm_short101010_2 = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnormInt101010_2),
-    sint8               = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::SignedInt8),
-    sint16              = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::SignedInt16),
-    sint32              = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::SignedInt32),
-    uint8               = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnsignedInt8),
-    uint16              = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnsignedInt16),
-    uint32              = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnsignedInt32),
-    float16             = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::HalfFloat),
-    float32             = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::Float)
+    signed_int8         = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::SignedInt8),
+    signed_int16        = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::SignedInt16),
+    signed_int32        = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::SignedInt32),
+    unsigned_int8       = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnsignedInt8),
+    unsigned_int16      = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnsignedInt16),
+    unsigned_int32      = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::UnsignedInt32),
+    fp16                = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::HalfFloat),
+    fp32                = static_cast<__details::channel_data_type>(__spirv::ImageChannelDataType::Float)
 };
 
 /// \brief Enumerable describing channel order of the image
