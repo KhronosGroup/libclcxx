@@ -162,7 +162,7 @@ class AtomicFunctionCall:
             
         out.write(");\n")
         
-        if (len(self.fopt_args) is not 0):
+        if (len(self.fopt_args) != 0):
             out.write("      ")
             out.write(self.atomic.get_var_name()+"."+self.fname+"(");
             i = 0
@@ -213,7 +213,7 @@ def make_footer(file):
     file.write("}\n")
 
 def open_file(atomic, test_type, suffix = ""):
-    filename = "TestBasicAtomic"+("_"+test_type if test_type is not "" else "")+("" if atomic == None else "_"+atomic.get_short_name())+suffix+".cl"
+    filename = "TestBasicAtomic"+("_"+test_type if test_type != "" else "")+("" if atomic == None else "_"+atomic.get_short_name())+suffix+".cl"
     if (filename not in files):
         try:
             files[filename] = open(filename, "w+")
