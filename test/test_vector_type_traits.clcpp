@@ -121,6 +121,8 @@ void __traits_test(){
 	
 	static_assert(std::is_same<typename std::remove_extent<T>::type, T>::value);
 	static_assert(std::is_same<typename std::remove_all_extents<T>::type, T>::value);
+
+	static_assert(is_vector_type<T>::value);
 }
 
 void __instantiate_traits_tests(){
@@ -241,4 +243,20 @@ void __instantiate_unsigned_tests(){
 	__unsigned_traits_test<ulong4>();
 	__unsigned_traits_test<ulong8>();
 	__unsigned_traits_test<ulong16>();
+}
+
+void __custom_traits_test(){
+	static_assert(!is_vector_type<int>::value);
+
+	static_assert(vector_size<uint4>::value == 4);
+	static_assert(vector_size<float16>::value == 16);
+	static_assert(vector_size<char>::value == 0);  //Size of non vectors is set to 0
+
+	static_assert(std::is_same<scalar_type<long4>::type, long>::value);
+	static_assert(std::is_same<scalar_type<ushort16>::type, ushort>::value);
+	static_assert(std::is_same<scalar_type<char>::type, char>::value);  //Non vector types should just return the same type
+
+	static_assert(std::is_same<vector_n<double, 3>::type, double3>::value);	
+	static_assert(std::is_same<vector_n<uchar, 8>::type, uchar8>::value);
+	static_assert(std::is_same<vector_n<float, 5>::type, void>::value);  //Invalid vector type should return void type
 }
