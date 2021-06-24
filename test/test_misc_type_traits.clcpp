@@ -1,0 +1,27 @@
+#include "opencl_type_traits.h"
+
+void __test_misc_type_traits(){
+	static_assert(is_image<image1d_t>::value);
+	static_assert(is_image<image2d_t>::value);
+	static_assert(is_image<image3d_t>::value);
+	static_assert(is_image<image1d_array_t>::value);
+	static_assert(is_image<image1d_buffer_t>::value);
+	static_assert(is_image<image2d_array_t>::value);
+	static_assert(is_image<image2d_depth_t>::value);
+	static_assert(is_image<image2d_array_depth_t>::value);
+	static_assert(!is_image<sampler_t>::value);
+	static_assert(!is_image<uint2>::value);
+
+
+	static_assert(image_dimension<image1d_t>::value == 1);
+	static_assert(image_dimension<image2d_t>::value == 2);
+	static_assert(image_dimension<image3d_t>::value == 3);
+	static_assert(image_dimension<image1d_array_t>::value == 1);
+	static_assert(image_dimension<image1d_buffer_t>::value == 1);
+	static_assert(image_dimension<image2d_array_t>::value == 2);
+	static_assert(image_dimension<image2d_depth_t>::value == 2);
+	static_assert(image_dimension<image2d_array_depth_t>::value == 2);
+	static_assert(image_dimension<int>::value == 0);
+	static_assert(image_dimension<ndrange_t>::value == 0);
+
+}

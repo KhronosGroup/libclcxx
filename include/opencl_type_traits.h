@@ -740,3 +740,46 @@ template<typename T>
 struct remove_address_space<__local T> {typedef T type;};
 template<typename T>
 struct remove_address_space<__constant T> {typedef T type;};
+
+
+template<typename T>
+struct is_image : public std::false_type {};
+
+template<>
+struct is_image<image1d_t> : public std::true_type {};
+template<>
+struct is_image<image2d_t> : public std::true_type {};
+template<>
+struct is_image<image3d_t> : public std::true_type {};
+template<>
+struct is_image<image1d_array_t> : public std::true_type {};
+template<>
+struct is_image<image1d_buffer_t> : public std::true_type {};
+template<>
+struct is_image<image2d_array_t> : public std::true_type {};
+template<>
+struct is_image<image2d_depth_t> : public std::true_type {};
+template<>
+struct is_image<image2d_array_depth_t> : public std::true_type {};
+
+
+template<typename T>
+struct image_dimension : public std::integral_constant<size_t, 0> {};
+
+template<>
+struct image_dimension<image1d_t> : public std::integral_constant<size_t, 1> {};
+template<>
+struct image_dimension<image2d_t> : public std::integral_constant<size_t, 2> {};
+template<>
+struct image_dimension<image3d_t> : public std::integral_constant<size_t, 3> {};
+template<>
+struct image_dimension<image1d_array_t> : public std::integral_constant<size_t, 1> {};
+template<>
+struct image_dimension<image1d_buffer_t> : public std::integral_constant<size_t, 1> {};
+template<>
+struct image_dimension<image2d_array_t> : public std::integral_constant<size_t, 2> {};
+template<>
+struct image_dimension<image2d_depth_t> : public std::integral_constant<size_t, 2> {};
+template<>
+struct image_dimension<image2d_array_depth_t> : public std::integral_constant<size_t, 2> {};
+
