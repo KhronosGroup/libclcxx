@@ -42,8 +42,8 @@ void __traits_test(){
 	
 	static_assert(std::is_aggregate<T>::value);
 	
-	static_assert(!std::is_signed<T>::value);
-	static_assert(!std::is_unsigned<T>::value);
+	static_assert(is_signed<typename make_signed<T>::type>::value);
+	//static_assert(is_unsigned<typename make_unsigned<T>::type>::value == std::is_integral<T>::value);
 	
 	static_assert(std::is_constructible<T>::value);
 	static_assert(std::is_trivially_constructible<T>::value);
@@ -183,4 +183,62 @@ void __instantiate_traits_tests(){
 	__traits_test<double4, double, double3>();	
 	__traits_test<double8, double, double3>();	
 	__traits_test<double16, double, double3>();	
+}
+
+
+template<typename T>
+void __unsigned_traits_test(){
+	static_assert(is_signed<typename make_signed<T>::type>::value);
+	static_assert(is_unsigned<typename make_unsigned<T>::type>::value);
+}
+
+
+void __instantiate_unsigned_tests(){
+	__unsigned_traits_test<int2>();
+	__unsigned_traits_test<int3>();
+	__unsigned_traits_test<int4>();
+	__unsigned_traits_test<int8>();
+	__unsigned_traits_test<int16>();
+
+	__unsigned_traits_test<uint2>();
+	__unsigned_traits_test<uint3>();
+	__unsigned_traits_test<uint4>();
+	__unsigned_traits_test<uint8>();
+	__unsigned_traits_test<uint16>();
+
+	__unsigned_traits_test<char2>();
+	__unsigned_traits_test<char3>();
+	__unsigned_traits_test<char4>();
+	__unsigned_traits_test<char8>();
+	__unsigned_traits_test<char16>();
+
+	__unsigned_traits_test<uchar2>();
+	__unsigned_traits_test<uchar3>();
+	__unsigned_traits_test<uchar4>();
+	__unsigned_traits_test<uchar8>();
+	__unsigned_traits_test<uchar16>();
+
+	__unsigned_traits_test<short2>();
+	__unsigned_traits_test<short3>();
+	__unsigned_traits_test<short4>();
+	__unsigned_traits_test<short8>();
+	__unsigned_traits_test<short16>();
+
+	__unsigned_traits_test<ushort2>();
+	__unsigned_traits_test<ushort3>();
+	__unsigned_traits_test<ushort4>();
+	__unsigned_traits_test<ushort8>();
+	__unsigned_traits_test<ushort16>();
+
+	__unsigned_traits_test<long2>();
+	__unsigned_traits_test<long3>();
+	__unsigned_traits_test<long4>();
+	__unsigned_traits_test<long8>();
+	__unsigned_traits_test<long16>();
+
+	__unsigned_traits_test<ulong2>();
+	__unsigned_traits_test<ulong3>();
+	__unsigned_traits_test<ulong4>();
+	__unsigned_traits_test<ulong8>();
+	__unsigned_traits_test<ulong16>();
 }
