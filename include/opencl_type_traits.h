@@ -673,3 +673,70 @@ struct vector_n<double, 8> {typedef double8 type;};
 template<>
 struct vector_n<double, 16> {typedef double16 type;};
 
+
+template<typename T>
+struct add_generic {typedef __generic T type;};
+template<typename T>
+struct add_global {typedef __global T type;};
+template<typename T>
+struct add_private {typedef __private T type;};
+template<typename T>
+struct add_local {typedef __local T type;};
+template<typename T>
+struct add_constant {typedef __constant T type;};
+
+
+template<typename T>
+struct has_address_space : public std::false_type {};
+
+template<typename T>
+struct has_address_space<__generic T> : public std::true_type {};
+template<typename T>
+struct has_address_space<__global T> : public std::true_type {};
+template<typename T>
+struct has_address_space<__private T> : public std::true_type {};
+template<typename T>
+struct has_address_space<__local T> : public std::true_type {};
+template<typename T>
+struct has_address_space<__constant T> : public std::true_type {};
+
+
+template<typename T>
+struct is_generic : public std::false_type {};
+template<typename T>
+struct is_generic<__generic T> : public std::true_type {};
+
+template<typename T>
+struct is_global : public std::false_type {};
+template<typename T>
+struct is_global<__global T> : public std::true_type {};
+
+template<typename T>
+struct is_private : public std::false_type {};
+template<typename T>
+struct is_private<__private T> : public std::true_type {};
+
+template<typename T>
+struct is_local : public std::false_type {};
+template<typename T>
+struct is_local<__local T> : public std::true_type {};
+
+template<typename T>
+struct is_constant : public std::false_type {};
+template<typename T>
+struct is_constant<__constant T> : public std::true_type {};
+
+
+template<typename T>
+struct remove_address_space {typedef T type;};
+
+template<typename T>
+struct remove_address_space<__generic T> {typedef T type;};
+template<typename T>
+struct remove_address_space<__global T> {typedef T type;};
+template<typename T>
+struct remove_address_space<__private T> {typedef T type;};
+template<typename T>
+struct remove_address_space<__local T> {typedef T type;};
+template<typename T>
+struct remove_address_space<__constant T> {typedef T type;};
