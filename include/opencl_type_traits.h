@@ -783,3 +783,49 @@ struct image_dimension<image2d_depth_t> : public std::integral_constant<size_t, 
 template<>
 struct image_dimension<image2d_array_depth_t> : public std::integral_constant<size_t, 2> {};
 
+
+template<typename T>
+struct is_sampler : public std::false_type {};
+template<>
+struct is_sampler<sampler_t> : public std::true_type {};
+
+template<typename T>
+struct is_queue : public std::false_type {};
+template<>
+struct is_queue<queue_t> : public std::true_type {};
+
+template<typename T>
+struct is_ndrange : public std::false_type {};
+template<>
+struct is_ndrange<ndrange_t> : public std::true_type {};
+
+template<typename T>
+struct is_clk_event : public std::false_type {};
+template<>
+struct is_clk_event<clk_event_t> : public std::true_type {};
+
+template<typename T>
+struct is_reserve_id : public std::false_type {};
+template<>
+struct is_reserve_id<reserve_id_t> : public std::true_type {};
+
+template<typename T>
+struct is_event : public std::false_type {};
+template<>
+struct is_event<event_t> : public std::true_type {};
+
+template<typename T>
+struct is_cl_mem_fence_flag : public std::false_type {};
+template<>
+struct is_cl_mem_fence_flag<cl_mem_fence_flags> : public std::true_type {};
+
+
+template<typename T>
+struct is_floating_point : public std::false_type {};
+
+template<>
+struct is_floating_point<float> : public std::true_type {};
+template<>
+struct is_floating_point<double> : public std::true_type {};
+template<>
+struct is_floating_point<half> : public std::true_type {};

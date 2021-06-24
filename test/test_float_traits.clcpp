@@ -1,0 +1,9 @@
+#include "opencl_type_traits.h"
+
+void test_float_traits(){
+	static_assert(is_floating_point<half>::value);
+	static_assert(is_floating_point<float>::value);
+	static_assert(is_floating_point<double>::value);
+	static_assert(!is_floating_point<int>::value);
+	static_assert(!is_floating_point<char>::value);
+}
