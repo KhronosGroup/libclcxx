@@ -1,5 +1,5 @@
-#ifndef OPENCL_NEW_DELETE
-#define OPENCL_NEW_DELETE
+#ifndef __OPENCL_NEW_DELETE
+#define __OPENCL_NEW_DELETE
 
 inline void* operator new(size_t _s, void *ptr) noexcept {
     return ptr;
@@ -18,4 +18,4 @@ inline void* operator new[](size_t _s, void *ptr) noexcept {
 
 // }
 
-#endif /* !OPENCL_NEW_DELETE */
+#endif /* !__OPENCL_NEW_DELETE -> define __OPENCL_NEW_DELETE */
