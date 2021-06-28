@@ -19,7 +19,5 @@
 #else
 #error "Clang version not supported. Need clang-12 or newer"
 
-#else
-#error "Clang version not supported. Need clang-12 or newer"
 #endif /* if define __clang_major__ */
 #endif /* define __OPENCL_TYPE_TRAITS  */
