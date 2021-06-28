@@ -1,4 +1,4 @@
-#include <opencl_new.h>
+#include <opencl_new>
 
 class B{
 	public:
