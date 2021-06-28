@@ -18,4 +18,4 @@ inline void* operator new[](size_t _s, void *ptr) noexcept {
 
 // }
 
-#endif /* !__OPENCL_NEW_DELETE -> define __OPENCL_NEW_DELETE */
+#endif /* define __OPENCL_NEW_DELETE */
