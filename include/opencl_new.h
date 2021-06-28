@@ -1,3 +1,6 @@
+#ifndef OPENCL_NEW_DELETE
+#define OPENCL_NEW_DELETE
+
 inline void* operator new(size_t _s, void *ptr) noexcept {
     return ptr;
 }
@@ -6,7 +9,7 @@ inline void* operator new[](size_t _s, void *ptr) noexcept {
     return ptr;
 }
 
-// Clang doesn't compile this yet due to a bug
+// Clang doesn't compile this yet due to a bug:  llvm.org/PR50736
 // void operator delete(void*, void*){
 
 // }
@@ -14,3 +17,5 @@ inline void* operator new[](size_t _s, void *ptr) noexcept {
 // void operator delete[](void*, void*){
 
 // }
+
+#endif /* !OPENCL_NEW_DELETE */
