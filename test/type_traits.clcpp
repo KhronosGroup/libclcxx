@@ -3,5 +3,5 @@
 using sint_type = std::make_signed<unsigned int>::type;
 
 __kernel void foo() {
-	static_assert(!std::is_same<sint_type, unsigned int>::value);
+  static_assert(!std::is_same<sint_type, unsigned int>::value);
 }

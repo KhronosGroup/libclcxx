@@ -1,15 +1,15 @@
 #ifndef __OPENCL_TYPE_TRAITS
 #define __OPENCL_TYPE_TRAITS
 
-#if defined (__clang_major__) && (__clang_major__ > 12)
+#if defined(__clang_major__) && (__clang_major__ > 11)
 
 // These clang extensions are necessary to include type traits from C++17
 #ifndef __cl_clang_function_pointers
-#error "Missing __cl_clang_function_pointers define"
+#error "Missing __cl_clang_function_pointers extension support"
 #endif
 #pragma OPENCL EXTENSION __cl_clang_function_pointers : enable
 #ifndef __cl_clang_variadic_functions
-#error "Missing __cl_clang_variadic_functions define"
+#error "Missing __cl_clang_variadic_functions extension support"
 #endif
 #pragma OPENCL EXTENSION __cl_clang_variadic_functions : enable
 #include <type_traits>
@@ -17,7 +17,7 @@
 #pragma OPENCL EXTENSION __cl_clang_variadic_functions : disable
 
 #else
-#error "Clang version not supported. Need clang-12 or newer"
+#error "Unsupported clang version - use clang-12 or later versions"
 
 #endif /* if define __clang_major__ */
 #endif /* define __OPENCL_TYPE_TRAITS  */
