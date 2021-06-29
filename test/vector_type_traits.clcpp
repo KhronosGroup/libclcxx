@@ -1,0 +1,251 @@
+#include <opencl_type_traits>
+
+template <typename T, typename Other, typename OtherN> void __traits_test() {
+  static_assert(!std::is_void<T>::value);
+  static_assert(!std::is_null_pointer<T>::value);
+  static_assert(!std::is_integral<T>::value);
+  static_assert(!std::is_floating_point<T>::value);
+  static_assert(!std::is_array<T>::value);
+  static_assert(!std::is_enum<T>::value);
+  static_assert(!std::is_union<T>::value);
+  static_assert(!std::is_class<T>::value);
+  static_assert(!std::is_function<T>::value);
+  static_assert(!std::is_pointer<T>::value);
+  static_assert(!std::is_lvalue_reference<T>::value);
+  static_assert(!std::is_rvalue_reference<T>::value);
+  static_assert(!std::is_member_object_pointer<T>::value);
+  static_assert(!std::is_member_function_pointer<T>::value);
+  static_assert(!std::is_fundamental<T>::value);
+  static_assert(!std::is_arithmetic<T>::value);
+  static_assert(!std::is_scalar<T>::value);
+
+  static_assert(std::is_object<T>::value);
+
+  static_assert(!std::is_compound<T>::value);
+  static_assert(!std::is_reference<T>::value);
+  static_assert(!std::is_member_pointer<T>::value);
+  static_assert(!std::is_const<T>::value);
+  static_assert(!std::is_volatile<T>::value);
+
+  static_assert(std::is_trivial<T>::value);
+  static_assert(std::is_trivially_copyable<T>::value);
+  static_assert(std::is_standard_layout<T>::value);
+  static_assert(std::is_pod<T>::value);
+  static_assert(std::is_literal_type<T>::value);
+
+  static_assert(!std::has_unique_object_representations<T>::value);
+  static_assert(!std::is_empty<T>::value);
+  static_assert(!std::is_polymorphic<T>::value);
+  static_assert(!std::is_abstract<T>::value);
+  static_assert(!std::is_final<T>::value);
+
+  static_assert(std::is_aggregate<T>::value);
+
+  static_assert(std::is_constructible<T>::value);
+  static_assert(std::is_trivially_constructible<T>::value);
+  static_assert(std::is_nothrow_constructible<T>::value);
+  static_assert(std::is_default_constructible<T>::value);
+  static_assert(std::is_trivially_default_constructible<T>::value);
+  static_assert(std::is_nothrow_default_constructible<T>::value);
+  static_assert(std::is_copy_constructible<T>::value);
+  static_assert(std::is_trivially_copy_constructible<T>::value);
+  static_assert(std::is_nothrow_copy_constructible<T>::value);
+  static_assert(std::is_move_constructible<T>::value);
+  static_assert(std::is_trivially_move_constructible<T>::value);
+  static_assert(std::is_nothrow_move_constructible<T>::value);
+
+  // FAIL: static_assert(std::is_assignable<T, T>::value);
+  // FAIL: static_assert(std::is_assignable<T&, T>::value);
+  static_assert(!std::is_assignable<T, OtherN>::value);
+  // FAIL: static_assert(std::is_assignable<T, Other>::value);
+
+  static_assert(!std::is_nothrow_assignable<T, OtherN>::value);
+  static_assert(!std::is_nothrow_assignable<T, Other>::value);
+  // FAIL: static_assert(std::is_nothrow_assignable<T, T>::value);
+
+  static_assert(std::is_copy_assignable<T>::value);
+  static_assert(std::is_trivially_copy_assignable<T>::value);
+  static_assert(std::is_nothrow_copy_assignable<T>::value);
+  static_assert(std::is_move_assignable<T>::value);
+  static_assert(std::is_trivially_move_assignable<T>::value);
+  static_assert(std::is_nothrow_move_assignable<T>::value);
+  static_assert(std::is_destructible<T>::value);
+  static_assert(std::is_trivially_destructible<T>::value);
+  static_assert(std::is_nothrow_destructible<T>::value);
+
+  static_assert(!std::has_virtual_destructor<T>::value);
+
+  static_assert(!std::is_swappable_with<T, OtherN>::value);
+  static_assert(std::is_swappable<T>::value);
+  static_assert(!std::is_nothrow_swappable_with<T, OtherN>::value);
+  static_assert(std::is_nothrow_swappable<T>::value);
+  static_assert(std::alignment_of<T>::value);
+  static_assert(std::rank<T>::value == 0);
+  static_assert(!std::extent<T>::value);
+
+  static_assert(std::is_same<T, T>::value);
+  static_assert(!std::is_same<T, OtherN>::value);
+  static_assert(!std::is_same<T, Other>::value);
+
+  static_assert(!std::is_base_of<OtherN, T>::value);
+
+  static_assert(std::is_convertible<T, T>::value);
+  static_assert(!std::is_convertible<T, OtherN>::value);
+  static_assert(!std::is_convertible<T, Other>::value);
+
+  static_assert(!std::is_invocable<T>::value);
+  static_assert(!std::is_invocable_r<T, T()>::value);
+  static_assert(!std::is_nothrow_invocable<T>::value);
+  static_assert(!std::is_nothrow_invocable_r<T, T()>::value);
+
+  static_assert(
+      std::is_same<typename std::remove_cv<typename std::add_cv<T>::type>::type,
+                   T>::value);
+  static_assert(
+      std::is_same<
+          typename std::remove_const<typename std::add_const<T>::type>::type,
+          T>::value);
+  static_assert(std::is_same<typename std::remove_volatile<
+                                 typename std::add_volatile<T>::type>::type,
+                             T>::value);
+  static_assert(
+      std::is_same<typename std::add_cv<T>::type, const volatile T>::value);
+  static_assert(std::is_same<typename std::add_const<T>::type, const T>::value);
+  static_assert(
+      std::is_same<typename std::add_volatile<T>::type, volatile T>::value);
+
+  // FAIL: static_assert(std::is_same<std::remove_reference<T&>::type,
+  // T>::value);
+
+  static_assert(std::is_lvalue_reference<
+                typename std::add_lvalue_reference<T>::type>::value);
+  static_assert(std::is_rvalue_reference<
+                typename std::add_rvalue_reference<T>::type>::value);
+
+  // FAIL: static_assert(std::is_same<std::remove_pointer<T*>::type, T>::value);
+  static_assert(std::is_same<typename std::add_pointer<T>::type, T *>::value);
+  // FAIL: static_assert(!std::is_same<std::make_signed<T>::type, signed
+  // T>::value); FAIL: static_assert(!std::is_same<std::make_unsigned<T>::type,
+  // unsigned T>::value);
+
+  static_assert(std::is_same<typename std::remove_extent<T>::type, T>::value);
+  static_assert(
+      std::is_same<typename std::remove_all_extents<T>::type, T>::value);
+}
+
+void __instantiate_traits_tests() {
+  __traits_test<char2, char, char3>();
+  __traits_test<char3, char, char2>();
+  __traits_test<char4, char, char3>();
+  __traits_test<char8, char, char3>();
+  __traits_test<char16, char, char3>();
+
+  __traits_test<uchar2, uchar, uchar3>();
+  __traits_test<uchar3, uchar, uchar2>();
+  __traits_test<uchar4, uchar, uchar3>();
+  __traits_test<uchar8, uchar, uchar3>();
+  __traits_test<uchar16, uchar, uchar3>();
+
+  __traits_test<short2, short, short3>();
+  __traits_test<short3, short, short2>();
+  __traits_test<short4, short, short3>();
+  __traits_test<short8, short, short3>();
+  __traits_test<short16, short, short3>();
+
+  __traits_test<ushort2, ushort, ushort3>();
+  __traits_test<ushort3, ushort, ushort2>();
+  __traits_test<ushort4, ushort, ushort3>();
+  __traits_test<ushort8, ushort, ushort3>();
+  __traits_test<ushort16, ushort, ushort3>();
+
+  __traits_test<int2, int, int3>();
+  __traits_test<int3, int, int2>();
+  __traits_test<int4, int, int3>();
+  __traits_test<int8, int, int3>();
+  __traits_test<int16, int, int3>();
+
+  __traits_test<uint2, uint, uint3>();
+  __traits_test<uint3, uint, uint2>();
+  __traits_test<uint4, uint, uint3>();
+  __traits_test<uint8, uint, uint3>();
+  __traits_test<uint16, uint, uint3>();
+
+  __traits_test<long2, long, long3>();
+  __traits_test<long3, long, long2>();
+  __traits_test<long4, long, long3>();
+  __traits_test<long8, long, long3>();
+  __traits_test<long16, long, long3>();
+
+  __traits_test<ulong2, ulong, ulong3>();
+  __traits_test<ulong3, ulong, ulong2>();
+  __traits_test<ulong4, ulong, ulong3>();
+  __traits_test<ulong8, ulong, ulong3>();
+  __traits_test<ulong16, ulong, ulong3>();
+
+  __traits_test<float2, float, float3>();
+  __traits_test<float3, float, float2>();
+  __traits_test<float4, float, float3>();
+  __traits_test<float8, float, float3>();
+  __traits_test<float16, float, float3>();
+
+  __traits_test<double2, double, double3>();
+  __traits_test<double3, double, double2>();
+  __traits_test<double4, double, double3>();
+  __traits_test<double8, double, double3>();
+  __traits_test<double16, double, double3>();
+}
+
+template <typename T> void __unsigned_traits_test() {
+  static_assert(is_signed<typename make_signed<T>::type>::value);
+  static_assert(is_unsigned<typename make_unsigned<T>::type>::value);
+}
+
+void __instantiate_unsigned_tests() {
+  __unsigned_traits_test<int2>();
+  __unsigned_traits_test<int3>();
+  __unsigned_traits_test<int4>();
+  __unsigned_traits_test<int8>();
+  __unsigned_traits_test<int16>();
+
+  __unsigned_traits_test<uint2>();
+  __unsigned_traits_test<uint3>();
+  __unsigned_traits_test<uint4>();
+  __unsigned_traits_test<uint8>();
+  __unsigned_traits_test<uint16>();
+
+  __unsigned_traits_test<char2>();
+  __unsigned_traits_test<char3>();
+  __unsigned_traits_test<char4>();
+  __unsigned_traits_test<char8>();
+  __unsigned_traits_test<char16>();
+
+  __unsigned_traits_test<uchar2>();
+  __unsigned_traits_test<uchar3>();
+  __unsigned_traits_test<uchar4>();
+  __unsigned_traits_test<uchar8>();
+  __unsigned_traits_test<uchar16>();
+
+  __unsigned_traits_test<short2>();
+  __unsigned_traits_test<short3>();
+  __unsigned_traits_test<short4>();
+  __unsigned_traits_test<short8>();
+  __unsigned_traits_test<short16>();
+
+  __unsigned_traits_test<ushort2>();
+  __unsigned_traits_test<ushort3>();
+  __unsigned_traits_test<ushort4>();
+  __unsigned_traits_test<ushort8>();
+  __unsigned_traits_test<ushort16>();
+
+  __unsigned_traits_test<long2>();
+  __unsigned_traits_test<long3>();
+  __unsigned_traits_test<long4>();
+  __unsigned_traits_test<long8>();
+  __unsigned_traits_test<long16>();
+
+  __unsigned_traits_test<ulong2>();
+  __unsigned_traits_test<ulong3>();
+  __unsigned_traits_test<ulong4>();
+  __unsigned_traits_test<ulong8>();
+  __unsigned_traits_test<ulong16>();
+}
