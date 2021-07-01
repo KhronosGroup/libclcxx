@@ -15,8 +15,8 @@ template <typename T, typename Other, typename OtherN> void __traits_test() {
   static_assert(!std::is_rvalue_reference<T>::value);
   static_assert(!std::is_member_object_pointer<T>::value);
   static_assert(!std::is_member_function_pointer<T>::value);
-  static_assert(!std::is_fundamental<T>::value);
-  static_assert(!std::is_arithmetic<T>::value);
+  static_assert(std::is_fundamental<T>::value);
+  static_assert(std::is_arithmetic<T>::value);
   static_assert(!std::is_scalar<T>::value);
 
   static_assert(std::is_object<T>::value);
@@ -25,7 +25,9 @@ template <typename T, typename Other, typename OtherN> void __traits_test() {
   static_assert(!std::is_reference<T>::value);
   static_assert(!std::is_member_pointer<T>::value);
   static_assert(!std::is_const<T>::value);
+  static_assert(std::is_const<const T>::value);
   static_assert(!std::is_volatile<T>::value);
+  static_assert(std::is_volatile<volatile T>::value);
 
   static_assert(std::is_trivial<T>::value);
   static_assert(std::is_trivially_copyable<T>::value);
@@ -42,8 +44,20 @@ template <typename T, typename Other, typename OtherN> void __traits_test() {
   static_assert(std::is_aggregate<T>::value);
 
   static_assert(std::is_constructible<T>::value);
+  static_assert(std::is_constructible<T, Other>::value);
+  static_assert(!std::is_constructible<T, OtherN>::value);
+  static_assert(!std::is_constructible<T, Other[2]>::value);
+
   static_assert(std::is_trivially_constructible<T>::value);
+  static_assert(std::is_trivially_constructible<T, Other>::value);
+  static_assert(!std::is_trivially_constructible<T, OtherN>::value);
+  static_assert(!std::is_trivially_constructible<T, Other[2]>::value);
+
   static_assert(std::is_nothrow_constructible<T>::value);
+  static_assert(std::is_nothrow_constructible<T, Other>::value);
+  static_assert(!std::is_nothrow_constructible<T, OtherN>::value);
+  static_assert(!std::is_nothrow_constructible<T, Other[2]>::value);
+
   static_assert(std::is_default_constructible<T>::value);
   static_assert(std::is_trivially_default_constructible<T>::value);
   static_assert(std::is_nothrow_default_constructible<T>::value);
@@ -54,14 +68,17 @@ template <typename T, typename Other, typename OtherN> void __traits_test() {
   static_assert(std::is_trivially_move_constructible<T>::value);
   static_assert(std::is_nothrow_move_constructible<T>::value);
 
-  // FAIL: static_assert(std::is_assignable<T, T>::value);
-  // FAIL: static_assert(std::is_assignable<T&, T>::value);
+  static_assert(!std::is_assignable<T, T>::value);
+  static_assert(std::is_assignable<T &, T>::value);
   static_assert(!std::is_assignable<T, OtherN>::value);
-  // FAIL: static_assert(std::is_assignable<T, Other>::value);
+  static_assert(std::is_assignable<T &, Other>::value);
+  static_assert(!std::is_assignable<T, Other>::value);
 
   static_assert(!std::is_nothrow_assignable<T, OtherN>::value);
   static_assert(!std::is_nothrow_assignable<T, Other>::value);
-  // FAIL: static_assert(std::is_nothrow_assignable<T, T>::value);
+  static_assert(!std::is_nothrow_assignable<T, T>::value);
+  static_assert(std::is_assignable<T &, T &>::value);
+  static_assert(std::is_assignable<T &, T &&>::value);
 
   static_assert(std::is_copy_assignable<T>::value);
   static_assert(std::is_trivially_copy_assignable<T>::value);
@@ -79,7 +96,15 @@ template <typename T, typename Other, typename OtherN> void __traits_test() {
   static_assert(std::is_swappable<T>::value);
   static_assert(!std::is_nothrow_swappable_with<T, OtherN>::value);
   static_assert(std::is_nothrow_swappable<T>::value);
-  static_assert(std::alignment_of<T>::value);
+
+  static_assert(std::alignment_of<T>::value ==
+                (sizeof(T) / sizeof(Other)) * std::alignment_of<Other>::value);
+
+  // Special case for vector of size 3 which has size an alignment
+  // 4*sizeof(scalar)
+  static_assert(std::alignment_of<int3>::value ==
+                4 * std::alignment_of<int>::value);
+
   static_assert(std::rank<T>::value == 0);
   static_assert(!std::extent<T>::value);
 
@@ -92,6 +117,9 @@ template <typename T, typename Other, typename OtherN> void __traits_test() {
   static_assert(std::is_convertible<T, T>::value);
   static_assert(!std::is_convertible<T, OtherN>::value);
   static_assert(!std::is_convertible<T, Other>::value);
+
+  static_assert(!std::is_convertible<OtherN, T>::value);
+  static_assert(std::is_convertible<Other, T>::value);
 
   static_assert(!std::is_invocable<T>::value);
   static_assert(!std::is_invocable_r<T, T()>::value);
@@ -114,20 +142,17 @@ template <typename T, typename Other, typename OtherN> void __traits_test() {
   static_assert(
       std::is_same<typename std::add_volatile<T>::type, volatile T>::value);
 
-  // FAIL: static_assert(std::is_same<std::remove_reference<T&>::type,
-  // T>::value);
+  static_assert(
+      std::is_same<typename std::remove_reference<T &>::type, T>::value);
 
   static_assert(std::is_lvalue_reference<
                 typename std::add_lvalue_reference<T>::type>::value);
   static_assert(std::is_rvalue_reference<
                 typename std::add_rvalue_reference<T>::type>::value);
 
-  // FAIL: static_assert(std::is_same<std::remove_pointer<T*>::type, T>::value);
+  static_assert(
+      std::is_same<typename std::remove_pointer<T *>::type, T>::value);
   static_assert(std::is_same<typename std::add_pointer<T>::type, T *>::value);
-  // FAIL: static_assert(!std::is_same<std::make_signed<T>::type, signed
-  // T>::value); FAIL: static_assert(!std::is_same<std::make_unsigned<T>::type,
-  // unsigned T>::value);
-
   static_assert(std::is_same<typename std::remove_extent<T>::type, T>::value);
   static_assert(
       std::is_same<typename std::remove_all_extents<T>::type, T>::value);
@@ -196,8 +221,8 @@ void __instantiate_traits_tests() {
 }
 
 template <typename T> void __unsigned_traits_test() {
-  static_assert(is_signed<typename make_signed<T>::type>::value);
-  static_assert(is_unsigned<typename make_unsigned<T>::type>::value);
+  static_assert(std::is_signed<typename std::make_signed<T>::type>::value);
+  static_assert(std::is_unsigned<typename std::make_unsigned<T>::type>::value);
 }
 
 void __instantiate_unsigned_tests() {
