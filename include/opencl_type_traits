@@ -20,55 +20,55 @@ namespace std {
 
 // is_signed
 
-template <> struct is_signed<int2> : public std::true_type {};
-template <> struct is_signed<int3> : public std::true_type {};
-template <> struct is_signed<int4> : public std::true_type {};
-template <> struct is_signed<int8> : public std::true_type {};
-template <> struct is_signed<int16> : public std::true_type {};
+template <> struct is_signed<int2> : public true_type {};
+template <> struct is_signed<int3> : public true_type {};
+template <> struct is_signed<int4> : public true_type {};
+template <> struct is_signed<int8> : public true_type {};
+template <> struct is_signed<int16> : public true_type {};
 
-template <> struct is_signed<char2> : public std::true_type {};
-template <> struct is_signed<char3> : public std::true_type {};
-template <> struct is_signed<char4> : public std::true_type {};
-template <> struct is_signed<char8> : public std::true_type {};
-template <> struct is_signed<char16> : public std::true_type {};
+template <> struct is_signed<char2> : public true_type {};
+template <> struct is_signed<char3> : public true_type {};
+template <> struct is_signed<char4> : public true_type {};
+template <> struct is_signed<char8> : public true_type {};
+template <> struct is_signed<char16> : public true_type {};
 
-template <> struct is_signed<short2> : public std::true_type {};
-template <> struct is_signed<short3> : public std::true_type {};
-template <> struct is_signed<short4> : public std::true_type {};
-template <> struct is_signed<short8> : public std::true_type {};
-template <> struct is_signed<short16> : public std::true_type {};
+template <> struct is_signed<short2> : public true_type {};
+template <> struct is_signed<short3> : public true_type {};
+template <> struct is_signed<short4> : public true_type {};
+template <> struct is_signed<short8> : public true_type {};
+template <> struct is_signed<short16> : public true_type {};
 
-template <> struct is_signed<long2> : public std::true_type {};
-template <> struct is_signed<long3> : public std::true_type {};
-template <> struct is_signed<long4> : public std::true_type {};
-template <> struct is_signed<long8> : public std::true_type {};
-template <> struct is_signed<long16> : public std::true_type {};
+template <> struct is_signed<long2> : public true_type {};
+template <> struct is_signed<long3> : public true_type {};
+template <> struct is_signed<long4> : public true_type {};
+template <> struct is_signed<long8> : public true_type {};
+template <> struct is_signed<long16> : public true_type {};
 
 // is_unsigned
 
-template <> struct is_unsigned<uint2> : public std::true_type {};
-template <> struct is_unsigned<uint3> : public std::true_type {};
-template <> struct is_unsigned<uint4> : public std::true_type {};
-template <> struct is_unsigned<uint8> : public std::true_type {};
-template <> struct is_unsigned<uint16> : public std::true_type {};
+template <> struct is_unsigned<uint2> : public true_type {};
+template <> struct is_unsigned<uint3> : public true_type {};
+template <> struct is_unsigned<uint4> : public true_type {};
+template <> struct is_unsigned<uint8> : public true_type {};
+template <> struct is_unsigned<uint16> : public true_type {};
 
-template <> struct is_unsigned<uchar2> : public std::true_type {};
-template <> struct is_unsigned<uchar3> : public std::true_type {};
-template <> struct is_unsigned<uchar4> : public std::true_type {};
-template <> struct is_unsigned<uchar8> : public std::true_type {};
-template <> struct is_unsigned<uchar16> : public std::true_type {};
+template <> struct is_unsigned<uchar2> : public true_type {};
+template <> struct is_unsigned<uchar3> : public true_type {};
+template <> struct is_unsigned<uchar4> : public true_type {};
+template <> struct is_unsigned<uchar8> : public true_type {};
+template <> struct is_unsigned<uchar16> : public true_type {};
 
-template <> struct is_unsigned<ushort2> : public std::true_type {};
-template <> struct is_unsigned<ushort3> : public std::true_type {};
-template <> struct is_unsigned<ushort4> : public std::true_type {};
-template <> struct is_unsigned<ushort8> : public std::true_type {};
-template <> struct is_unsigned<ushort16> : public std::true_type {};
+template <> struct is_unsigned<ushort2> : public true_type {};
+template <> struct is_unsigned<ushort3> : public true_type {};
+template <> struct is_unsigned<ushort4> : public true_type {};
+template <> struct is_unsigned<ushort8> : public true_type {};
+template <> struct is_unsigned<ushort16> : public true_type {};
 
-template <> struct is_unsigned<ulong2> : public std::true_type {};
-template <> struct is_unsigned<ulong3> : public std::true_type {};
-template <> struct is_unsigned<ulong4> : public std::true_type {};
-template <> struct is_unsigned<ulong8> : public std::true_type {};
-template <> struct is_unsigned<ulong16> : public std::true_type {};
+template <> struct is_unsigned<ulong2> : public true_type {};
+template <> struct is_unsigned<ulong3> : public true_type {};
+template <> struct is_unsigned<ulong4> : public true_type {};
+template <> struct is_unsigned<ulong8> : public true_type {};
+template <> struct is_unsigned<ulong16> : public true_type {};
 
 // make_signed
 
@@ -172,251 +172,127 @@ template <> struct make_unsigned<ulong16> { typedef ulong16 type; };
 
 // is_arithmetic
 
-template <> struct is_arithmetic<int2> : public std::true_type {};
-template <> struct is_arithmetic<int3> : public std::true_type {};
-template <> struct is_arithmetic<int4> : public std::true_type {};
-template <> struct is_arithmetic<int8> : public std::true_type {};
-template <> struct is_arithmetic<int16> : public std::true_type {};
+template <> struct is_arithmetic<int2> : public true_type {};
+template <> struct is_arithmetic<int3> : public true_type {};
+template <> struct is_arithmetic<int4> : public true_type {};
+template <> struct is_arithmetic<int8> : public true_type {};
+template <> struct is_arithmetic<int16> : public true_type {};
 
-template <> struct is_arithmetic<char2> : public std::true_type {};
-template <> struct is_arithmetic<char3> : public std::true_type {};
-template <> struct is_arithmetic<char4> : public std::true_type {};
-template <> struct is_arithmetic<char8> : public std::true_type {};
-template <> struct is_arithmetic<char16> : public std::true_type {};
+template <> struct is_arithmetic<char2> : public true_type {};
+template <> struct is_arithmetic<char3> : public true_type {};
+template <> struct is_arithmetic<char4> : public true_type {};
+template <> struct is_arithmetic<char8> : public true_type {};
+template <> struct is_arithmetic<char16> : public true_type {};
 
-template <> struct is_arithmetic<short2> : public std::true_type {};
-template <> struct is_arithmetic<short3> : public std::true_type {};
-template <> struct is_arithmetic<short4> : public std::true_type {};
-template <> struct is_arithmetic<short8> : public std::true_type {};
-template <> struct is_arithmetic<short16> : public std::true_type {};
+template <> struct is_arithmetic<short2> : public true_type {};
+template <> struct is_arithmetic<short3> : public true_type {};
+template <> struct is_arithmetic<short4> : public true_type {};
+template <> struct is_arithmetic<short8> : public true_type {};
+template <> struct is_arithmetic<short16> : public true_type {};
 
-template <> struct is_arithmetic<long2> : public std::true_type {};
-template <> struct is_arithmetic<long3> : public std::true_type {};
-template <> struct is_arithmetic<long4> : public std::true_type {};
-template <> struct is_arithmetic<long8> : public std::true_type {};
-template <> struct is_arithmetic<long16> : public std::true_type {};
+template <> struct is_arithmetic<long2> : public true_type {};
+template <> struct is_arithmetic<long3> : public true_type {};
+template <> struct is_arithmetic<long4> : public true_type {};
+template <> struct is_arithmetic<long8> : public true_type {};
+template <> struct is_arithmetic<long16> : public true_type {};
 
-template <> struct is_arithmetic<float2> : public std::true_type {};
-template <> struct is_arithmetic<float3> : public std::true_type {};
-template <> struct is_arithmetic<float4> : public std::true_type {};
-template <> struct is_arithmetic<float8> : public std::true_type {};
-template <> struct is_arithmetic<float16> : public std::true_type {};
+template <> struct is_arithmetic<float2> : public true_type {};
+template <> struct is_arithmetic<float3> : public true_type {};
+template <> struct is_arithmetic<float4> : public true_type {};
+template <> struct is_arithmetic<float8> : public true_type {};
+template <> struct is_arithmetic<float16> : public true_type {};
 
-template <> struct is_arithmetic<double2> : public std::true_type {};
-template <> struct is_arithmetic<double3> : public std::true_type {};
-template <> struct is_arithmetic<double4> : public std::true_type {};
-template <> struct is_arithmetic<double8> : public std::true_type {};
-template <> struct is_arithmetic<double16> : public std::true_type {};
+template <> struct is_arithmetic<double2> : public true_type {};
+template <> struct is_arithmetic<double3> : public true_type {};
+template <> struct is_arithmetic<double4> : public true_type {};
+template <> struct is_arithmetic<double8> : public true_type {};
+template <> struct is_arithmetic<double16> : public true_type {};
 
-template <> struct is_arithmetic<uint2> : public std::true_type {};
-template <> struct is_arithmetic<uint3> : public std::true_type {};
-template <> struct is_arithmetic<uint4> : public std::true_type {};
-template <> struct is_arithmetic<uint8> : public std::true_type {};
-template <> struct is_arithmetic<uint16> : public std::true_type {};
+template <> struct is_arithmetic<uint2> : public true_type {};
+template <> struct is_arithmetic<uint3> : public true_type {};
+template <> struct is_arithmetic<uint4> : public true_type {};
+template <> struct is_arithmetic<uint8> : public true_type {};
+template <> struct is_arithmetic<uint16> : public true_type {};
 
-template <> struct is_arithmetic<uchar2> : public std::true_type {};
-template <> struct is_arithmetic<uchar3> : public std::true_type {};
-template <> struct is_arithmetic<uchar4> : public std::true_type {};
-template <> struct is_arithmetic<uchar8> : public std::true_type {};
-template <> struct is_arithmetic<uchar16> : public std::true_type {};
+template <> struct is_arithmetic<uchar2> : public true_type {};
+template <> struct is_arithmetic<uchar3> : public true_type {};
+template <> struct is_arithmetic<uchar4> : public true_type {};
+template <> struct is_arithmetic<uchar8> : public true_type {};
+template <> struct is_arithmetic<uchar16> : public true_type {};
 
-template <> struct is_arithmetic<ushort2> : public std::true_type {};
-template <> struct is_arithmetic<ushort3> : public std::true_type {};
-template <> struct is_arithmetic<ushort4> : public std::true_type {};
-template <> struct is_arithmetic<ushort8> : public std::true_type {};
-template <> struct is_arithmetic<ushort16> : public std::true_type {};
+template <> struct is_arithmetic<ushort2> : public true_type {};
+template <> struct is_arithmetic<ushort3> : public true_type {};
+template <> struct is_arithmetic<ushort4> : public true_type {};
+template <> struct is_arithmetic<ushort8> : public true_type {};
+template <> struct is_arithmetic<ushort16> : public true_type {};
 
-template <> struct is_arithmetic<ulong2> : public std::true_type {};
-template <> struct is_arithmetic<ulong3> : public std::true_type {};
-template <> struct is_arithmetic<ulong4> : public std::true_type {};
-template <> struct is_arithmetic<ulong8> : public std::true_type {};
-template <> struct is_arithmetic<ulong16> : public std::true_type {};
+template <> struct is_arithmetic<ulong2> : public true_type {};
+template <> struct is_arithmetic<ulong3> : public true_type {};
+template <> struct is_arithmetic<ulong4> : public true_type {};
+template <> struct is_arithmetic<ulong8> : public true_type {};
+template <> struct is_arithmetic<ulong16> : public true_type {};
 
 // is_fundamental
 
-template <> struct is_fundamental<int2> : public std::true_type {};
-template <> struct is_fundamental<int3> : public std::true_type {};
-template <> struct is_fundamental<int4> : public std::true_type {};
-template <> struct is_fundamental<int8> : public std::true_type {};
-template <> struct is_fundamental<int16> : public std::true_type {};
+template <> struct is_fundamental<int2> : public true_type {};
+template <> struct is_fundamental<int3> : public true_type {};
+template <> struct is_fundamental<int4> : public true_type {};
+template <> struct is_fundamental<int8> : public true_type {};
+template <> struct is_fundamental<int16> : public true_type {};
 
-template <> struct is_fundamental<char2> : public std::true_type {};
-template <> struct is_fundamental<char3> : public std::true_type {};
-template <> struct is_fundamental<char4> : public std::true_type {};
-template <> struct is_fundamental<char8> : public std::true_type {};
-template <> struct is_fundamental<char16> : public std::true_type {};
+template <> struct is_fundamental<char2> : public true_type {};
+template <> struct is_fundamental<char3> : public true_type {};
+template <> struct is_fundamental<char4> : public true_type {};
+template <> struct is_fundamental<char8> : public true_type {};
+template <> struct is_fundamental<char16> : public true_type {};
 
-template <> struct is_fundamental<short2> : public std::true_type {};
-template <> struct is_fundamental<short3> : public std::true_type {};
-template <> struct is_fundamental<short4> : public std::true_type {};
-template <> struct is_fundamental<short8> : public std::true_type {};
-template <> struct is_fundamental<short16> : public std::true_type {};
+template <> struct is_fundamental<short2> : public true_type {};
+template <> struct is_fundamental<short3> : public true_type {};
+template <> struct is_fundamental<short4> : public true_type {};
+template <> struct is_fundamental<short8> : public true_type {};
+template <> struct is_fundamental<short16> : public true_type {};
 
-template <> struct is_fundamental<long2> : public std::true_type {};
-template <> struct is_fundamental<long3> : public std::true_type {};
-template <> struct is_fundamental<long4> : public std::true_type {};
-template <> struct is_fundamental<long8> : public std::true_type {};
-template <> struct is_fundamental<long16> : public std::true_type {};
+template <> struct is_fundamental<long2> : public true_type {};
+template <> struct is_fundamental<long3> : public true_type {};
+template <> struct is_fundamental<long4> : public true_type {};
+template <> struct is_fundamental<long8> : public true_type {};
+template <> struct is_fundamental<long16> : public true_type {};
 
-template <> struct is_fundamental<float2> : public std::true_type {};
-template <> struct is_fundamental<float3> : public std::true_type {};
-template <> struct is_fundamental<float4> : public std::true_type {};
-template <> struct is_fundamental<float8> : public std::true_type {};
-template <> struct is_fundamental<float16> : public std::true_type {};
+template <> struct is_fundamental<float2> : public true_type {};
+template <> struct is_fundamental<float3> : public true_type {};
+template <> struct is_fundamental<float4> : public true_type {};
+template <> struct is_fundamental<float8> : public true_type {};
+template <> struct is_fundamental<float16> : public true_type {};
 
-template <> struct is_fundamental<double2> : public std::true_type {};
-template <> struct is_fundamental<double3> : public std::true_type {};
-template <> struct is_fundamental<double4> : public std::true_type {};
-template <> struct is_fundamental<double8> : public std::true_type {};
-template <> struct is_fundamental<double16> : public std::true_type {};
+template <> struct is_fundamental<double2> : public true_type {};
+template <> struct is_fundamental<double3> : public true_type {};
+template <> struct is_fundamental<double4> : public true_type {};
+template <> struct is_fundamental<double8> : public true_type {};
+template <> struct is_fundamental<double16> : public true_type {};
 
-template <> struct is_fundamental<uint2> : public std::true_type {};
-template <> struct is_fundamental<uint3> : public std::true_type {};
-template <> struct is_fundamental<uint4> : public std::true_type {};
-template <> struct is_fundamental<uint8> : public std::true_type {};
-template <> struct is_fundamental<uint16> : public std::true_type {};
+template <> struct is_fundamental<uint2> : public true_type {};
+template <> struct is_fundamental<uint3> : public true_type {};
+template <> struct is_fundamental<uint4> : public true_type {};
+template <> struct is_fundamental<uint8> : public true_type {};
+template <> struct is_fundamental<uint16> : public true_type {};
 
-template <> struct is_fundamental<uchar2> : public std::true_type {};
-template <> struct is_fundamental<uchar3> : public std::true_type {};
-template <> struct is_fundamental<uchar4> : public std::true_type {};
-template <> struct is_fundamental<uchar8> : public std::true_type {};
-template <> struct is_fundamental<uchar16> : public std::true_type {};
+template <> struct is_fundamental<uchar2> : public true_type {};
+template <> struct is_fundamental<uchar3> : public true_type {};
+template <> struct is_fundamental<uchar4> : public true_type {};
+template <> struct is_fundamental<uchar8> : public true_type {};
+template <> struct is_fundamental<uchar16> : public true_type {};
 
-template <> struct is_fundamental<ushort2> : public std::true_type {};
-template <> struct is_fundamental<ushort3> : public std::true_type {};
-template <> struct is_fundamental<ushort4> : public std::true_type {};
-template <> struct is_fundamental<ushort8> : public std::true_type {};
-template <> struct is_fundamental<ushort16> : public std::true_type {};
+template <> struct is_fundamental<ushort2> : public true_type {};
+template <> struct is_fundamental<ushort3> : public true_type {};
+template <> struct is_fundamental<ushort4> : public true_type {};
+template <> struct is_fundamental<ushort8> : public true_type {};
+template <> struct is_fundamental<ushort16> : public true_type {};
 
-template <> struct is_fundamental<ulong2> : public std::true_type {};
-template <> struct is_fundamental<ulong3> : public std::true_type {};
-template <> struct is_fundamental<ulong4> : public std::true_type {};
-template <> struct is_fundamental<ulong8> : public std::true_type {};
-template <> struct is_fundamental<ulong16> : public std::true_type {};
-
-// remove_reference
-
-template <> struct remove_reference<int2 &> { typedef int2 type; };
-template <> struct remove_reference<int3 &> { typedef int3 type; };
-template <> struct remove_reference<int4 &> { typedef int4 type; };
-template <> struct remove_reference<int8 &> { typedef int8 type; };
-template <> struct remove_reference<int16 &> { typedef int16 type; };
-
-template <> struct remove_reference<char2 &> { typedef char2 type; };
-template <> struct remove_reference<char3 &> { typedef char3 type; };
-template <> struct remove_reference<char4 &> { typedef char4 type; };
-template <> struct remove_reference<char8 &> { typedef char8 type; };
-template <> struct remove_reference<char16 &> { typedef char16 type; };
-
-template <> struct remove_reference<short2 &> { typedef short2 type; };
-template <> struct remove_reference<short3 &> { typedef short3 type; };
-template <> struct remove_reference<short4 &> { typedef short4 type; };
-template <> struct remove_reference<short8 &> { typedef short8 type; };
-template <> struct remove_reference<short16 &> { typedef short16 type; };
-
-template <> struct remove_reference<long2 &> { typedef long2 type; };
-template <> struct remove_reference<long3 &> { typedef long3 type; };
-template <> struct remove_reference<long4 &> { typedef long4 type; };
-template <> struct remove_reference<long8 &> { typedef long8 type; };
-template <> struct remove_reference<long16 &> { typedef long16 type; };
-
-template <> struct remove_reference<float2 &> { typedef float2 type; };
-template <> struct remove_reference<float3 &> { typedef float3 type; };
-template <> struct remove_reference<float4 &> { typedef float4 type; };
-template <> struct remove_reference<float8 &> { typedef float8 type; };
-template <> struct remove_reference<float16 &> { typedef float16 type; };
-
-template <> struct remove_reference<double2 &> { typedef double2 type; };
-template <> struct remove_reference<double3 &> { typedef double3 type; };
-template <> struct remove_reference<double4 &> { typedef double4 type; };
-template <> struct remove_reference<double8 &> { typedef double8 type; };
-template <> struct remove_reference<double16 &> { typedef double16 type; };
-
-template <> struct remove_reference<uint2 &> { typedef uint2 type; };
-template <> struct remove_reference<uint3 &> { typedef uint3 type; };
-template <> struct remove_reference<uint4 &> { typedef uint4 type; };
-template <> struct remove_reference<uint8 &> { typedef uint8 type; };
-template <> struct remove_reference<uint16 &> { typedef uint16 type; };
-
-template <> struct remove_reference<uchar2 &> { typedef uchar2 type; };
-template <> struct remove_reference<uchar3 &> { typedef uchar3 type; };
-template <> struct remove_reference<uchar4 &> { typedef uchar4 type; };
-template <> struct remove_reference<uchar8 &> { typedef uchar8 type; };
-template <> struct remove_reference<uchar16 &> { typedef uchar16 type; };
-
-template <> struct remove_reference<ushort2 &> { typedef ushort2 type; };
-template <> struct remove_reference<ushort3 &> { typedef ushort3 type; };
-template <> struct remove_reference<ushort4 &> { typedef ushort4 type; };
-template <> struct remove_reference<ushort8 &> { typedef ushort8 type; };
-template <> struct remove_reference<ushort16 &> { typedef ushort16 type; };
-
-template <> struct remove_reference<ulong2 &> { typedef ulong2 type; };
-template <> struct remove_reference<ulong3 &> { typedef ulong3 type; };
-template <> struct remove_reference<ulong4 &> { typedef ulong4 type; };
-template <> struct remove_reference<ulong8 &> { typedef ulong8 type; };
-template <> struct remove_reference<ulong16 &> { typedef ulong16 type; };
-
-// remove_pointer
-
-template <> struct remove_pointer<int2 *> { typedef int2 type; };
-template <> struct remove_pointer<int3 *> { typedef int3 type; };
-template <> struct remove_pointer<int4 *> { typedef int4 type; };
-template <> struct remove_pointer<int8 *> { typedef int8 type; };
-template <> struct remove_pointer<int16 *> { typedef int16 type; };
-
-template <> struct remove_pointer<char2 *> { typedef char2 type; };
-template <> struct remove_pointer<char3 *> { typedef char3 type; };
-template <> struct remove_pointer<char4 *> { typedef char4 type; };
-template <> struct remove_pointer<char8 *> { typedef char8 type; };
-template <> struct remove_pointer<char16 *> { typedef char16 type; };
-
-template <> struct remove_pointer<short2 *> { typedef short2 type; };
-template <> struct remove_pointer<short3 *> { typedef short3 type; };
-template <> struct remove_pointer<short4 *> { typedef short4 type; };
-template <> struct remove_pointer<short8 *> { typedef short8 type; };
-template <> struct remove_pointer<short16 *> { typedef short16 type; };
-
-template <> struct remove_pointer<long2 *> { typedef long2 type; };
-template <> struct remove_pointer<long3 *> { typedef long3 type; };
-template <> struct remove_pointer<long4 *> { typedef long4 type; };
-template <> struct remove_pointer<long8 *> { typedef long8 type; };
-template <> struct remove_pointer<long16 *> { typedef long16 type; };
-
-template <> struct remove_pointer<float2 *> { typedef float2 type; };
-template <> struct remove_pointer<float3 *> { typedef float3 type; };
-template <> struct remove_pointer<float4 *> { typedef float4 type; };
-template <> struct remove_pointer<float8 *> { typedef float8 type; };
-template <> struct remove_pointer<float16 *> { typedef float16 type; };
-
-template <> struct remove_pointer<double2 *> { typedef double2 type; };
-template <> struct remove_pointer<double3 *> { typedef double3 type; };
-template <> struct remove_pointer<double4 *> { typedef double4 type; };
-template <> struct remove_pointer<double8 *> { typedef double8 type; };
-template <> struct remove_pointer<double16 *> { typedef double16 type; };
-
-template <> struct remove_pointer<uint2 *> { typedef uint2 type; };
-template <> struct remove_pointer<uint3 *> { typedef uint3 type; };
-template <> struct remove_pointer<uint4 *> { typedef uint4 type; };
-template <> struct remove_pointer<uint8 *> { typedef uint8 type; };
-template <> struct remove_pointer<uint16 *> { typedef uint16 type; };
-
-template <> struct remove_pointer<uchar2 *> { typedef uchar2 type; };
-template <> struct remove_pointer<uchar3 *> { typedef uchar3 type; };
-template <> struct remove_pointer<uchar4 *> { typedef uchar4 type; };
-template <> struct remove_pointer<uchar8 *> { typedef uchar8 type; };
-template <> struct remove_pointer<uchar16 *> { typedef uchar16 type; };
-
-template <> struct remove_pointer<ushort2 *> { typedef ushort2 type; };
-template <> struct remove_pointer<ushort3 *> { typedef ushort3 type; };
-template <> struct remove_pointer<ushort4 *> { typedef ushort4 type; };
-template <> struct remove_pointer<ushort8 *> { typedef ushort8 type; };
-template <> struct remove_pointer<ushort16 *> { typedef ushort16 type; };
-
-template <> struct remove_pointer<ulong2 *> { typedef ulong2 type; };
-template <> struct remove_pointer<ulong3 *> { typedef ulong3 type; };
-template <> struct remove_pointer<ulong4 *> { typedef ulong4 type; };
-template <> struct remove_pointer<ulong8 *> { typedef ulong8 type; };
-template <> struct remove_pointer<ulong16 *> { typedef ulong16 type; };
+template <> struct is_fundamental<ulong2> : public true_type {};
+template <> struct is_fundamental<ulong3> : public true_type {};
+template <> struct is_fundamental<ulong4> : public true_type {};
+template <> struct is_fundamental<ulong8> : public true_type {};
+template <> struct is_fundamental<ulong16> : public true_type {};
 
 } // namespace std
 
