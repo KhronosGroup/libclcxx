@@ -72,103 +72,103 @@ template <> struct is_unsigned<ulong16> : public true_type {};
 
 // make_signed
 
-template <> struct make_signed<int2> { typedef int2 type; };
-template <> struct make_signed<int3> { typedef int3 type; };
-template <> struct make_signed<int4> { typedef int4 type; };
-template <> struct make_signed<int8> { typedef int8 type; };
-template <> struct make_signed<int16> { typedef int16 type; };
+template <> struct make_signed<int2> { using type = int2; };
+template <> struct make_signed<int3> { using type = int3; };
+template <> struct make_signed<int4> { using type = int4; };
+template <> struct make_signed<int8> { using type = int8; };
+template <> struct make_signed<int16> { using type = int16; };
 
-template <> struct make_signed<char2> { typedef char2 type; };
-template <> struct make_signed<char3> { typedef char3 type; };
-template <> struct make_signed<char4> { typedef char4 type; };
-template <> struct make_signed<char8> { typedef char8 type; };
-template <> struct make_signed<char16> { typedef char16 type; };
+template <> struct make_signed<char2> { using type = char2; };
+template <> struct make_signed<char3> { using type = char3; };
+template <> struct make_signed<char4> { using type = char4; };
+template <> struct make_signed<char8> { using type = char8; };
+template <> struct make_signed<char16> { using type = char16; };
 
-template <> struct make_signed<short2> { typedef short2 type; };
-template <> struct make_signed<short3> { typedef short3 type; };
-template <> struct make_signed<short4> { typedef short4 type; };
-template <> struct make_signed<short8> { typedef short8 type; };
-template <> struct make_signed<short16> { typedef short16 type; };
+template <> struct make_signed<short2> { using type = short2; };
+template <> struct make_signed<short3> { using type = short3; };
+template <> struct make_signed<short4> { using type = short4; };
+template <> struct make_signed<short8> { using type = short8; };
+template <> struct make_signed<short16> { using type = short16; };
 
-template <> struct make_signed<long2> { typedef long2 type; };
-template <> struct make_signed<long3> { typedef long3 type; };
-template <> struct make_signed<long4> { typedef long4 type; };
-template <> struct make_signed<long8> { typedef long8 type; };
-template <> struct make_signed<long16> { typedef long16 type; };
+template <> struct make_signed<long2> { using type = long2; };
+template <> struct make_signed<long3> { using type = long3; };
+template <> struct make_signed<long4> { using type = long4; };
+template <> struct make_signed<long8> { using type = long8; };
+template <> struct make_signed<long16> { using type = long16; };
 
-template <> struct make_signed<uint2> { typedef int2 type; };
-template <> struct make_signed<uint3> { typedef int3 type; };
-template <> struct make_signed<uint4> { typedef int4 type; };
-template <> struct make_signed<uint8> { typedef int8 type; };
-template <> struct make_signed<uint16> { typedef int16 type; };
+template <> struct make_signed<uint2> { using type = int2; };
+template <> struct make_signed<uint3> { using type = int3; };
+template <> struct make_signed<uint4> { using type = int4; };
+template <> struct make_signed<uint8> { using type = int8; };
+template <> struct make_signed<uint16> { using type = int16; };
 
-template <> struct make_signed<uchar2> { typedef char2 type; };
-template <> struct make_signed<uchar3> { typedef char3 type; };
-template <> struct make_signed<uchar4> { typedef char4 type; };
-template <> struct make_signed<uchar8> { typedef char8 type; };
-template <> struct make_signed<uchar16> { typedef char16 type; };
+template <> struct make_signed<uchar2> { using type = char2; };
+template <> struct make_signed<uchar3> { using type = char3; };
+template <> struct make_signed<uchar4> { using type = char4; };
+template <> struct make_signed<uchar8> { using type = char8; };
+template <> struct make_signed<uchar16> { using type = char16; };
 
-template <> struct make_signed<ushort2> { typedef short2 type; };
-template <> struct make_signed<ushort3> { typedef short3 type; };
-template <> struct make_signed<ushort4> { typedef short4 type; };
-template <> struct make_signed<ushort8> { typedef short8 type; };
-template <> struct make_signed<ushort16> { typedef short16 type; };
+template <> struct make_signed<ushort2> { using type = short2; };
+template <> struct make_signed<ushort3> { using type = short3; };
+template <> struct make_signed<ushort4> { using type = short4; };
+template <> struct make_signed<ushort8> { using type = short8; };
+template <> struct make_signed<ushort16> { using type = short16; };
 
-template <> struct make_signed<ulong2> { typedef long2 type; };
-template <> struct make_signed<ulong3> { typedef long3 type; };
-template <> struct make_signed<ulong4> { typedef long4 type; };
-template <> struct make_signed<ulong8> { typedef long8 type; };
-template <> struct make_signed<ulong16> { typedef long16 type; };
+template <> struct make_signed<ulong2> { using type = long2; };
+template <> struct make_signed<ulong3> { using type = long3; };
+template <> struct make_signed<ulong4> { using type = long4; };
+template <> struct make_signed<ulong8> { using type = long8; };
+template <> struct make_signed<ulong16> { using type = long16; };
 
 // make_unsigned
 
-template <> struct make_unsigned<int2> { typedef uint2 type; };
-template <> struct make_unsigned<int3> { typedef uint3 type; };
-template <> struct make_unsigned<int4> { typedef uint4 type; };
-template <> struct make_unsigned<int8> { typedef uint8 type; };
-template <> struct make_unsigned<int16> { typedef uint16 type; };
+template <> struct make_unsigned<int2> { using type = uint2; };
+template <> struct make_unsigned<int3> { using type = uint3; };
+template <> struct make_unsigned<int4> { using type = uint4; };
+template <> struct make_unsigned<int8> { using type = uint8; };
+template <> struct make_unsigned<int16> { using type = uint16; };
 
-template <> struct make_unsigned<char2> { typedef uchar2 type; };
-template <> struct make_unsigned<char3> { typedef uchar3 type; };
-template <> struct make_unsigned<char4> { typedef uchar4 type; };
-template <> struct make_unsigned<char8> { typedef uchar8 type; };
-template <> struct make_unsigned<char16> { typedef uchar16 type; };
+template <> struct make_unsigned<char2> { using type = uchar2; };
+template <> struct make_unsigned<char3> { using type = uchar3; };
+template <> struct make_unsigned<char4> { using type = uchar4; };
+template <> struct make_unsigned<char8> { using type = uchar8; };
+template <> struct make_unsigned<char16> { using type = uchar16; };
 
-template <> struct make_unsigned<short2> { typedef ushort2 type; };
-template <> struct make_unsigned<short3> { typedef ushort3 type; };
-template <> struct make_unsigned<short4> { typedef ushort4 type; };
-template <> struct make_unsigned<short8> { typedef ushort8 type; };
-template <> struct make_unsigned<short16> { typedef ushort16 type; };
+template <> struct make_unsigned<short2> { using type = ushort2; };
+template <> struct make_unsigned<short3> { using type = ushort3; };
+template <> struct make_unsigned<short4> { using type = ushort4; };
+template <> struct make_unsigned<short8> { using type = ushort8; };
+template <> struct make_unsigned<short16> { using type = ushort16; };
 
-template <> struct make_unsigned<long2> { typedef ulong2 type; };
-template <> struct make_unsigned<long3> { typedef ulong3 type; };
-template <> struct make_unsigned<long4> { typedef ulong4 type; };
-template <> struct make_unsigned<long8> { typedef ulong8 type; };
-template <> struct make_unsigned<long16> { typedef ulong16 type; };
+template <> struct make_unsigned<long2> { using type = ulong2; };
+template <> struct make_unsigned<long3> { using type = ulong3; };
+template <> struct make_unsigned<long4> { using type = ulong4; };
+template <> struct make_unsigned<long8> { using type = ulong8; };
+template <> struct make_unsigned<long16> { using type = ulong16; };
 
-template <> struct make_unsigned<uint2> { typedef uint2 type; };
-template <> struct make_unsigned<uint3> { typedef uint3 type; };
-template <> struct make_unsigned<uint4> { typedef uint4 type; };
-template <> struct make_unsigned<uint8> { typedef uint8 type; };
-template <> struct make_unsigned<uint16> { typedef uint16 type; };
+template <> struct make_unsigned<uint2> { using type = uint2; };
+template <> struct make_unsigned<uint3> { using type = uint3; };
+template <> struct make_unsigned<uint4> { using type = uint4; };
+template <> struct make_unsigned<uint8> { using type = uint8; };
+template <> struct make_unsigned<uint16> { using type = uint16; };
 
-template <> struct make_unsigned<uchar2> { typedef uchar2 type; };
-template <> struct make_unsigned<uchar3> { typedef uchar3 type; };
-template <> struct make_unsigned<uchar4> { typedef uchar4 type; };
-template <> struct make_unsigned<uchar8> { typedef uchar8 type; };
-template <> struct make_unsigned<uchar16> { typedef uchar16 type; };
+template <> struct make_unsigned<uchar2> { using type = uchar2; };
+template <> struct make_unsigned<uchar3> { using type = uchar3; };
+template <> struct make_unsigned<uchar4> { using type = uchar4; };
+template <> struct make_unsigned<uchar8> { using type = uchar8; };
+template <> struct make_unsigned<uchar16> { using type = uchar16; };
 
-template <> struct make_unsigned<ushort2> { typedef ushort2 type; };
-template <> struct make_unsigned<ushort3> { typedef ushort3 type; };
-template <> struct make_unsigned<ushort4> { typedef ushort4 type; };
-template <> struct make_unsigned<ushort8> { typedef ushort8 type; };
-template <> struct make_unsigned<ushort16> { typedef ushort16 type; };
+template <> struct make_unsigned<ushort2> { using type = ushort2; };
+template <> struct make_unsigned<ushort3> { using type = ushort3; };
+template <> struct make_unsigned<ushort4> { using type = ushort4; };
+template <> struct make_unsigned<ushort8> { using type = ushort8; };
+template <> struct make_unsigned<ushort16> { using type = ushort16; };
 
-template <> struct make_unsigned<ulong2> { typedef ulong2 type; };
-template <> struct make_unsigned<ulong3> { typedef ulong3 type; };
-template <> struct make_unsigned<ulong4> { typedef ulong4 type; };
-template <> struct make_unsigned<ulong8> { typedef ulong8 type; };
-template <> struct make_unsigned<ulong16> { typedef ulong16 type; };
+template <> struct make_unsigned<ulong2> { using type = ulong2; };
+template <> struct make_unsigned<ulong3> { using type = ulong3; };
+template <> struct make_unsigned<ulong4> { using type = ulong4; };
+template <> struct make_unsigned<ulong8> { using type = ulong8; };
+template <> struct make_unsigned<ulong16> { using type = ulong16; };
 
 // is_arithmetic
 
