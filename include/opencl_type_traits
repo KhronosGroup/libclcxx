@@ -16,6 +16,50 @@
 #pragma OPENCL EXTENSION __cl_clang_function_pointers : disable
 #pragma OPENCL EXTENSION __cl_clang_variadic_functions : disable
 
+namespace std {
+
+// is_image
+
+template <typename T> struct is_image : public false_type {};
+
+template <> struct is_image<image1d_t> : public true_type {};
+template <> struct is_image<image2d_t> : public true_type {};
+template <> struct is_image<image3d_t> : public true_type {};
+template <> struct is_image<image1d_array_t> : public true_type {};
+template <> struct is_image<image1d_buffer_t> : public true_type {};
+template <> struct is_image<image2d_array_t> : public true_type {};
+template <> struct is_image<image2d_depth_t> : public true_type {};
+template <> struct is_image<image2d_array_depth_t> : public true_type {};
+
+// image_dimension
+
+template <typename T>
+struct image_dimension : public integral_constant<size_t, 0> {};
+
+template <>
+struct image_dimension<image1d_t> : public integral_constant<size_t, 1> {};
+template <>
+struct image_dimension<image2d_t> : public integral_constant<size_t, 2> {};
+template <>
+struct image_dimension<image3d_t> : public integral_constant<size_t, 3> {};
+template <>
+struct image_dimension<image1d_array_t> : public integral_constant<size_t, 1> {
+};
+template <>
+struct image_dimension<image1d_buffer_t> : public integral_constant<size_t, 1> {
+};
+template <>
+struct image_dimension<image2d_array_t> : public integral_constant<size_t, 2> {
+};
+template <>
+struct image_dimension<image2d_depth_t> : public integral_constant<size_t, 2> {
+};
+template <>
+struct image_dimension<image2d_array_depth_t>
+    : public integral_constant<size_t, 2> {};
+
+} // namespace std
+
 #else
 #error "Unsupported clang version - use clang-12 or later versions"
 
