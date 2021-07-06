@@ -1,0 +1,42 @@
+#include <opencl_type_traits>
+
+void test_address_space_traits() {
+  static_assert(
+      std::is_same<std::remove_address_space<__generic int>::type, int>::value);
+  static_assert(std::is_same<std::remove_address_space<__global char>::type,
+                             char>::value);
+  static_assert(std::is_same<std::remove_address_space<__private ulong>::type,
+                             ulong>::value);
+  static_assert(std::is_same<std::remove_address_space<__local short>::type,
+                             short>::value);
+  static_assert(std::is_same<std::remove_address_space<__constant int3>::type,
+                             int3>::value);
+
+  static_assert(
+      std::is_same<std::add_generic<char>::type, __generic char>::value);
+  static_assert(
+      std::is_same<std::add_global<char>::type, __global char>::value);
+  static_assert(
+      std::is_same<std::add_private<char>::type, __private char>::value);
+  static_assert(std::is_same<std::add_local<char>::type, __local char>::value);
+  static_assert(
+      std::is_same<std::add_constant<char>::type, __constant char>::value);
+
+  static_assert(std::is_generic<__generic char>::value);
+  static_assert(!std::is_generic<char>::value);
+  static_assert(std::is_global<__global int>::value);
+  static_assert(!std::is_global<int>::value);
+  static_assert(std::is_private<__private float16>::value);
+  static_assert(!std::is_private<__global char3>::value);
+  static_assert(std::is_local<__local double>::value);
+  static_assert(!std::is_local<short>::value);
+  static_assert(std::is_constant<__constant int>::value);
+  static_assert(!std::is_constant<__generic char>::value);
+
+  static_assert(std::has_address_space<__generic int>::value);
+  static_assert(std::has_address_space<__global char>::value);
+  static_assert(std::has_address_space<__private float>::value);
+  static_assert(std::has_address_space<__local short2>::value);
+  static_assert(std::has_address_space<__constant long>::value);
+  static_assert(!std::has_address_space<float4>::value);
+}
