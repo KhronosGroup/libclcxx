@@ -294,6 +294,113 @@ template <> struct is_fundamental<ulong4> : public true_type {};
 template <> struct is_fundamental<ulong8> : public true_type {};
 template <> struct is_fundamental<ulong16> : public true_type {};
 
+// is_image
+
+template <typename T> struct is_image : public false_type {};
+
+template <> struct is_image<image1d_t> : public true_type {};
+template <> struct is_image<image2d_t> : public true_type {};
+template <> struct is_image<image3d_t> : public true_type {};
+template <> struct is_image<image1d_array_t> : public true_type {};
+template <> struct is_image<image1d_buffer_t> : public true_type {};
+template <> struct is_image<image2d_array_t> : public true_type {};
+template <> struct is_image<image2d_depth_t> : public true_type {};
+template <> struct is_image<image2d_array_depth_t> : public true_type {};
+
+// image_dimension
+
+template <typename T>
+struct image_dimension : public integral_constant<size_t, 0> {};
+
+template <>
+struct image_dimension<image1d_t> : public integral_constant<size_t, 1> {};
+template <>
+struct image_dimension<image2d_t> : public integral_constant<size_t, 2> {};
+template <>
+struct image_dimension<image3d_t> : public integral_constant<size_t, 3> {};
+template <>
+struct image_dimension<image1d_array_t> : public integral_constant<size_t, 1> {
+};
+template <>
+struct image_dimension<image1d_buffer_t> : public integral_constant<size_t, 1> {
+};
+template <>
+struct image_dimension<image2d_array_t> : public integral_constant<size_t, 2> {
+};
+template <>
+struct image_dimension<image2d_depth_t> : public integral_constant<size_t, 2> {
+};
+template <>
+struct image_dimension<image2d_array_depth_t>
+    : public integral_constant<size_t, 2> {};
+
+// add address spaces
+
+template <typename T> struct add_generic { using type = __generic T; };
+template <typename T> struct add_global { using type = __global T; };
+template <typename T> struct add_private { using type = __private T; };
+template <typename T> struct add_local { using type = __local T; };
+template <typename T> struct add_constant { using type = __constant T; };
+
+// has_address_space
+
+template <typename T> struct has_address_space : public false_type {};
+
+template <typename T>
+struct has_address_space<__generic T> : public true_type {};
+template <typename T>
+struct has_address_space<__global T> : public true_type {};
+template <typename T>
+struct has_address_space<__private T> : public true_type {};
+template <typename T> struct has_address_space<__local T> : public true_type {};
+template <typename T>
+struct has_address_space<__constant T> : public true_type {};
+
+// is_generic
+
+template <typename T> struct is_generic : public false_type {};
+template <typename T> struct is_generic<__generic T> : public true_type {};
+
+// is_global
+
+template <typename T> struct is_global : public false_type {};
+template <typename T> struct is_global<__global T> : public true_type {};
+
+// is_private
+
+template <typename T> struct is_private : public false_type {};
+template <typename T> struct is_private<__private T> : public true_type {};
+
+// is_local
+
+template <typename T> struct is_local : public false_type {};
+template <typename T> struct is_local<__local T> : public true_type {};
+
+// is_constant
+
+template <typename T> struct is_constant : public false_type {};
+template <typename T> struct is_constant<__constant T> : public true_type {};
+
+// remove_address_space
+
+template <typename T> struct remove_address_space { using type = T; };
+
+template <typename T> struct remove_address_space<__generic T> {
+  using type = T;
+};
+template <typename T> struct remove_address_space<__global T> {
+  using type = T;
+};
+template <typename T> struct remove_address_space<__private T> {
+  using type = T;
+};
+template <typename T> struct remove_address_space<__local T> {
+  using type = T;
+};
+template <typename T> struct remove_address_space<__constant T> {
+  using type = T;
+};
+
 // is_floating_point support for half type
 
 template <> struct is_floating_point<half> : public true_type {};

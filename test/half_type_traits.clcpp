@@ -6,4 +6,50 @@ void test_float_traits() {
   static_assert(std::is_floating_point<double>::value);
   static_assert(!std::is_floating_point<int>::value);
   static_assert(!std::is_floating_point<char>::value);
+
+  static_assert(std::is_fundamental<half>::value);
+  static_assert(std::is_arithmetic<half>::value);
+  static_assert(std::is_scalar<half>::value);
+  static_assert(std::is_object<half>::value);
+  static_assert(std::is_pod<half>::value);
+  static_assert(std::is_standard_layout<half>::value);
+  static_assert(std::is_trivial<half>::value);
+
+  static_assert(std::is_constructible<half>::value == std::is_constructible<float>::value);
+  static_assert(std::is_trivially_constructible<half>::value == std::is_trivially_constructible<float>::value);
+  static_assert(std::is_nothrow_constructible<half>::value == std::is_nothrow_constructible<float>::value);
+  static_assert(std::is_default_constructible<half>::value == std::is_default_constructible<float>::value);
+  static_assert(std::is_trivially_default_constructible<half>::value == std::is_trivially_default_constructible<float>::value);
+  static_assert(std::is_nothrow_default_constructible<half>::value == std::is_nothrow_default_constructible<float>::value);
+  // FAIL: static_assert(std::is_copy_constructible<half>::value == std::is_copy_constructible<float>::value);
+  // FAIL: static_assert(std::is_trivially_copy_constructible<half>::value == std::is_trivially_copy_constructible<float>::value);
+  // FAIL: static_assert(std::is_nothrow_copy_constructible<half>::value == std::is_nothrow_copy_constructible<float>::value);
+  // FAIL: static_assert(std::is_move_constructible<half>::value == std::is_move_constructible<float>::value);
+  // FAIL: static_assert(std::is_trivially_move_constructible<half>::value == std::is_trivially_move_constructible<float>::value);
+  // FAIL: static_assert(std::is_nothrow_move_constructible<half>::value == std::is_nothrow_move_constructible<float>::value);
+
+  static_assert(!std::is_assignable<half, float>::value);
+  static_assert(!std::is_trivially_assignable<half, float>::value);
+  static_assert(!std::is_nothrow_assignable<half, float>::value);
+  // FAIL: static_assert(std::is_copy_assignable<half>::value == std::is_copy_assignable<float>::value);
+  // FAIL: static_assert(std::is_trivially_copy_assignable<half>::value == std::is_trivially_copy_assignable<float>::value);
+  // FAIL: static_assert(std::is_nothrow_copy_assignable<half>::value == std::is_nothrow_copy_assignable<float>::value);
+  // FAIL: static_assert(std::is_move_assignable<half>::value == std::is_move_assignable<float>::value);
+  // FAIL: static_assert(std::is_trivially_move_assignable<half>::value == std::is_trivially_move_assignable<float>::value);
+  // FAIL: static_assert(std::is_nothrow_move_assignable<half>::value == std::is_nothrow_move_assignable<float>::value);
+  
+  static_assert(std::is_destructible<half>::value == std::is_destructible<float>::value);
+  static_assert(std::is_trivially_destructible<half>::value == std::is_trivially_destructible<float>::value);
+  static_assert(std::is_nothrow_destructible<half>::value == std::is_nothrow_destructible<float>::value);
+  static_assert(std::has_virtual_destructor<half>::value == std::has_virtual_destructor<float>::value);
+  
+  static_assert(!std::is_swappable_with<half, float>::value);
+  // FAIL: static_assert(std::is_swappable<half>::value == std::is_swappable<float>::value);
+  static_assert(!std::is_nothrow_swappable_with<half, float>::value);
+  // FAIL: static_assert(std::is_nothrow_swappable<half>::value == std::is_nothrow_swappable<float>::value);
+  // FAIL: static_assert(std::alignment_of<half>::value == std::alignment_of<float>::value);
+  // FAIL: static_assert(std::is_convertible<half, float>::value);
+  static_assert(std::is_convertible<float, half>::value);
+  // FAIL: static_assert(std::is_convertible<half, int>::value);
+  static_assert(std::is_convertible<int, half>::value);
 }
