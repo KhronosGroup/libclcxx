@@ -1,3 +1,6 @@
+// Copyright (c) 2021 The Khronos Group Inc.
+// SPDX-License-Identifier: Apache-2.0
+
 #ifndef __OPENCL_TYPE_TRAITS
 #define __OPENCL_TYPE_TRAITS
 
