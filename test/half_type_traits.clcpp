@@ -2,10 +2,6 @@
 
 void test_float_traits() {
   static_assert(std::is_floating_point<half>::value);
-  static_assert(std::is_floating_point<float>::value);
-  static_assert(std::is_floating_point<double>::value);
-  static_assert(!std::is_floating_point<int>::value);
-  static_assert(!std::is_floating_point<char>::value);
 
   static_assert(std::is_fundamental<half>::value);
   static_assert(std::is_arithmetic<half>::value);
