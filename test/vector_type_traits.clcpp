@@ -1,3 +1,6 @@
+// Copyright (c) 2021 The Khronos Group Inc.
+// SPDX-License-Identifier: Apache-2.0
+
 /*
    FIXME: Enable remove_reference and remove_pointer tests after address space
    traits are added
