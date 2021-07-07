@@ -230,7 +230,7 @@ void instantiate_traits_tests() {
   traits_test<double16, double, double3>();
 }
 
-template <typename T> void __unsigned_traits_test() {
+template <typename T> void unsigned_traits_test() {
   static_assert(std::is_signed<typename std::make_signed<T>::type>::value);
   static_assert(std::is_unsigned<typename std::make_unsigned<T>::type>::value);
 }
