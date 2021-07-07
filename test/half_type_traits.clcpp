@@ -29,8 +29,11 @@ void test_float_traits() {
   // FAIL: static_assert(std::is_nothrow_move_constructible<half>::value == std::is_nothrow_move_constructible<float>::value);
 
   static_assert(!std::is_assignable<half, float>::value);
+  static_assert(!std::is_assignable<float, half>::value);
   static_assert(!std::is_trivially_assignable<half, float>::value);
+  static_assert(!std::is_trivially_assignable<float, half>::value);
   static_assert(!std::is_nothrow_assignable<half, float>::value);
+  static_assert(!std::is_nothrow_assignable<float, half>::value);
   // FAIL: static_assert(std::is_copy_assignable<half>::value == std::is_copy_assignable<float>::value);
   // FAIL: static_assert(std::is_trivially_copy_assignable<half>::value == std::is_trivially_copy_assignable<float>::value);
   // FAIL: static_assert(std::is_nothrow_copy_assignable<half>::value == std::is_nothrow_copy_assignable<float>::value);
@@ -47,9 +50,9 @@ void test_float_traits() {
   // FAIL: static_assert(std::is_swappable<half>::value == std::is_swappable<float>::value);
   static_assert(!std::is_nothrow_swappable_with<half, float>::value);
   // FAIL: static_assert(std::is_nothrow_swappable<half>::value == std::is_nothrow_swappable<float>::value);
-  // FAIL: static_assert(std::alignment_of<half>::value == std::alignment_of<float>::value);
-  // FAIL: static_assert(std::is_convertible<half, float>::value);
+  static_assert(std::alignment_of<half>::value == 0.5*std::alignment_of<float>::value);
+  static_assert(!std::is_convertible<half, float>::value);
   static_assert(std::is_convertible<float, half>::value);
-  // FAIL: static_assert(std::is_convertible<half, int>::value);
+  static_assert(!std::is_convertible<half, int>::value);
   static_assert(std::is_convertible<int, half>::value);
 }
