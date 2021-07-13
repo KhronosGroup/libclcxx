@@ -4,7 +4,7 @@ build_include = -I${PATH_TO_LLVM_BUILD}/include/c++/v1/
 test-all: *.bc
 
 *.bc: *.clcpp
-	clang ${libclcxx_include} ${build_include} -c *.clcpp --target=spir -emit-llvm ${ARGS}
+	clang ${libclcxx_include} ${build_include} -c *.clcpp --target=spir -emit-llvm
 
 clean:
 	rm *.bc
