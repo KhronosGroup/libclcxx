@@ -1,3 +1,10 @@
+// Clang-12 cannot compile this test due to a bug which has been addressed in clang-13
+#if defined(__clang_major__) && (__clang_major__ < 13)
+#error "Unsupported clang version - use clang-13 or later versions"
+#endif /* if defined __clang_major__ */
+
+#if defined(__clang_major__) && (__clang_major__ > 12)
+
 #include <opencl_type_traits>
 
 void test_float_traits() {
@@ -17,12 +24,12 @@ void test_float_traits() {
   static_assert(std::is_default_constructible<half>::value == std::is_default_constructible<float>::value);
   static_assert(std::is_trivially_default_constructible<half>::value == std::is_trivially_default_constructible<float>::value);
   static_assert(std::is_nothrow_default_constructible<half>::value == std::is_nothrow_default_constructible<float>::value);
-  // FAIL: static_assert(std::is_copy_constructible<half>::value == std::is_copy_constructible<float>::value);
-  // FAIL: static_assert(std::is_trivially_copy_constructible<half>::value == std::is_trivially_copy_constructible<float>::value);
-  // FAIL: static_assert(std::is_nothrow_copy_constructible<half>::value == std::is_nothrow_copy_constructible<float>::value);
-  // FAIL: static_assert(std::is_move_constructible<half>::value == std::is_move_constructible<float>::value);
-  // FAIL: static_assert(std::is_trivially_move_constructible<half>::value == std::is_trivially_move_constructible<float>::value);
-  // FAIL: static_assert(std::is_nothrow_move_constructible<half>::value == std::is_nothrow_move_constructible<float>::value);
+  static_assert(std::is_copy_constructible<half>::value == std::is_copy_constructible<float>::value);
+  static_assert(std::is_trivially_copy_constructible<half>::value == std::is_trivially_copy_constructible<float>::value);
+  static_assert(std::is_nothrow_copy_constructible<half>::value == std::is_nothrow_copy_constructible<float>::value);
+  static_assert(std::is_move_constructible<half>::value == std::is_move_constructible<float>::value);
+  static_assert(std::is_trivially_move_constructible<half>::value == std::is_trivially_move_constructible<float>::value);
+  static_assert(std::is_nothrow_move_constructible<half>::value == std::is_nothrow_move_constructible<float>::value);
 
   static_assert(!std::is_assignable<half, float>::value);
   static_assert(!std::is_assignable<float, half>::value);
@@ -30,12 +37,12 @@ void test_float_traits() {
   static_assert(!std::is_trivially_assignable<float, half>::value);
   static_assert(!std::is_nothrow_assignable<half, float>::value);
   static_assert(!std::is_nothrow_assignable<float, half>::value);
-  // FAIL: static_assert(std::is_copy_assignable<half>::value == std::is_copy_assignable<float>::value);
-  // FAIL: static_assert(std::is_trivially_copy_assignable<half>::value == std::is_trivially_copy_assignable<float>::value);
-  // FAIL: static_assert(std::is_nothrow_copy_assignable<half>::value == std::is_nothrow_copy_assignable<float>::value);
-  // FAIL: static_assert(std::is_move_assignable<half>::value == std::is_move_assignable<float>::value);
-  // FAIL: static_assert(std::is_trivially_move_assignable<half>::value == std::is_trivially_move_assignable<float>::value);
-  // FAIL: static_assert(std::is_nothrow_move_assignable<half>::value == std::is_nothrow_move_assignable<float>::value);
+  static_assert(std::is_copy_assignable<half>::value == std::is_copy_assignable<float>::value);
+  static_assert(std::is_trivially_copy_assignable<half>::value == std::is_trivially_copy_assignable<float>::value);
+  static_assert(std::is_nothrow_copy_assignable<half>::value == std::is_nothrow_copy_assignable<float>::value);
+  static_assert(std::is_move_assignable<half>::value == std::is_move_assignable<float>::value);
+  static_assert(std::is_trivially_move_assignable<half>::value == std::is_trivially_move_assignable<float>::value);
+  static_assert(std::is_nothrow_move_assignable<half>::value == std::is_nothrow_move_assignable<float>::value);
   
   static_assert(std::is_destructible<half>::value == std::is_destructible<float>::value);
   static_assert(std::is_trivially_destructible<half>::value == std::is_trivially_destructible<float>::value);
@@ -43,12 +50,14 @@ void test_float_traits() {
   static_assert(std::has_virtual_destructor<half>::value == std::has_virtual_destructor<float>::value);
   
   static_assert(!std::is_swappable_with<half, float>::value);
-  // FAIL: static_assert(std::is_swappable<half>::value == std::is_swappable<float>::value);
+  static_assert(std::is_swappable<half>::value == std::is_swappable<float>::value);
   static_assert(!std::is_nothrow_swappable_with<half, float>::value);
-  // FAIL: static_assert(std::is_nothrow_swappable<half>::value == std::is_nothrow_swappable<float>::value);
+  static_assert(std::is_nothrow_swappable<half>::value == std::is_nothrow_swappable<float>::value);
   static_assert(std::alignment_of<half>::value == 0.5*std::alignment_of<float>::value);
   static_assert(!std::is_convertible<half, float>::value);
   static_assert(std::is_convertible<float, half>::value);
   static_assert(!std::is_convertible<half, int>::value);
   static_assert(std::is_convertible<int, half>::value);
 }
+
+#endif /* if defined __clang_major__ */
