@@ -6,6 +6,10 @@
 
 #if defined(__clang_major__) && (__clang_major__ > 11)
 
+#if defined(__SPIR__)
+#define _LIBCPP_HAS_NO_THREADS
+#endif /* if defined __SPIR__ */
+
 // These clang extensions are necessary to include type traits from C++17
 #ifndef __cl_clang_function_pointers
 #error "Missing __cl_clang_function_pointers extension support"
