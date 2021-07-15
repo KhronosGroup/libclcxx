@@ -408,6 +408,54 @@ template <typename T> struct remove_address_space<__constant T> {
   using type = T;
 };
 
+// remove_pointer_address_space
+
+template <typename T> struct remove_pointer_address_space { using type = T; };
+
+template <typename T> struct remove_pointer_address_space<__generic T *> {
+  using type = T *;
+};
+template <typename T> struct remove_pointer_address_space<__global T *> {
+  using type = T *;
+};
+template <typename T> struct remove_pointer_address_space<__private T *> {
+  using type = T *;
+};
+template <typename T> struct remove_pointer_address_space<__local T *> {
+  using type = T *;
+};
+template <typename T> struct remove_pointer_address_space<__constant T *> {
+  using type = T *;
+};
+
+template <typename T>
+using remove_pointer_address_space_t =
+    typename remove_pointer_address_space<T>::type;
+
+// remove_reference_address_space
+
+template <typename T> struct remove_reference_address_space { using type = T; };
+
+template <typename T> struct remove_reference_address_space<__generic T &> {
+  using type = T &;
+};
+template <typename T> struct remove_reference_address_space<__global T &> {
+  using type = T &;
+};
+template <typename T> struct remove_reference_address_space<__private T &> {
+  using type = T &;
+};
+template <typename T> struct remove_reference_address_space<__local T &> {
+  using type = T &;
+};
+template <typename T> struct remove_reference_address_space<__constant T &> {
+  using type = T &;
+};
+
+template <typename T>
+using remove_reference_address_space_t =
+    typename remove_reference_address_space<T>::type;
+
 } // namespace std
 
 #else
