@@ -39,4 +39,10 @@ void test_address_space_traits() {
   static_assert(std::has_address_space<__local short2>::value);
   static_assert(std::has_address_space<__constant long>::value);
   static_assert(!std::has_address_space<float4>::value);
+
+  static_assert(std::is_same<std::add_generic_t<int>, __generic int>::value);
+  static_assert(std::is_same<std::add_global_t<char>, __global char>::value);
+  static_assert(std::is_same<std::add_private_t<__private int>, __private int>::value);
+  static_assert(std::is_same<std::add_local_t<int4>, __local int4>::value);
+  static_assert(std::is_same<std::add_constant_t<long>, __constant long>::value);
 }
