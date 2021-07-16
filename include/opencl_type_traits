@@ -349,10 +349,19 @@ inline constexpr size_t image_dimension_v = image_dimension<T>::value;
 // add address spaces
 
 template <typename T> struct add_generic { using type = __generic T; };
+template <typename T> using add_generic_t = typename add_generic<T>::type;
+
 template <typename T> struct add_global { using type = __global T; };
+template <typename T> using add_global_t = typename add_global<T>::type;
+
 template <typename T> struct add_private { using type = __private T; };
+template <typename T> using add_private_t = typename add_private<T>::type;
+
 template <typename T> struct add_local { using type = __local T; };
+template <typename T> using add_local_t = typename add_local<T>::type;
+
 template <typename T> struct add_constant { using type = __constant T; };
+template <typename T> using add_constant_t = typename add_constant<T>::type;
 
 // has_address_space
 
