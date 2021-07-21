@@ -2,24 +2,24 @@
 
 void test_misc_type_traits() {
   static_assert(std::is_image<image1d_t>::value);
-  static_assert(std::is_image<image2d_t>::value);
+  static_assert(std::is_image_v<image2d_t>);
   static_assert(std::is_image<image3d_t>::value);
-  static_assert(std::is_image<image1d_array_t>::value);
+  static_assert(std::is_image_v<image1d_array_t>);
   static_assert(std::is_image<image1d_buffer_t>::value);
-  static_assert(std::is_image<image2d_array_t>::value);
+  static_assert(std::is_image_v<image2d_array_t>);
   static_assert(std::is_image<image2d_depth_t>::value);
-  static_assert(std::is_image<image2d_array_depth_t>::value);
+  static_assert(std::is_image_v<image2d_array_depth_t>);
   static_assert(!std::is_image<sampler_t>::value);
-  static_assert(!std::is_image<uint2>::value);
+  static_assert(!std::is_image_v<uint2>);
 
   static_assert(std::image_dimension<image1d_t>::value == 1);
-  static_assert(std::image_dimension<image2d_t>::value == 2);
+  static_assert(std::image_dimension_v<image2d_t> == 2);
   static_assert(std::image_dimension<image3d_t>::value == 3);
-  static_assert(std::image_dimension<image1d_array_t>::value == 1);
+  static_assert(std::image_dimension_v<image1d_array_t> == 1);
   static_assert(std::image_dimension<image1d_buffer_t>::value == 1);
-  static_assert(std::image_dimension<image2d_array_t>::value == 2);
+  static_assert(std::image_dimension_v<image2d_array_t> == 2);
   static_assert(std::image_dimension<image2d_depth_t>::value == 2);
-  static_assert(std::image_dimension<image2d_array_depth_t>::value == 2);
+  static_assert(std::image_dimension_v<image2d_array_depth_t> == 2);
   static_assert(std::image_dimension<int>::value == 0);
-  static_assert(std::image_dimension<ndrange_t>::value == 0);
+  static_assert(std::image_dimension_v<ndrange_t> == 0);
 }

@@ -2,15 +2,15 @@
 
 void test_address_space_traits() {
   static_assert(
-      std::is_same<std::remove_address_space<__generic int>::type, int>::value);
+      std::is_same<std::remove_address_space_t<__generic int>, int>::value);
   static_assert(std::is_same<std::remove_address_space<__global char>::type,
                              char>::value);
-  static_assert(std::is_same<std::remove_address_space<__private ulong>::type,
-                             ulong>::value);
+  static_assert(
+      std::is_same<std::remove_address_space_t<__private ulong>, ulong>::value);
   static_assert(std::is_same<std::remove_address_space<__local short>::type,
                              short>::value);
-  static_assert(std::is_same<std::remove_address_space<__constant int3>::type,
-                             int3>::value);
+  static_assert(
+      std::is_same<std::remove_address_space_t<__constant int3>, int3>::value);
 
   static_assert(
       std::is_same<std::add_generic<char>::type, __generic char>::value);
@@ -22,33 +22,42 @@ void test_address_space_traits() {
   static_assert(
       std::is_same<std::add_constant<char>::type, __constant char>::value);
 
-  static_assert(std::is_generic<__generic char>::value);
+  static_assert(std::is_generic_v<__generic char>);
   static_assert(!std::is_generic<char>::value);
   static_assert(std::is_global<__global int>::value);
-  static_assert(!std::is_global<int>::value);
-  static_assert(std::is_private<__private float16>::value);
+  static_assert(!std::is_global_v<int>);
+  static_assert(std::is_private_v<__private float16>);
   static_assert(!std::is_private<__global char3>::value);
   static_assert(std::is_local<__local double>::value);
-  static_assert(!std::is_local<short>::value);
-  static_assert(std::is_constant<__constant int>::value);
+  static_assert(!std::is_local_v<short>);
+  static_assert(std::is_constant_v<__constant int>);
   static_assert(!std::is_constant<__generic char>::value);
 
-  static_assert(std::has_address_space<__generic int>::value);
+  static_assert(std::has_address_space_v<__generic int>);
   static_assert(std::has_address_space<__global char>::value);
-  static_assert(std::has_address_space<__private float>::value);
+  static_assert(std::has_address_space_v<__private float>);
   static_assert(std::has_address_space<__local short2>::value);
-  static_assert(std::has_address_space<__constant long>::value);
+  static_assert(std::has_address_space_v<__constant long>);
   static_assert(!std::has_address_space<float4>::value);
 
   static_assert(
-      std::is_same<std::remove_pointer_address_space_t<__generic int *>,
+      std::is_same<std::remove_pointer_address_space<__generic int *>::type,
                    int *>::value);
-  static_assert(std::is_same<std::remove_pointer_address_space_t<const void *>,
-                             const void *>::value);
   static_assert(
-      std::is_same<std::remove_reference_address_space_t<__local char &>,
+      std::is_same<std::remove_pointer_address_space<const void *>::type,
+                   const void *>::value);
+  static_assert(
+      std::is_same<std::remove_reference_address_space<__local char &>::type,
                    char &>::value);
   static_assert(
-      std::is_same<std::remove_reference_address_space_t<const half &>,
+      std::is_same<std::remove_reference_address_space<const half &>::type,
                    const half &>::value);
+
+  static_assert(std::is_same<std::add_generic_t<int>, __generic int>::value);
+  static_assert(std::is_same<std::add_global_t<char>, __global char>::value);
+  static_assert(
+      std::is_same<std::add_private_t<__private int>, __private int>::value);
+  static_assert(std::is_same<std::add_local_t<int4>, __local int4>::value);
+  static_assert(
+      std::is_same<std::add_constant_t<long>, __constant long>::value);
 }
