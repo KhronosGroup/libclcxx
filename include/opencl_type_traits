@@ -314,6 +314,8 @@ template <> struct is_image<image2d_array_t> : public true_type {};
 template <> struct is_image<image2d_depth_t> : public true_type {};
 template <> struct is_image<image2d_array_depth_t> : public true_type {};
 
+template <typename T> inline constexpr bool is_image_v = is_image<T>::value;
+
 // image_dimension
 
 template <typename T>
@@ -341,13 +343,25 @@ template <>
 struct image_dimension<image2d_array_depth_t>
     : public integral_constant<size_t, 2> {};
 
+template <typename T>
+inline constexpr size_t image_dimension_v = image_dimension<T>::value;
+
 // add address spaces
 
 template <typename T> struct add_generic { using type = __generic T; };
+template <typename T> using add_generic_t = typename add_generic<T>::type;
+
 template <typename T> struct add_global { using type = __global T; };
+template <typename T> using add_global_t = typename add_global<T>::type;
+
 template <typename T> struct add_private { using type = __private T; };
+template <typename T> using add_private_t = typename add_private<T>::type;
+
 template <typename T> struct add_local { using type = __local T; };
+template <typename T> using add_local_t = typename add_local<T>::type;
+
 template <typename T> struct add_constant { using type = __constant T; };
+template <typename T> using add_constant_t = typename add_constant<T>::type;
 
 // has_address_space
 
@@ -363,30 +377,39 @@ template <typename T> struct has_address_space<__local T> : public true_type {};
 template <typename T>
 struct has_address_space<__constant T> : public true_type {};
 
+template <typename T>
+inline constexpr bool has_address_space_v = has_address_space<T>::value;
+
 // is_generic
 
 template <typename T> struct is_generic : public false_type {};
 template <typename T> struct is_generic<__generic T> : public true_type {};
+template <typename T> inline constexpr bool is_generic_v = is_generic<T>::value;
 
 // is_global
 
 template <typename T> struct is_global : public false_type {};
 template <typename T> struct is_global<__global T> : public true_type {};
+template <typename T> inline constexpr bool is_global_v = is_global<T>::value;
 
 // is_private
 
 template <typename T> struct is_private : public false_type {};
 template <typename T> struct is_private<__private T> : public true_type {};
+template <typename T> inline constexpr bool is_private_v = is_private<T>::value;
 
 // is_local
 
 template <typename T> struct is_local : public false_type {};
 template <typename T> struct is_local<__local T> : public true_type {};
+template <typename T> inline constexpr bool is_local_v = is_local<T>::value;
 
 // is_constant
 
 template <typename T> struct is_constant : public false_type {};
 template <typename T> struct is_constant<__constant T> : public true_type {};
+template <typename T>
+inline constexpr bool is_constant_v = is_constant<T>::value;
 
 // remove_address_space
 
@@ -407,6 +430,9 @@ template <typename T> struct remove_address_space<__local T> {
 template <typename T> struct remove_address_space<__constant T> {
   using type = T;
 };
+
+template <typename T>
+using remove_address_space_t = typename remove_address_space<T>::type;
 
 // is_floating_point support for half type
 
@@ -434,6 +460,10 @@ template <> struct is_nothrow_move_assignable<half> : public true_type {};
 
 template <> struct is_swappable<half> : public true_type {};
 template <> struct is_nothrow_swappable<half> : public true_type {};
+
+// is_convertible<half, float>
+
+template <> struct is_convertible<half, float> : public true_type {};
 
 } // namespace std
 
