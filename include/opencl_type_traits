@@ -434,53 +434,171 @@ template <typename T> struct remove_address_space<__constant T> {
 template <typename T>
 using remove_address_space_t = typename remove_address_space<T>::type;
 
-// remove_pointer_address_space
+// replace_pointer_address_space
 
-template <typename T> struct remove_pointer_address_space { using type = T; };
-
-template <typename T> struct remove_pointer_address_space<__generic T *> {
-  using type = T *;
-};
-template <typename T> struct remove_pointer_address_space<__global T *> {
-  using type = T *;
-};
-template <typename T> struct remove_pointer_address_space<__private T *> {
-  using type = T *;
-};
-template <typename T> struct remove_pointer_address_space<__local T *> {
-  using type = T *;
-};
-template <typename T> struct remove_pointer_address_space<__constant T *> {
-  using type = T *;
+template <typename T, typename U> struct replace_pointer_address_space {
+  using type = T;
 };
 
+template <typename T, typename U>
+struct replace_pointer_address_space<T, __generic U *> {
+  using type = __generic T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<T, __global U *> {
+  using type = __global T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<T, __private U *> {
+  using type = __private T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<T, __local U *> {
+  using type = __local T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<T, __constant U *> {
+  using type = __constant T *;
+};
+
+template <typename T, typename U>
+using replace_pointer_address_space_t =
+    typename replace_pointer_address_space<T, U>::type;
+
+// add_<address_space>_pointer_address_space
+
+template <typename T> struct add_generic_pointer_address_space {
+  using type = T;
+};
+template <typename T> struct add_generic_pointer_address_space<T *> {
+  using type = __generic typename remove_address_space<T>::type *;
+};
 template <typename T>
-using remove_pointer_address_space_t =
-    typename remove_pointer_address_space<T>::type;
+using add_generic_pointer_address_space_t =
+    typename add_generic_pointer_address_space<T>::type;
 
-// remove_reference_address_space
-
-template <typename T> struct remove_reference_address_space { using type = T; };
-
-template <typename T> struct remove_reference_address_space<__generic T &> {
-  using type = T &;
+template <typename T> struct add_global_pointer_address_space {
+  using type = T;
 };
-template <typename T> struct remove_reference_address_space<__global T &> {
-  using type = T &;
+template <typename T> struct add_global_pointer_address_space<T *> {
+  using type = __global typename remove_address_space<T>::type *;
 };
-template <typename T> struct remove_reference_address_space<__private T &> {
-  using type = T &;
-};
-template <typename T> struct remove_reference_address_space<__local T &> {
-  using type = T &;
-};
-template <typename T> struct remove_reference_address_space<__constant T &> {
-  using type = T &;
-};
-
 template <typename T>
-using remove_reference_address_space_t =
-    typename remove_reference_address_space<T>::type;
+using add_global_pointer_address_space_t =
+    typename add_global_pointer_address_space<T>::type;
+
+template <typename T> struct add_private_pointer_address_space {
+  using type = T;
+};
+template <typename T> struct add_private_pointer_address_space<T *> {
+  using type = __private typename remove_address_space<T>::type *;
+};
+template <typename T>
+using add_private_pointer_address_space_t =
+    typename add_private_pointer_address_space<T>::type;
+
+template <typename T> struct add_local_pointer_address_space {
+  using type = T;
+};
+template <typename T> struct add_local_pointer_address_space<T *> {
+  using type = __local typename remove_address_space<T>::type *;
+};
+template <typename T>
+using add_local_pointer_address_space_t =
+    typename add_local_pointer_address_space<T>::type;
+
+template <typename T> struct add_constant_pointer_address_space {
+  using type = T;
+};
+template <typename T> struct add_constant_pointer_address_space<T *> {
+  using type = __constant typename remove_address_space<T>::type *;
+};
+template <typename T>
+using add_constant_pointer_address_space_t =
+    typename add_constant_pointer_address_space<T>::type;
+
+// replace_reference_address_space
+
+template <typename T, typename U> struct replace_reference_address_space {
+  using type = T;
+};
+
+template <typename T, typename U>
+struct replace_reference_address_space<T, __generic U &> {
+  using type = __generic T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<T, __global U &> {
+  using type = __global T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<T, __private U &> {
+  using type = __private T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<T, __local U &> {
+  using type = __local T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<T, __constant U &> {
+  using type = __constant T &;
+};
+
+template <typename T, typename U>
+using replace_reference_address_space_t =
+    typename replace_reference_address_space<T, U>::type;
+
+// add_<address_space>_reference_address_space
+
+template <typename T> struct add_generic_reference_address_space {
+  using type = T;
+};
+template <typename T> struct add_generic_reference_address_space<T &> {
+  using type = __generic typename remove_address_space<T>::type &;
+};
+template <typename T>
+using add_generic_reference_address_space_t =
+    typename add_generic_reference_address_space<T>::type;
+
+template <typename T> struct add_global_reference_address_space {
+  using type = T;
+};
+template <typename T> struct add_global_reference_address_space<T &> {
+  using type = __global typename remove_address_space<T>::type &;
+};
+template <typename T>
+using add_global_reference_address_space_t =
+    typename add_global_reference_address_space<T>::type;
+
+template <typename T> struct add_private_reference_address_space {
+  using type = T;
+};
+template <typename T> struct add_private_reference_address_space<T &> {
+  using type = __private typename remove_address_space<T>::type &;
+};
+template <typename T>
+using add_private_reference_address_space_t =
+    typename add_private_reference_address_space<T>::type;
+
+template <typename T> struct add_local_reference_address_space {
+  using type = T;
+};
+template <typename T> struct add_local_reference_address_space<T &> {
+  using type = __local typename remove_address_space<T>::type &;
+};
+template <typename T>
+using add_local_reference_address_space_t =
+    typename add_local_reference_address_space<T>::type;
+
+template <typename T> struct add_constant_reference_address_space {
+  using type = T;
+};
+template <typename T> struct add_constant_reference_address_space<T &> {
+  using type = __constant typename remove_address_space<T>::type &;
+};
+template <typename T>
+using add_constant_reference_address_space_t =
+    typename add_constant_reference_address_space<T>::type;
 
 // is_floating_point support for half type
 
