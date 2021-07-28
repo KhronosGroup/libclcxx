@@ -41,7 +41,7 @@ if (DEFAULT_CLANG)
   add_custom_command(
     TARGET cxx
     POST_BUILD
-    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_BINARY_DIR}/include/c++/v1/
+    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/
     COMMENT "Copying libclcxx include files into build include dir"
     )
   add_custom_target(
@@ -75,7 +75,7 @@ if (NOT CLANG_PATH STREQUAL "")
   add_custom_command(
     TARGET cxx
     POST_BUILD
-    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_BINARY_DIR}/include/c++/v1/
+    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/
     COMMENT "Copying libclcxx include files into build include dir"
     )
   add_custom_target(
@@ -148,12 +148,12 @@ if (NOT CUSTOM_COMMAND_USED)
   add_custom_command(
     TARGET tools
     POST_BUILD
-    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_BINARY_DIR}/include/c++/v1/
+    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/
     COMMENT "Copying libclcxx include files into build include dir"
     )
   add_custom_target(
     test
-    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/bin/clang-13
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang-13
     )
   add_custom_target(
     clean_test
