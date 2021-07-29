@@ -18,9 +18,12 @@ endif()
 project(libclcxx)
 
 set(CUSTOM_COMMAND_USED OFF CACHE BOOL "A variable to see if a custom configuration command is called")
+set(LLVM_TARGETS_TO_BUILD="X86" CACHE STRING "This is the default target build system type")
+set(CMAKE_BUILD_TYPE "Debug")
 
 # Default clang build; uses the command "clang" to call and use clang to compile libcxx and tests
-# Note this option only works if the clang executable or symlink is called "clang" and not "clang-12" or "clang-13" 
+# Note this option only works if the clang executable or symlink is called "clang" and not "clang-12" or "clang-13"
+# In those cases it's recommended to use the CLANG_PATH option
 if (DEFAULT_CLANG)
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
     message(FATAL_ERROR "Libclcxx does not support clang versions older than clang-12")
@@ -39,7 +42,7 @@ if (DEFAULT_CLANG)
     DEPENDS cxx
     )
   add_custom_command(
-    TARGET cxx
+    TARGET tools
     POST_BUILD
     COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/
     COMMENT "Copying libclcxx include files into build include dir"
@@ -73,7 +76,7 @@ if (NOT CLANG_PATH STREQUAL "")
     DEPENDS cxx
     )
   add_custom_command(
-    TARGET cxx
+    TARGET tools
     POST_BUILD
     COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/
     COMMENT "Copying libclcxx include files into build include dir"
@@ -88,13 +91,10 @@ if (NOT CLANG_PATH STREQUAL "")
     )
 endif()
 
-# Default libcxx build; ???
+# Default libcxx build; uses default installation of libcxx in system
 if (DEFAULT_LIBCXX)
-  # This needs to be amended, I'm not sure how to find and include the default libcxx library and the necessary include for the tests
   set(CUSTOM_COMMAND_USED ON)
-  set(LLVM_ENABLE_LIBCXX ON CACHE BOOL "This is required to allow libstdc++ tests to pass" FORCE)
   set(LLVM_ENABLE_PROJECTS "clang" CACHE STRING "Enable project clang")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
   add_subdirectory(llvm-project/llvm)
   message(STATUS "Using default libcxx installation in system")
   message(STATUS "Configuring tests")
@@ -102,20 +102,30 @@ if (DEFAULT_LIBCXX)
     tools
     DEPENDS clang
     )
+  add_custom_command(
+    TARGET tools
+    POST_BUILD
+    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_INSTALL_PREFIX}/include/c++/v1/
+    COMMENT "Copying libclcxx include files into build include dir"
+    )
   add_custom_target(
     test
-    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/bin/clang-13
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_INSTALL_PREFIX}/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang-13
     )
   add_custom_target(
     clean_test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
+    )
+  add_custom_target(
+    remove_libclcxx
+    command cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_*
     )
 endif()
 
 # Libcxx path given build; builds clang using default system compiler and compiles tests using built clang and libcxx library path provided
 if (NOT LIBCXX_PATH STREQUAL "")
   set(CUSTOM_COMMAND_USED ON)
-  set(LLVM_ENABLE_LIBCXX ON CACHE BOOL "This is required to allow libstdc++ tests to pass" FORCE)
+  #set(LLVM_ENABLE_LIBCXX ON CACHE BOOL "This is required to allow libstdc++ tests to pass" FORCE)
   set(LLVM_ENABLE_PROJECTS "clang" CACHE STRING "Enable project clang")
   add_subdirectory(llvm-project/llvm)
   message(STATUS "Using path to libcxx provided")
@@ -124,13 +134,23 @@ if (NOT LIBCXX_PATH STREQUAL "")
     tools
     DEPENDS clang
     )
+  add_custom_command(
+    TARGET tools
+    POST_BUILD
+    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${LIBCXX_PATH}/include/c++/v1/
+    COMMENT "Copying libclcxx include files into build include dir"
+    )
   add_custom_target(
     test
-    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH} CLANG_PATH=${CMAKE_BINARY_DIR}/bin/clang-13
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang-13
     )
   add_custom_target(
     clean_test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
+    )
+  add_custom_target(
+    remove_libclcxx
+    command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
 endif()
 
