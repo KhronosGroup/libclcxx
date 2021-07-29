@@ -441,24 +441,88 @@ template <typename T, typename U> struct replace_pointer_address_space {
 };
 
 template <typename T, typename U>
-struct replace_pointer_address_space<T, __generic U *> {
-  using type = __generic T *;
-};
-template <typename T, typename U>
-struct replace_pointer_address_space<T, __global U *> {
+struct replace_pointer_address_space<__generic T *, __global U *> {
   using type = __global T *;
 };
 template <typename T, typename U>
-struct replace_pointer_address_space<T, __private U *> {
+struct replace_pointer_address_space<__generic T *, __private U *> {
   using type = __private T *;
 };
 template <typename T, typename U>
-struct replace_pointer_address_space<T, __local U *> {
+struct replace_pointer_address_space<__generic T *, __local U *> {
   using type = __local T *;
 };
 template <typename T, typename U>
-struct replace_pointer_address_space<T, __constant U *> {
+struct replace_pointer_address_space<__generic T *, __constant U *> {
   using type = __constant T *;
+};
+
+template <typename T, typename U>
+struct replace_pointer_address_space<__global T *, __generic U *> {
+  using type = __generic T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__global T *, __private U *> {
+  using type = __private T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__global T *, __local U *> {
+  using type = __local T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__global T *, __constant U *> {
+  using type = __constant T *;
+};
+
+template <typename T, typename U>
+struct replace_pointer_address_space<__private T *, __global U *> {
+  using type = __global T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__private T *, __generic U *> {
+  using type = __private T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__private T *, __local U *> {
+  using type = __local T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__private T *, __constant U *> {
+  using type = __constant T *;
+};
+
+template <typename T, typename U>
+struct replace_pointer_address_space<__local T *, __global U *> {
+  using type = __global T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__local T *, __private U *> {
+  using type = __private T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__local T *, __generic U *> {
+  using type = __generic T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__local T *, __constant U *> {
+  using type = __constant T *;
+};
+
+template <typename T, typename U>
+struct replace_pointer_address_space<__constant T *, __global U *> {
+  using type = __global T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__constant T *, __private U *> {
+  using type = __private T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__constant T *, __local U *> {
+  using type = __local T *;
+};
+template <typename T, typename U>
+struct replace_pointer_address_space<__constant T *, __generic U *> {
+  using type = __generic T *;
 };
 
 template <typename T, typename U>
@@ -524,29 +588,89 @@ template <typename T, typename U> struct replace_reference_address_space {
 };
 
 template <typename T, typename U>
-struct replace_reference_address_space<T, __generic U &> {
-  using type = __generic T &;
-};
-template <typename T, typename U>
-struct replace_reference_address_space<T, __global U &> {
+struct replace_reference_address_space<__generic T &, __global U &> {
   using type = __global T &;
 };
 template <typename T, typename U>
-struct replace_reference_address_space<T, __private U &> {
+struct replace_reference_address_space<__generic T &, __private U &> {
   using type = __private T &;
 };
 template <typename T, typename U>
-struct replace_reference_address_space<T, __local U &> {
+struct replace_reference_address_space<__generic T &, __local U &> {
   using type = __local T &;
 };
 template <typename T, typename U>
-struct replace_reference_address_space<T, __constant U &> {
+struct replace_reference_address_space<__generic T &, __constant U &> {
   using type = __constant T &;
 };
 
 template <typename T, typename U>
-using replace_reference_address_space_t =
-    typename replace_reference_address_space<T, U>::type;
+struct replace_reference_address_space<__global T &, __generic U &> {
+  using type = __generic T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__global T &, __private U &> {
+  using type = __private T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__global T &, __local U &> {
+  using type = __local T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__global T &, __constant U &> {
+  using type = __constant T &;
+};
+
+template <typename T, typename U>
+struct replace_reference_address_space<__private T &, __global U &> {
+  using type = __global T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__private T &, __generic U &> {
+  using type = __private T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__private T &, __local U &> {
+  using type = __local T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__private T &, __constant U &> {
+  using type = __constant T &;
+};
+
+template <typename T, typename U>
+struct replace_reference_address_space<__local T &, __global U &> {
+  using type = __global T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__local T &, __private U &> {
+  using type = __private T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__local T &, __generic U &> {
+  using type = __generic T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__local T &, __constant U &> {
+  using type = __constant T &;
+};
+
+template <typename T, typename U>
+struct replace_reference_address_space<__constant T &, __global U &> {
+  using type = __global T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__constant T &, __private U &> {
+  using type = __private T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__constant T &, __local U &> {
+  using type = __local T &;
+};
+template <typename T, typename U>
+struct replace_reference_address_space<__constant T &, __generic U &> {
+  using type = __generic T &;
+};
 
 // add_<address_space>_reference_address_space
 
