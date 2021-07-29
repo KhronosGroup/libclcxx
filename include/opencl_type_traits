@@ -480,7 +480,7 @@ struct replace_pointer_address_space<__private T *, __global U *> {
 };
 template <typename T, typename U>
 struct replace_pointer_address_space<__private T *, __generic U *> {
-  using type = __private T *;
+  using type = __generic T *;
 };
 template <typename T, typename U>
 struct replace_pointer_address_space<__private T *, __local U *> {
@@ -627,7 +627,7 @@ struct replace_reference_address_space<__private T &, __global U &> {
 };
 template <typename T, typename U>
 struct replace_reference_address_space<__private T &, __generic U &> {
-  using type = __private T &;
+  using type = __generic T &;
 };
 template <typename T, typename U>
 struct replace_reference_address_space<__private T &, __local U &> {
@@ -671,6 +671,10 @@ template <typename T, typename U>
 struct replace_reference_address_space<__constant T &, __generic U &> {
   using type = __generic T &;
 };
+
+template <typename T, typename U>
+using replace_reference_address_space_t =
+    typename replace_reference_address_space<T, U>::type;
 
 // add_<address_space>_reference_address_space
 
