@@ -40,9 +40,126 @@ void test_address_space_traits() {
   static_assert(std::has_address_space_v<__constant long>);
   static_assert(!std::has_address_space<float4>::value);
 
-  static_assert(std::is_same<std::add_generic_t<int>, __generic int>::value);
-  static_assert(std::is_same<std::add_global_t<char>, __global char>::value);
-  static_assert(std::is_same<std::add_private_t<__private int>, __private int>::value);
-  static_assert(std::is_same<std::add_local_t<int4>, __local int4>::value);
-  static_assert(std::is_same<std::add_constant_t<long>, __constant long>::value);
+  static_assert(
+      std::is_global<std::remove_pointer<std::replace_pointer_address_space<
+          __generic int *, __global int *>::type>::type>::value);
+  static_assert(
+      std::is_generic<std::remove_pointer<std::replace_pointer_address_space<
+          __global char *, __generic char *>::type>::type>::value);
+  static_assert(
+      std::is_private<std::remove_pointer<std::replace_pointer_address_space<
+          __local long *, __private long *>::type>::type>::value);
+  static_assert(
+      std::is_local<std::remove_pointer<std::replace_pointer_address_space<
+          __constant short *, __local short *>::type>::type>::value);
+  static_assert(
+      std::is_constant<std::remove_pointer<std::replace_pointer_address_space<
+          __private double *, __constant double *>::type>::type>::value);
+  static_assert(
+      !std::is_local<std::remove_pointer<std::replace_pointer_address_space<
+          __local double *, __constant double *>::type>::type>::value);
+  static_assert(
+      !std::is_generic<std::remove_pointer<std::replace_pointer_address_space<
+          __generic double *, __private double *>::type>::type>::value);
+  static_assert(
+      !std::is_constant<std::remove_pointer<std::replace_pointer_address_space<
+          __private double &, __constant double *>::type>::type>::value);
+  static_assert(
+      !std::is_generic<std::remove_pointer<std::replace_pointer_address_space<
+          __private double, __generic double *>::type>::type>::value);
+
+  static_assert(
+      std::is_generic<std::remove_pointer<
+          std::add_generic_pointer_address_space<int *>::type>::type>::value);
+  static_assert(
+      std::is_global<std::remove_pointer<
+          std::add_global_pointer_address_space<double *>::type>::type>::value);
+  static_assert(
+      std::is_private<std::remove_pointer<
+          std::add_private_pointer_address_space<char *>::type>::type>::value);
+  static_assert(
+      std::is_local<std::remove_pointer<
+          std::add_local_pointer_address_space<short *>::type>::type>::value);
+  static_assert(
+      std::is_constant<std::remove_pointer<
+          std::add_constant_pointer_address_space<long *>::type>::type>::value);
+  static_assert(
+      !std::is_constant<std::remove_pointer<
+          std::add_private_pointer_address_space<long *>::type>::type>::value);
+  static_assert(
+      !std::is_generic<std::remove_pointer<
+          std::add_local_pointer_address_space<long *>::type>::type>::value);
+  static_assert(
+      !std::is_local<std::remove_pointer<
+          std::add_local_pointer_address_space<long &>::type>::type>::value);
+  static_assert(
+      !std::is_private<std::remove_pointer<
+          std::add_private_pointer_address_space<short>::type>::type>::value);
+
+  static_assert(
+      std::is_global<std::remove_reference<std::replace_reference_address_space<
+          __generic int &, __global int &>::type>::type>::value);
+  static_assert(std::is_generic<
+                std::remove_reference<std::replace_reference_address_space<
+                    __local char &, __generic char &>::type>::type>::value);
+  static_assert(std::is_private<
+                std::remove_reference<std::replace_reference_address_space<
+                    __global long &, __private long &>::type>::type>::value);
+  static_assert(
+      std::is_local<std::remove_reference<std::replace_reference_address_space<
+          __constant short &, __local short &>::type>::type>::value);
+  static_assert(
+      std::is_constant<
+          std::remove_reference<std::replace_reference_address_space<
+              __private double &, __constant double &>::type>::type>::value);
+  static_assert(
+      !std::is_global<
+          std::remove_reference<std::replace_reference_address_space<
+              __global double &, __constant double &>::type>::type>::value);
+  static_assert(!std::is_generic<
+                std::remove_reference<std::replace_reference_address_space<
+                    __generic float &, __local double &>::type>::type>::value);
+  static_assert(
+      !std::is_local<std::remove_reference<std::replace_reference_address_space<
+          __generic float *, __local double &>::type>::type>::value);
+  static_assert(!std::is_generic<
+                std::remove_reference<std::replace_reference_address_space<
+                    __local float, __generic double &>::type>::type>::value);
+
+  static_assert(
+      std::is_generic<std::remove_reference<
+          std::add_generic_reference_address_space<int &>::type>::type>::value);
+  static_assert(
+      std::is_global<std::remove_reference<
+          std::add_global_reference_address_space<double &>::type>::type>::
+          value);
+  static_assert(
+      std::is_private<std::remove_reference<
+          std::add_private_reference_address_space<char &>::type>::type>::
+          value);
+  static_assert(
+      std::is_local<std::remove_reference<
+          std::add_local_reference_address_space<short &>::type>::type>::value);
+  static_assert(
+      std::is_constant<std::remove_reference<
+          std::add_constant_reference_address_space<long &>::type>::type>::
+          value);
+  static_assert(
+      !std::is_constant<std::remove_reference<
+          std::add_private_reference_address_space<int &>::type>::type>::value);
+  static_assert(
+      !std::is_generic<std::remove_reference<
+          std::add_local_reference_address_space<char &>::type>::type>::value);
+  static_assert(
+      !std::is_private<std::remove_reference<
+          std::add_private_reference_address_space<int *>::type>::type>::value);
+  static_assert(
+      !std::is_local<std::remove_reference<
+          std::add_local_reference_address_space<char>::type>::type>::value);
+
+  static_assert(std::is_generic<std::add_generic_t<int>>::value);
+  static_assert(std::is_global<std::add_global_t<char>>::value);
+  static_assert(std::is_private<std::add_private_t<__private int>>::value);
+  static_assert(std::is_local<std::add_local_t<int4>>::value);
+  static_assert(std::is_constant<std::add_constant_t<long>>::value);
 }
