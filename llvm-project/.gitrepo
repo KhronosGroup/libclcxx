@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/llvm/llvm-project
+	branch = main
+	commit = 23d4c4f3fb12e127a5f07a7082f33b02082bb3f5
+	parent = 40f1d0423b472e221d2877237f1276b8fa5a2e2f
+	method = merge
+	cmdver = 0.4.3
