@@ -1,10 +1,10 @@
 // Clang-12 cannot compile this test due to a bug which has been addressed in clang-13
 // The bug has to do with the is_convertible type trait as it compiles with it commented out
-#if defined(__clang_major__) && (__clang_major__ < 12)
+#if defined(__clang_major__) && (__clang_major__ < 13)
 #error "Unsupported clang version - use clang-13 or later versions"
 #endif /* if defined __clang_major__ */
 
-#if defined(__clang_major__) && (__clang_major__ > 11)
+#if defined(__clang_major__) && (__clang_major__ > 12)
 
 #include <opencl_type_traits>
 
