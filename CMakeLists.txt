@@ -173,7 +173,7 @@ if (NOT CUSTOM_COMMAND_USED)
     )
   add_custom_target(
     test
-    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang-13
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang-14
     )
   add_custom_target(
     clean_test
