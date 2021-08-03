@@ -24,7 +24,7 @@ set(CMAKE_BUILD_TYPE "Debug")
 # Default clang build; uses the command "clang" to call and use clang to compile libcxx and tests
 # Note this option only works if the clang executable or symlink is called "clang" and not "clang-12" or "clang-13"
 # In those cases it's recommended to use the CLANG_PATH option
-if (DEFAULT_CLANG)
+if (DEFAULT_CLANG AND NOT DEFAULT LIBCXX)
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
     message(FATAL_ERROR "Libclcxx does not support clang versions older than clang-12")
   endif()
@@ -58,7 +58,7 @@ if (DEFAULT_CLANG)
 endif()
 
 # Clang path given build; Builds libcxx and compiles tests using the clang executable path provided
-if (NOT CLANG_PATH STREQUAL "")
+if (LIBCXX_PATH STREQUAL "" AND NOT CLANG_PATH STREQUAL "")
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
     message(FATAL_ERROR "Libclcxx does not support clang versions older than clang-12")
   endif()
@@ -92,7 +92,7 @@ if (NOT CLANG_PATH STREQUAL "")
 endif()
 
 # Default libcxx build; uses default installation of libcxx in system
-if (DEFAULT_LIBCXX)
+if (DEFAULT_LIBCXX AND NOT DEFAULT_CLANG)
   set(CUSTOM_COMMAND_USED ON)
   set(LLVM_ENABLE_PROJECTS "clang" CACHE STRING "Enable project clang")
   add_subdirectory(llvm-project/llvm)
@@ -123,9 +123,8 @@ if (DEFAULT_LIBCXX)
 endif()
 
 # Libcxx path given build; builds clang using default system compiler and compiles tests using built clang and libcxx library path provided
-if (NOT LIBCXX_PATH STREQUAL "")
+if (CLANG_PATH STREQUAL "" AND NOT LIBCXX_PATH STREQUAL "")
   set(CUSTOM_COMMAND_USED ON)
-  #set(LLVM_ENABLE_LIBCXX ON CACHE BOOL "This is required to allow libstdc++ tests to pass" FORCE)
   set(LLVM_ENABLE_PROJECTS "clang" CACHE STRING "Enable project clang")
   add_subdirectory(llvm-project/llvm)
   message(STATUS "Using path to libcxx provided")
@@ -143,6 +142,76 @@ if (NOT LIBCXX_PATH STREQUAL "")
   add_custom_target(
     test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang-13
+    )
+  add_custom_target(
+    clean_test
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
+    )
+  add_custom_target(
+    remove_libclcxx
+    command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
+    )
+endif()
+
+# Default clang and default libcxx build; uses default clang and libcxx installation paths to compile tests
+if (DEFAULT_CLANG AND DEFAULT_CXX)
+  if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
+    message(FATAL_ERROR "Libclcxx does not support clang versions older than clang-12")
+  endif()
+  set(CUSTOM_COMMAND_USED ON)
+  message(STATUS "Using default installation of clang")
+  message(STATUS "Using default installation of libcxx")
+  message(STATUS "Configuring tests")
+  if (CMAKE_CXX_COMPILER_VERSION EQUAL 12)
+    set(EXTRA_CLANG_12_FLAGS "-x cl -Xclang -finclude-default-header -Xclang -fdeclare-opencl-builtins -cl-std=clc++")
+  endif()
+  add_custom_target(
+    tools
+    )
+  add_custom_command(
+    TARGET tools
+    POST_BUILD
+    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
+    COMMENT "Copying libclcxx include files into build include dir"
+    )
+  add_custom_target(
+    test
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_INSTALL_PREFIX}/include/c++/v1/
+    )
+  add_custom_target(
+    clean_test
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
+    )
+  add_custom_target(
+    remove_libclcxx
+    command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
+    )
+endif()
+
+# Clang and libcxx path given build; uses provided clang and libcxx installation paths to compile tests
+if (NOT LIBCXX_PATH STREQUAL "" AND NOT CLANG_PATH STREQUAL "")
+  if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 12)
+    message(FATAL_ERROR "Libclcxx does not support clang versions older than clang-12")
+  endif()
+  set(CUSTOM_COMMAND_USED ON)
+  message(STATUS "Using path to clang provided")
+  message(STATUS "Using path to libcxx provided")
+  message(STATUS "Configuring tests")
+  if (CMAKE_CXX_COMPILER_VERSION EQUAL 12)
+    set(EXTRA_CLANG_12_FLAGS "-x cl -Xclang -finclude-default-header -Xclang -fdeclare-opencl-builtins -cl-std=clc++")
+  endif()
+  add_custom_target(
+    tools
+    )
+  add_custom_command(
+    TARGET tools
+    POST_BUILD
+    COMMAND cp ${CMAKE_SOURCE_DIR}/include/* ${LIBCXX_PATH}/include/c++/v1/
+    COMMENT "Copying libclcxx include files into build include dir"
+    )
+  add_custom_target(
+    test
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ CLANG_PATH=${CLANG_PATH} EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
     clean_test
@@ -180,4 +249,5 @@ if (NOT CUSTOM_COMMAND_USED)
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
 endif()
+
 

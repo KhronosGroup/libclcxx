@@ -14,7 +14,7 @@ the [llvm-project](https://github.com/llvm/llvm-project).
 
 	* ``git clone https://github.com/KhronosGroup/libclcxx.git``
 
-2. Configure and build Libclcxx and **all** its dependencies:
+2. Configure and build Libclcxx and its dependencies:
 
 	* ``cd libclcxx``
 
@@ -31,11 +31,13 @@ the [llvm-project](https://github.com/llvm/llvm-project).
 
 		Config options include:
 
-		* Ommiting the build options will build the default target which includes clang and libcxx.
+		* Ommiting the config options will build the default target which includes clang and libcxx.
 		* ``-DDEFAULT_CLANG=ON`` --- Uses system installation of clang to build libcxx and compile tests. Note that this option only works if the environment variable for clang is ``clang`` and not ``clang-12`` or ``clang-13``, use ``-DCLANG_PATH=<path to clang executable>`` in those cases.
 		* ``-DCLANG_PATH=<path to clang executable>`` --- Uses provided executable of clang to build libcxx and compile tests.
 		* ``-DDEFAULT_LIBCXX=ON`` --- Uses system installation of libcxx to build clang and compile tests. Note that libcxx needs to be installed in the ``CMAKE_INSTALL_PREFIX`` directory for this option to work, otherwise use ``-DPATH_TO_LIBCXX=<path to libcxx>``.
-		* ``-DPATH_TO_LIBCXX=<path to libcxx>`` --- Uses the provided libcxx installation to build clang and compile tests. Note that the path needs to be to directory which has the ``include/c++/v1/`` directory within it.
+		* ``-DLIBCXX_PATH=<path to libcxx>`` --- Uses the provided libcxx installation to build clang and compile tests. Note that the path needs to be to directory which has the ``include/c++/v1/`` directory within it.
+		If both ``-DCLANG_PATH`` and ``-DLIBCXX_PATH`` are provided, the provided clang and libcxx installations are used to compile the tests only.
+		If both ``-DDEFAULT_CLANG`` and ``-DDEFAULT_LIBCXX`` are provided, the default clang and libcxx installations are used to compile the tests only.
 
 		Some common build options include:
 
@@ -44,3 +46,5 @@ the [llvm-project](https://github.com/llvm/llvm-project).
 	* ``<generator> tools``
 
 	* ``<generator> test``
+
+		To clean the test object files, you can run ``<generator> clean_test``, this will delete the compiled object files from test/.
