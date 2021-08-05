@@ -41,6 +41,8 @@ This repository makes use of functionality from the [llvm-project](https://githu
 
 		* ``-DLLVM_PARALLEL_LINK_JOBS=<number of link jobs>`` --- Specify the number of link jobs manually. This is useful when running into memory issues during the linking process of the LLVM executables.
 
+		* ``-DLLVM_TARGETS_TO_BUILD="<target architecture>"`` --- Specifies which targets are enabled. If ommited, the default target is set to ``X86``.
+
 	* ``<generator> tools``
 
 	* ``<generator> test``

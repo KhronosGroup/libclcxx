@@ -18,7 +18,7 @@ endif()
 project(libclcxx)
 
 set(CUSTOM_COMMAND_USED OFF CACHE BOOL "A variable to see if a custom configuration command is called")
-set(LLVM_TARGETS_TO_BUILD="X86" CACHE STRING "This is the default target build system type")
+set(LLVM_TARGETS_TO_BUILD "X86" CACHE STRING "This is the default target build system type" FORCE)
 set(CMAKE_BUILD_TYPE "Debug")
 
 # Default clang build; uses the command "clang" to call and use clang to compile libcxx and tests
