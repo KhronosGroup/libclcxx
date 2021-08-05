@@ -129,8 +129,11 @@ template <typename T, typename Other, typename OtherN> void traits_test() {
   static_assert(!std::is_convertible<OtherN, T>::value);
   static_assert(std::is_convertible<Other, T>::value);
 
+#if defined(__clang_major__) && (__clang_major__ > 12)
+// Clang-12 fails these tests erroneously.
   static_assert(!std::is_invocable<T>::value);
   static_assert(!std::is_invocable_r<T, T()>::value);
+#endif /* if defined __clang_major__ */
   static_assert(!std::is_nothrow_invocable<T>::value);
   static_assert(!std::is_nothrow_invocable_r<T, T()>::value);
 
