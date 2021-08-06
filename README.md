@@ -7,13 +7,13 @@ This repository is now to contain WIP libraries for C++ for OpenCL Kernel Langua
 
 This repository makes use of functionality from the [llvm-project](https://github.com/llvm/llvm-project) i.e. clang and libcxx.
 
-### Getting the source code and building Libclcxx
+### Getting the source code and building libclcxx
 
 1. Clone libclcxx:
 
 	* ``git clone https://github.com/KhronosGroup/libclcxx.git``
 
-2. Configure and build Libclcxx and its dependencies:
+2. Configure and build libclcxx and its dependencies:
 
 	* ``cd libclcxx``
 

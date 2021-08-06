@@ -58,7 +58,7 @@ if ((DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (L
     )
   add_custom_target(
     # This target cleans all build files, compiled test object files and (if relevant) copied opencl_ include files from your default or provided libcxx installation
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR} && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     )
@@ -97,7 +97,7 @@ if ((LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR} && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     )
@@ -134,7 +134,7 @@ if ((DEFAULT_LIBCXX) AND (NOT DEFAULT_CLANG) AND (CLANG_PATH STREQUAL "") AND (L
     command cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -171,7 +171,7 @@ if ((CLANG_PATH STREQUAL "") AND (NOT LIBCXX_PATH STREQUAL "") AND (NOT DEFAULT_
     command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -212,7 +212,7 @@ if ((DEFAULT_CLANG) AND (DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (LIBCX
     command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean ; cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
     )
@@ -252,7 +252,7 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFA
     command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -293,7 +293,7 @@ if ((DEFAULT_LIBCXX) AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_CLANG) AN
     command cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r * 
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -334,7 +334,7 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) A
     command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r * 
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -367,7 +367,7 @@ if ((NOT DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AN
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean_all
+    clean
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     )
