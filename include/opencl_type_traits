@@ -568,6 +568,13 @@ using remove_address_space_t = typename remove_address_space<T>::type;
  *
  * @tparam T - a pointer type who's address space is replaced.
  * @tparam U - a pointer type who's address space is to replace the address space of T.
+ *
+ * Example:
+ * \code{.cpp}
+ * // This will replace the address space of the first template argument with __constant from the second template argument.
+ * std::replace_pointer_address_space<__local double *, __constant double *>::type
+ * \endcode
+ *
  */
 
 template <typename T, typename U> struct replace_pointer_address_space {
@@ -776,6 +783,12 @@ using add_constant_pointer_address_space_t =
  *
  * @tparam T - a reference type who's address space is replaced.
  * @tparam U - a reference type who's address space is to replace the address space of T.
+ *
+ * Example:
+ * \code{.cpp}
+ * // This will replace the address space of the first template argument with __global from the second template argument.
+ * std::replace_pointer_address_space<__private int &, __global int &>::type
+ * \endcode
  */
 
 template <typename T, typename U> struct replace_reference_address_space {
