@@ -51,4 +51,4 @@ This repository makes use of functionality from the [llvm-project](https://githu
 
 		To clean the copied ``opencl_<>`` libclcxx source files from your system libcxx installation (if relevant), you can run ``<generator> clean_libclcxx``.
 
-		To clean everything, including build files, compiled test objects and (if relevant) copied libclcxx source files, you can run ``<generator> clean``. **Warning, this will clean your build directory!**
+		To clean everything, including build files, compiled test objects and (if relevant) copied libclcxx source files, you can run ``<generator> clean-all``. **Warning, this will clean your build directory!**
