@@ -1,11 +1,6 @@
 // Copyright (c) 2021 The Khronos Group Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-/*
-   FIXME: Enable remove_reference and remove_pointer tests after address space
-   traits are added
-*/
-
 #include <opencl_type_traits>
 
 template <typename T, typename Other, typename OtherN> void traits_test() {
@@ -130,7 +125,7 @@ template <typename T, typename Other, typename OtherN> void traits_test() {
   static_assert(std::is_convertible<Other, T>::value);
 
 #if defined(__clang_major__) && (__clang_major__ > 12)
-// Clang-12 fails these tests erroneously.
+  // Clang-12 fails these tests erroneously.
   static_assert(!std::is_invocable<T>::value);
   static_assert(!std::is_invocable_r<T, T()>::value);
 #endif /* if defined __clang_major__ */
@@ -138,34 +133,30 @@ template <typename T, typename Other, typename OtherN> void traits_test() {
   static_assert(!std::is_nothrow_invocable_r<T, T()>::value);
 
   static_assert(
-      std::is_same<typename std::remove_cv<typename std::add_cv<T>::type>::type,
-                   T>::value);
+      !std::is_const<typename std::remove_cv<
+          typename std::add_cv<T>::type>::type>::value &&
+      !std::is_volatile<
+          typename std::remove_cv<typename std::add_cv<T>::type>::type>::value);
+  static_assert(!std::is_const<typename std::remove_const<
+                    typename std::add_const<T>::type>::type>::value);
+  static_assert(!std::is_volatile<typename std::remove_volatile<
+                    typename std::add_volatile<T>::type>::type>::value);
+  static_assert(std::is_const<typename std::add_cv<T>::type>::value &&
+                std::is_volatile<typename std::add_cv<T>::type>::value);
+  static_assert(std::is_const<typename std::add_const<T>::type>::value);
+  static_assert(std::is_volatile<typename std::add_volatile<T>::type>::value);
+
   static_assert(
-      std::is_same<
-          typename std::remove_const<typename std::add_const<T>::type>::type,
-          T>::value);
-  static_assert(std::is_same<typename std::remove_volatile<
-                                 typename std::add_volatile<T>::type>::type,
-                             T>::value);
-  static_assert(
-      std::is_same<typename std::add_cv<T>::type, const volatile T>::value);
-  static_assert(std::is_same<typename std::add_const<T>::type, const T>::value);
-  static_assert(
-      std::is_same<typename std::add_volatile<T>::type, volatile T>::value);
-  
-  // We need the remove address spaces trait to enable this test line
-  // FAIL: static_assert(
-  //    std::is_same<typename std::remove_reference<T &>::type, T>::value);
+      !std::is_reference<typename std::remove_reference<T &>::type>::value);
 
   static_assert(std::is_lvalue_reference<
                 typename std::add_lvalue_reference<T>::type>::value);
   static_assert(std::is_rvalue_reference<
                 typename std::add_rvalue_reference<T>::type>::value);
 
-  // We need the remove address spaces trait to enable this test line
-  // FAIL: static_assert(
-  //    std::is_same<typename std::remove_pointer<T *>::type, T>::value);
-  static_assert(std::is_same<typename std::add_pointer<T>::type, T *>::value);
+  static_assert(
+      !std::is_pointer<typename std::remove_pointer<T *>::type>::value);
+  static_assert(std::is_pointer<typename std::add_pointer<T>::type>::value);
   static_assert(std::is_same<typename std::remove_extent<T>::type, T>::value);
   static_assert(
       std::is_same<typename std::remove_all_extents<T>::type, T>::value);
