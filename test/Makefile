@@ -1,10 +1,11 @@
-# To run: make PATH_TO_LLVM_BUILD=<Path to llvm build folder>
-libclcxx_include = -I../include/
-build_include = -I${PATH_TO_LLVM_BUILD}/include/c++/v1/
+# To run: make PATH_TO_LIBCXX_INCLUDE=<Path to libc++ library>
+# If needed, to pass extra flags use: EXTRA_ARGS=<other flags>
+CLANG_PATH ?= clang
+libcxx_include = -I${PATH_TO_LIBCXX_INCLUDE}
 test-all: *.bc
 
 *.bc: *.clcpp
-	clang ${libclcxx_include} ${build_include} -c *.clcpp --target=spir -emit-llvm
+	${CLANG_PATH} ${EXTRA_ARGS} ${libcxx_include} -c *.clcpp --target=spir -emit-llvm
 
 clean:
 	rm *.bc
