@@ -49,7 +49,7 @@ This repository makes use of functionality from the [llvm-project](https://githu
 
 	* ``<generator> docs``
 
-		To clean the documentation built, you can run ``<generator> clean_docs``, this will delete the html documentation from the docs directory.
+		To clean the documentation built, you can run ``<generator> clean-docs``, this will delete the html documentation from the docs directory.
 
 		To clean the test object files, you can run ``<generator> clean-test``, this will delete the compiled object files from the test source directory.
 
