@@ -561,13 +561,15 @@ using remove_address_space_t = typename remove_address_space<T>::type;
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of pointer T is replaced with the address space of pointer U. 
+ * the address space of the type pointed to by a pointer T is replaced with 
+ * the address space of the type pointed to by a pointer U. 
  *
  * If T or U are not pointer types or either have no address space qualifier, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is replaced.
- * @tparam U - a pointer type who's address space is to replace the address space of T.
+ * @tparam T - a pointer type that points to the type whose address space qualifer
+ * is to be replaced.
+ * @tparam U - a pointer type where the address space for T is taken from.
  *
  * Example:
  * \code{.cpp}
@@ -674,12 +676,14 @@ using replace_pointer_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of pointer T is replaced with __generic. 
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __generic. 
  *
  * If T is not a pointer type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __generic.
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __generic.
  */
 
 template <typename T> struct add_generic_pointer_address_space {
@@ -694,12 +698,14 @@ using add_generic_pointer_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of pointer T is replaced with __global. 
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __global. 
  *
  * If T is not a pointer type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __global.
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __global.
  */
 
 template <typename T> struct add_global_pointer_address_space {
@@ -714,12 +720,14 @@ using add_global_pointer_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of pointer T is replaced with __private. 
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __private. 
  *
  * If T is not a pointer type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __private.
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __private.
  */
 
 template <typename T> struct add_private_pointer_address_space {
@@ -734,12 +742,14 @@ using add_private_pointer_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of pointer T is replaced with __local. 
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __local. 
  *
  * If T is not a pointer type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __local.
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __local.
  */
 
 template <typename T> struct add_local_pointer_address_space {
@@ -754,12 +764,14 @@ using add_local_pointer_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of pointer T is replaced with __constant. 
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __constant. 
  *
  * If T is not a pointer type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __constant.
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __constant.
  */
 
 template <typename T> struct add_constant_pointer_address_space {
@@ -776,18 +788,20 @@ using add_constant_pointer_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of reference T is replaced with the address space of reference U. 
+ * the address space of the type reference T refers to is replaced with the
+ * address space taken from the type reference U refers to. 
  *
  * If T or U are not reference types or either have no address space qualifier, then 
  * type is the same as the T provided.
  *
- * @tparam T - a reference type who's address space is replaced.
- * @tparam U - a reference type who's address space is to replace the address space of T.
+ * @tparam T - a reference type with address space it refers to being replaced.
+ * @tparam U - a reference type from which address space is taken from to replace
+ * the address space of T.
  *
  * Example:
  * \code{.cpp}
  * // This will replace the address space of the first template argument with __global from the second template argument.
- * std::replace_pointer_address_space<__private int &, __global int &>::type
+ * std::replace_reference_address_space<__private int &, __global int &>::type
  * \endcode
  */
 
@@ -888,12 +902,13 @@ using replace_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of reference T is replaced with __generic. 
+ * the address space of the type reference T refers to is replaced with __generic. 
  *
  * If T is not a reference type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __generic.
+ * @tparam T - a reference type with the address space it refers to being
+ * replaced by __generic.
  */
 
 template <typename T> struct add_generic_reference_address_space {
@@ -908,12 +923,13 @@ using add_generic_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of reference T is replaced with __global. 
+ * the address space of the type reference T refers to is replaced with __global. 
  *
  * If T is not a reference type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __global.
+ * @tparam T - a reference type with the address space it refers to being
+ * replaced by __global.
  */
 
 template <typename T> struct add_global_reference_address_space {
@@ -928,12 +944,13 @@ using add_global_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of reference T is replaced with __private. 
+ * the address space of the type reference T refers to is replaced with __private. 
  *
  * If T is not a reference type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __private.
+ * @tparam T - a reference type with the address space it refers to being
+ * replaced by __private.
  */
 
 template <typename T> struct add_private_reference_address_space {
@@ -948,12 +965,13 @@ using add_private_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of reference T is replaced with __local. 
+ * the address space of the type reference T refers to is replaced with __local. 
  *
  * If T is not a reference type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __local.
+ * @tparam T - a reference type with the address space it referes to being 
+ * replaced by __local.
  */
 
 template <typename T> struct add_local_reference_address_space {
@@ -968,12 +986,13 @@ using add_local_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of reference T is replaced with __constant. 
+ * the address space of the type reference T refers to is replaced with __constant. 
  *
  * If T is not a reference type, then 
  * type is the same as the T provided.
  *
- * @tparam T - a pointer type who's address space is set to __constant.
+ * @tparam T - a reference type with the address space it refers to being
+ * replaced by __constant.
  */
 
 template <typename T> struct add_constant_reference_address_space {
