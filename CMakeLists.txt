@@ -56,17 +56,17 @@ if ((DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (L
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
     # This target cleans the compiled test object files from the test source directory
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
     # This target cleans all build files, compiled test object files and (if relevant) copied opencl_ include files from your default or provided libcxx installation
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR} && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
@@ -106,15 +106,15 @@ if ((LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR} && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
@@ -147,20 +147,20 @@ if ((DEFAULT_LIBCXX) AND (NOT DEFAULT_CLANG) AND (CLANG_PATH STREQUAL "") AND (L
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
     # This target removes the opencl_<> include files from your libcxx installation
-    clean_libclcxx
+    clean-libclcxx
     command cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -194,19 +194,19 @@ if ((CLANG_PATH STREQUAL "") AND (NOT LIBCXX_PATH STREQUAL "") AND (NOT DEFAULT_
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean_libclcxx
+    clean-libclcxx
     command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -244,19 +244,19 @@ if ((DEFAULT_CLANG) AND (DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (LIBCX
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean_libclcxx
+    clean-libclcxx
     command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -294,19 +294,19 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFA
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean_libclcxx
+    clean-libclcxx
     command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -344,19 +344,19 @@ if ((DEFAULT_LIBCXX) AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_CLANG) AN
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean_libclcxx
+    clean-libclcxx
     command cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r * 
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
@@ -394,19 +394,19 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) A
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean_libclcxx
+    clean-libclcxx
     command cd ${LIBCXX_PATH}/include/c++/v1/ && rm opencl_*
     )
   add_custom_target(
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r * 
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_*
@@ -440,15 +440,15 @@ if ((NOT DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AN
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
-    clean_docs
+    clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
   add_custom_target(
-    clean_test
+    clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
-    clean
+    clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
