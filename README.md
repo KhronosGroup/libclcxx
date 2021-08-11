@@ -47,7 +47,7 @@ This repository makes use of functionality from the [llvm-project](https://githu
 
 	* ``<generator> test``
 
-	* ``<generator> docs``
+	* ``<generator> docs`` --- to build Doxygen documentation for libclcxx.
 
 		To clean the documentation built, you can run ``<generator> clean-docs``, this will delete the html documentation from the docs directory.
 
