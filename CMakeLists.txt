@@ -56,6 +56,10 @@ if ((DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (L
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
@@ -106,6 +110,10 @@ if ((LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
@@ -145,6 +153,10 @@ if ((DEFAULT_LIBCXX) AND (NOT DEFAULT_CLANG) AND (CLANG_PATH STREQUAL "") AND (L
   add_custom_target(
     docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_custom_target(
+    all
+    DEPENDS tools test docs
     )
   add_custom_target(
     clean-docs
@@ -192,6 +204,10 @@ if ((CLANG_PATH STREQUAL "") AND (NOT LIBCXX_PATH STREQUAL "") AND (NOT DEFAULT_
   add_custom_target(
     docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_custom_target(
+    all
+    DEPENDS tools test docs
     )
   add_custom_target(
     clean-docs
@@ -244,6 +260,10 @@ if ((DEFAULT_CLANG) AND (DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (LIBCX
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
@@ -292,6 +312,10 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFA
   add_custom_target(
     docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_custom_target(
+    all
+    DEPENDS tools test docs
     )
   add_custom_target(
     clean-docs
@@ -344,6 +368,10 @@ if ((DEFAULT_LIBCXX) AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_CLANG) AN
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
@@ -394,6 +422,10 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) A
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
@@ -438,6 +470,10 @@ if ((NOT DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AN
   add_custom_target(
     docs
     COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_custom_target(
+    all
+    DEPENDS tools test docs
     )
   add_custom_target(
     clean-docs
