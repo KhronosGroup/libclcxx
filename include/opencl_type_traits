@@ -1,3 +1,7 @@
+/**
+@file opencl_type_traits
+*/
+
 // Copyright (c) 2021 The Khronos Group Inc.
 // SPDX-License-Identifier: Apache-2.0
 
@@ -303,6 +307,14 @@ template <> struct is_fundamental<ulong16> : public true_type {};
 
 // is_image
 
+/**
+ * Checks whether T is an image type.
+ *
+ * Provides the member constant value which is equal to `true`, if T is
+ * an image type. Otherwise the value is equal to `false`.
+ * 
+ * @tparam T - a type to check.
+ */
 template <typename T> struct is_image : public false_type {};
 
 template <> struct is_image<image1d_t> : public true_type {};
@@ -317,6 +329,15 @@ template <> struct is_image<image2d_array_depth_t> : public true_type {};
 template <typename T> inline constexpr bool is_image_v = is_image<T>::value;
 
 // image_dimension
+
+/**
+ * If T is an image type, provides the member constant value equal to the
+ * number of dimensions of the array.
+ * For any other type value is 0.
+ * 
+ * 
+ * @tparam T a type to check.
+ */
 
 template <typename T>
 struct image_dimension : public integral_constant<size_t, 0> {};
@@ -348,22 +369,70 @@ inline constexpr size_t image_dimension_v = image_dimension<T>::value;
 
 // add address spaces
 
+/**
+ * Provides the member typedef type which is the same as T except it has
+ * a __generic address space qualifier.
+ * 
+ * 
+ * @tparam T a type to add __generic to.
+ */
+
 template <typename T> struct add_generic { using type = __generic T; };
 template <typename T> using add_generic_t = typename add_generic<T>::type;
+
+/**
+ * Provides the member typedef type which is the same as T except it has
+ * a __global address space qualifier.
+ * 
+ * 
+ * @tparam T a type to add __global to.
+ */
 
 template <typename T> struct add_global { using type = __global T; };
 template <typename T> using add_global_t = typename add_global<T>::type;
 
+/**
+ * Provides the member typedef type which is the same as T except it has
+ * a __private address space qualifier.
+ * 
+ * 
+ * @tparam T a type to add __private to.
+ */
+
 template <typename T> struct add_private { using type = __private T; };
 template <typename T> using add_private_t = typename add_private<T>::type;
 
+/**
+ * Provides the member typedef type which is the same as T except it has
+ * a __local address space qualifier.
+ * 
+ * 
+ * @tparam T a type to add __local to.
+ */
+
 template <typename T> struct add_local { using type = __local T; };
 template <typename T> using add_local_t = typename add_local<T>::type;
+
+/**
+ * Provides the member typedef type which is the same as T except it has
+ * a __constant address space qualifier.
+ * 
+ * 
+ * @tparam T a type to add __constant to.
+ */
 
 template <typename T> struct add_constant { using type = __constant T; };
 template <typename T> using add_constant_t = typename add_constant<T>::type;
 
 // has_address_space
+
+/**
+ * If T has any adress space qualifier, provides the member constant value equal to `true`.
+ * Otherwise, value is `false`.
+ * 
+ * 
+ * @tparam T a type to check.
+ */
 
 template <typename T> struct has_address_space : public false_type {};
 
@@ -382,11 +451,29 @@ inline constexpr bool has_address_space_v = has_address_space<T>::value;
 
 // is_generic
 
+/**
+ * Checks whether T has __generic address space qualifier.
+ *
+ * Provides the member constant value which is equal to `true`, if T has
+ * __constant address space qualifier. Otherwise the value is equal to `false`.
+ * 
+ * @tparam T - a type to check.
+ */
+
 template <typename T> struct is_generic : public false_type {};
 template <typename T> struct is_generic<__generic T> : public true_type {};
 template <typename T> inline constexpr bool is_generic_v = is_generic<T>::value;
 
 // is_global
+
+/**
+ * Checks whether T has __global address space qualifier.
+ *
+ * Provides the member constant value which is equal to `true`, if T has
+ * __global address space qualifier. Otherwise the value is equal to `false`.
+ * 
+ * @tparam T - a type to check.
+ */
 
 template <typename T> struct is_global : public false_type {};
 template <typename T> struct is_global<__global T> : public true_type {};
@@ -394,11 +481,29 @@ template <typename T> inline constexpr bool is_global_v = is_global<T>::value;
 
 // is_private
 
+/**
+ * Checks whether T has __private address space qualifier.
+ *
+ * Provides the member constant value which is equal to `true`, if T has
+ * __private address space qualifier. Otherwise the value is equal to `false`.
+ * 
+ * @tparam T - a type to check.
+ */
+
 template <typename T> struct is_private : public false_type {};
 template <typename T> struct is_private<__private T> : public true_type {};
 template <typename T> inline constexpr bool is_private_v = is_private<T>::value;
 
 // is_local
+
+/**
+ * Checks whether T has __local address space qualifier.
+ *
+ * Provides the member constant value which is equal to `true`, if T has
+ * __local address space qualifier. Otherwise the value is equal to `false`.
+ * 
+ * @tparam T - a type to check.
+ */
 
 template <typename T> struct is_local : public false_type {};
 template <typename T> struct is_local<__local T> : public true_type {};
@@ -406,12 +511,30 @@ template <typename T> inline constexpr bool is_local_v = is_local<T>::value;
 
 // is_constant
 
+/**
+ * Checks whether T has __constant address space qualifier.
+ *
+ * Provides the member constant value which is equal to `true`, if T has
+ * __constant address space qualifier. Otherwise the value is equal to `false`.
+ * 
+ * @tparam T - a type to check.
+ */
+
 template <typename T> struct is_constant : public false_type {};
 template <typename T> struct is_constant<__constant T> : public true_type {};
 template <typename T>
 inline constexpr bool is_constant_v = is_constant<T>::value;
 
 // remove_address_space
+
+/**
+ * Provides the member typedef type which is the same as T, except that its address space
+ * qualifier is removed.
+ *
+ * If T has no address space qualifier, the member typedef type provides T unchanged.  
+ *
+ * @tparam T - a type to remove an address space qualifier from.
+ */
 
 template <typename T> struct remove_address_space { using type = T; };
 
@@ -435,6 +558,26 @@ template <typename T>
 using remove_address_space_t = typename remove_address_space<T>::type;
 
 // replace_pointer_address_space
+
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type pointed to by a pointer T is replaced with 
+ * the address space of the type pointed to by a pointer U. 
+ *
+ * If T or U are not pointer types or either have no address space qualifier, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a pointer type that points to the type whose address space qualifer
+ * is to be replaced.
+ * @tparam U - a pointer type where the address space for T is taken from.
+ *
+ * Example:
+ * \code{.cpp}
+ * // This will replace the address space of the first template argument with __constant from the second template argument.
+ * std::replace_pointer_address_space<__local double *, __constant double *>::type
+ * \endcode
+ *
+ */
 
 template <typename T, typename U> struct replace_pointer_address_space {
   using type = T;
@@ -531,6 +674,18 @@ using replace_pointer_address_space_t =
 
 // add_<address_space>_pointer_address_space
 
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __generic. 
+ *
+ * If T is not a pointer type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __generic.
+ */
+
 template <typename T> struct add_generic_pointer_address_space {
   using type = T;
 };
@@ -540,6 +695,18 @@ template <typename T> struct add_generic_pointer_address_space<T *> {
 template <typename T>
 using add_generic_pointer_address_space_t =
     typename add_generic_pointer_address_space<T>::type;
+
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __global. 
+ *
+ * If T is not a pointer type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __global.
+ */
 
 template <typename T> struct add_global_pointer_address_space {
   using type = T;
@@ -551,6 +718,18 @@ template <typename T>
 using add_global_pointer_address_space_t =
     typename add_global_pointer_address_space<T>::type;
 
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __private. 
+ *
+ * If T is not a pointer type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __private.
+ */
+
 template <typename T> struct add_private_pointer_address_space {
   using type = T;
 };
@@ -561,6 +740,18 @@ template <typename T>
 using add_private_pointer_address_space_t =
     typename add_private_pointer_address_space<T>::type;
 
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __local. 
+ *
+ * If T is not a pointer type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __local.
+ */
+
 template <typename T> struct add_local_pointer_address_space {
   using type = T;
 };
@@ -570,6 +761,18 @@ template <typename T> struct add_local_pointer_address_space<T *> {
 template <typename T>
 using add_local_pointer_address_space_t =
     typename add_local_pointer_address_space<T>::type;
+
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type pointed to by a pointer T is replaced
+ * with __constant. 
+ *
+ * If T is not a pointer type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a pointer type with the address space it points to being
+ * replaced by __constant.
+ */
 
 template <typename T> struct add_constant_pointer_address_space {
   using type = T;
@@ -582,6 +785,25 @@ using add_constant_pointer_address_space_t =
     typename add_constant_pointer_address_space<T>::type;
 
 // replace_reference_address_space
+
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type reference T refers to is replaced with the
+ * address space taken from the type reference U refers to. 
+ *
+ * If T or U are not reference types or either have no address space qualifier, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a reference type with address space it refers to being replaced.
+ * @tparam U - a reference type from which address space is taken from to replace
+ * the address space of T.
+ *
+ * Example:
+ * \code{.cpp}
+ * // This will replace the address space of the first template argument with __global from the second template argument.
+ * std::replace_reference_address_space<__private int &, __global int &>::type
+ * \endcode
+ */
 
 template <typename T, typename U> struct replace_reference_address_space {
   using type = T;
@@ -678,6 +900,17 @@ using replace_reference_address_space_t =
 
 // add_<address_space>_reference_address_space
 
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type reference T refers to is replaced with __generic. 
+ *
+ * If T is not a reference type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a reference type with the address space it refers to being
+ * replaced by __generic.
+ */
+
 template <typename T> struct add_generic_reference_address_space {
   using type = T;
 };
@@ -687,6 +920,17 @@ template <typename T> struct add_generic_reference_address_space<T &> {
 template <typename T>
 using add_generic_reference_address_space_t =
     typename add_generic_reference_address_space<T>::type;
+
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type reference T refers to is replaced with __global. 
+ *
+ * If T is not a reference type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a reference type with the address space it refers to being
+ * replaced by __global.
+ */
 
 template <typename T> struct add_global_reference_address_space {
   using type = T;
@@ -698,6 +942,17 @@ template <typename T>
 using add_global_reference_address_space_t =
     typename add_global_reference_address_space<T>::type;
 
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type reference T refers to is replaced with __private. 
+ *
+ * If T is not a reference type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a reference type with the address space it refers to being
+ * replaced by __private.
+ */
+
 template <typename T> struct add_private_reference_address_space {
   using type = T;
 };
@@ -708,6 +963,17 @@ template <typename T>
 using add_private_reference_address_space_t =
     typename add_private_reference_address_space<T>::type;
 
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type reference T refers to is replaced with __local. 
+ *
+ * If T is not a reference type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a reference type with the address space it referes to being 
+ * replaced by __local.
+ */
+
 template <typename T> struct add_local_reference_address_space {
   using type = T;
 };
@@ -717,6 +983,17 @@ template <typename T> struct add_local_reference_address_space<T &> {
 template <typename T>
 using add_local_reference_address_space_t =
     typename add_local_reference_address_space<T>::type;
+
+/**
+ * Provides the member typedef type which is the same as T, except that
+ * the address space of the type reference T refers to is replaced with __constant. 
+ *
+ * If T is not a reference type, then 
+ * type is the same as the T provided.
+ *
+ * @tparam T - a reference type with the address space it refers to being
+ * replaced by __constant.
+ */
 
 template <typename T> struct add_constant_reference_address_space {
   using type = T;
