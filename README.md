@@ -49,8 +49,12 @@ This repository makes use of functionality from the [llvm-project](https://githu
 
 	* ``<generator> test`` --- to build libclcxx tests
 
+	* ``<generator> docs`` --- to build Doxygen documentation for libclcxx.
+
+		To clean the documentation built, you can run ``<generator> clean-docs``, this will delete the html documentation from the docs directory.
+
 		To clean the test object files, you can run ``<generator> clean-test``, this will delete the compiled object files from the test source directory.
 
 		To clean the copied ``opencl_<>`` libclcxx source files from your system libcxx installation (if relevant), you can run ``<generator> clean-libclcxx``.
 
-		To clean everything, including build files, compiled test objects and (if relevant) copied libclcxx source files, you can run ``<generator> clean-all``. **Warning, this will clean your build directory!**
+		To clean everything, including build files, Doxygen documentation, compiled test objects and (if relevant) copied libclcxx source files, you can run ``<generator> clean``. **Warning, this will clean your build directory!**
