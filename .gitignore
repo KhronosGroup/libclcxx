@@ -48,3 +48,6 @@ _deps
 # Build
 build
 build/
+
+# Docs
+docs/html

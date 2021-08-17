@@ -52,6 +52,21 @@ if ((DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (L
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     # This target cleans the compiled test object files from the test source directory
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
@@ -61,6 +76,7 @@ if ((DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (L
     clean-all
     COMMAND cd ${CMAKE_BINARY_DIR} && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
@@ -93,6 +109,21 @@ if ((LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ CLANG_PATH=${CLANG_PATH} EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -100,6 +131,7 @@ if ((LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_
     clean-all
     COMMAND cd ${CMAKE_BINARY_DIR} && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
@@ -125,6 +157,21 @@ if ((DEFAULT_LIBCXX) AND (NOT DEFAULT_CLANG) AND (CLANG_PATH STREQUAL "") AND (L
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_INSTALL_PREFIX}/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -138,6 +185,7 @@ if ((DEFAULT_LIBCXX) AND (NOT DEFAULT_CLANG) AND (CLANG_PATH STREQUAL "") AND (L
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
@@ -163,6 +211,21 @@ if ((CLANG_PATH STREQUAL "") AND (NOT LIBCXX_PATH STREQUAL "") AND (NOT DEFAULT_
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -175,6 +238,7 @@ if ((CLANG_PATH STREQUAL "") AND (NOT LIBCXX_PATH STREQUAL "") AND (NOT DEFAULT_
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
@@ -204,6 +268,21 @@ if ((DEFAULT_CLANG) AND (DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (LIBCX
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_INSTALL_PREFIX}/include/c++/v1/ EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -216,6 +295,7 @@ if ((DEFAULT_CLANG) AND (DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (LIBCX
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
@@ -245,6 +325,21 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFA
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ CLANG_PATH=${CLANG_PATH} EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -257,6 +352,7 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFA
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
@@ -286,6 +382,21 @@ if ((DEFAULT_LIBCXX) AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_CLANG) AN
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_INSTALL_PREFIX}/include/c++/v1/ CLANG_PATH=${CLANG_PATH} EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -298,6 +409,7 @@ if ((DEFAULT_LIBCXX) AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_CLANG) AN
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r * 
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
@@ -327,6 +439,21 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) A
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -338,7 +465,8 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) A
     clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r * 
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
-    COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_* 
+    COMMAND cd ${CMAKE_INSTALL_PREFIX}/include/c++/v1/ && rm opencl_*
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
@@ -364,13 +492,29 @@ if ((NOT DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AN
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang
     )
   add_custom_target(
+    docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && doxygen
+    )
+  add_dependencies(
+    test tools
+    )
+  add_custom_target(
+    build-all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
+    clean-docs
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
   add_custom_target(
     clean-all
     COMMAND cd ${CMAKE_BINARY_DIR}/ && rm -r *
-    COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean 
+    COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
+    COMMAND cd ${CMAKE_SOURCE_DIR}/docs/ && rm -r html
     )
 endif()
 
