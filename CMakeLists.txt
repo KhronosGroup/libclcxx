@@ -52,6 +52,10 @@ if ((DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (L
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     # This target cleans the compiled test object files from the test source directory
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
@@ -93,6 +97,10 @@ if ((LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ CLANG_PATH=${CLANG_PATH} EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -123,6 +131,10 @@ if ((DEFAULT_LIBCXX) AND (NOT DEFAULT_CLANG) AND (CLANG_PATH STREQUAL "") AND (L
   add_custom_target(
     test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_INSTALL_PREFIX}/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang
+    )
+  add_custom_target(
+    all
+    DEPENDS tools test docs
     )
   add_custom_target(
     clean-test
@@ -161,6 +173,10 @@ if ((CLANG_PATH STREQUAL "") AND (NOT LIBCXX_PATH STREQUAL "") AND (NOT DEFAULT_
   add_custom_target(
     test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang
+    )
+  add_custom_target(
+    all
+    DEPENDS tools test docs
     )
   add_custom_target(
     clean-test
@@ -204,6 +220,10 @@ if ((DEFAULT_CLANG) AND (DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AND (LIBCX
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_INSTALL_PREFIX}/include/c++/v1/ EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -243,6 +263,10 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFA
   add_custom_target(
     test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ CLANG_PATH=${CLANG_PATH} EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
+    )
+  add_custom_target(
+    all
+    DEPENDS tools test docs
     )
   add_custom_target(
     clean-test
@@ -286,6 +310,10 @@ if ((DEFAULT_LIBCXX) AND (NOT CLANG_PATH STREQUAL "") AND (NOT DEFAULT_CLANG) AN
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_INSTALL_PREFIX}/include/c++/v1/ CLANG_PATH=${CLANG_PATH} EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -327,6 +355,10 @@ if ((NOT LIBCXX_PATH STREQUAL "") AND (DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) A
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${LIBCXX_PATH}/include/c++/v1/ EXTRA_ARGS=${EXTRA_CLANG_12_FLAGS}
     )
   add_custom_target(
+    all
+    DEPENDS tools test docs
+    )
+  add_custom_target(
     clean-test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test && make clean
     )
@@ -362,6 +394,10 @@ if ((NOT DEFAULT_CLANG) AND (NOT DEFAULT_LIBCXX) AND (CLANG_PATH STREQUAL "") AN
   add_custom_target(
     test
     COMMAND cd ${CMAKE_SOURCE_DIR}/test/ && make PATH_TO_LIBCXX_INCLUDE=${CMAKE_BINARY_DIR}/llvm-project/llvm/include/c++/v1/ CLANG_PATH=${CMAKE_BINARY_DIR}/llvm-project/llvm/bin/clang
+    )
+  add_custom_target(
+    all
+    DEPENDS tools test docs
     )
   add_custom_target(
     clean-test
