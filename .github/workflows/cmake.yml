@@ -23,6 +23,25 @@ jobs:
       run: cmake -G Ninja -B ${{github.workspace}}/build
 
     - name: Build all
-      run: cmake --build ${{github.workspace}}/build --target all
+      run: cmake --build ${{github.workspace}}/build --target build-all
+  
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    - uses: actions/checkout@master
+    
+    - name: Publish Doxygen documentation
+      uses: Roang-zero1/github-create-release-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create GitHub release
+      uses: Roang-zero1/github-upload-release-artifacts-action@master
+      with:
+        args:
+        - docs/html/
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       
