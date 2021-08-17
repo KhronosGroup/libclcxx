@@ -43,7 +43,7 @@ This repository makes use of functionality from the [llvm-project](https://githu
 
 		* ``-DLLVM_TARGETS_TO_BUILD="<target architecture>"`` --- Specifies which targets are enabled. If ommited, the default target is set to ``X86``.
 
-	* ``<generator> all`` --- to build the ``tools``, tests and documentation.
+	* ``<generator> build-all`` --- to build the ``tools``, tests and documentation.
 
 	* ``<generator> tools`` --- to build llvm tools (clang or libcxx or both).
 
