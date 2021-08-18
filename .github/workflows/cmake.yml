@@ -23,7 +23,7 @@ jobs:
       run: sudo apt-get install -y doxygen
 
     - name: Configure CMake
-      run: cmake -G Ninja -B ${{github.workspace}}/build -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_STANDARD_REQUIRED=True
+      run: cmake -G Ninja -B ${{github.workspace}}/build
 
     - name: Build all
       run: cmake --build ${{github.workspace}}/build --target build-all
