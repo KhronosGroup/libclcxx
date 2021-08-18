@@ -20,6 +20,8 @@ project(libclcxx)
 set(CUSTOM_COMMAND_USED OFF CACHE BOOL "A variable to see if a custom configuration command is called")
 set(LLVM_TARGETS_TO_BUILD "X86" CACHE STRING "This is the default target build system type" FORCE)
 set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Default clang build; uses the command "clang" to call and use clang to compile libcxx and tests
 # Note this option only works if the clang executable or symlink is called "clang" and not "clang-12" or "clang-13"
