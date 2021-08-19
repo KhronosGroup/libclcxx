@@ -35,7 +35,7 @@ jobs:
       run: sudo apt-get install -y doxygen
 
     - name: Configure CMake
-      run: cmake -G Ninja -B ${{github.workspace}}/build
+      run: cmake -G Ninja -B ${{github.workspace}}/build -DLLVM_PARALLEL_LINK_JOBS=2
 
     - name: Build all
       run: cmake --build ${{github.workspace}}/build --target build-all
