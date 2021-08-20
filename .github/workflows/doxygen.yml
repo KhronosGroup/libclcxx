@@ -11,7 +11,9 @@ jobs:
         run: sudo apt-get install -y doxygen
         
       - name: Build doxygen documentation
-        run: doxygen
+        run: |
+          sleep 10 &&
+          doxygen
         working-directory: docs
     
       - uses: actions/upload-artifact@v2
