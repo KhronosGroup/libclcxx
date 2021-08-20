@@ -9,7 +9,7 @@ jobs:
         run: sudo apt-get install -y doxygen
       
       - name: Build doxygen documentation
-        run: cd ${{github.wordspace}}/docs/ && doxygen
+        run: cd ${{github.workspace}}/docs/ && doxygen
         
       - name: Release
         uses: fnkr/github-action-ghr@v1
