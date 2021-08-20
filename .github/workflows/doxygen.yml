@@ -13,7 +13,7 @@ jobs:
       - name: Build doxygen documentation
         shell: bash
         run: |
-          sleep 10 &&
+          sleep 30 &&
           doxygen
         working-directory: docs
     
