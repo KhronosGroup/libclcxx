@@ -14,7 +14,11 @@ class B{
 
 void test_new_delete(void *buffer, B **b, B **b2){
 	*b = new (buffer) B;
-	*b2 = new (buffer) B[10];
-	auto p1 = new (buffer) double[2][5];
-	auto p2 = new (buffer) int;
+	
+	// These tests don't compile due to bugs https://bugs.llvm.org/show_bug.cgi?id=51059
+	// *b2 = new (buffer) B[10];
+	// auto p1 = new (buffer) double[2][5];
+	
+	// FIX: Update llvm-project subrepo
+	// auto p2 = new (buffer) int;
 }
