@@ -1,0 +1,20 @@
+on: push
+name: Build and release on push
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install doxygen
+        run: sudo apt-get install -y doxygen
+      
+      - name: Build doxygen documentation
+        run: cd ${{github.wordspace}}/docs/ && doxygen
+        
+      - name: Release
+        uses: fnkr/github-action-ghr@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GHR_COMPRESS: xz
+          GHR_PATH: build/
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
