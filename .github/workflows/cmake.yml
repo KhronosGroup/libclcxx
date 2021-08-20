@@ -41,8 +41,8 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --target build-all
       
     - name: Release
-        uses: fnkr/github-action-ghr@v1
-        env:
-          GHR_COMPRESS: xz
-          GHR_PATH: ${{github.workspace}}/docs/html/
-          GITHUB_TOKEN: ${{ secrets.REPO_GHA_PAT }}
+      uses: fnkr/github-action-ghr@v1
+      env:
+        GHR_COMPRESS: xz
+        GHR_PATH: ${{github.workspace}}/docs/html/
+        GITHUB_TOKEN: ${{ secrets.REPO_GHA_PAT }}
