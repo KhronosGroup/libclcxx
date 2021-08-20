@@ -51,4 +51,4 @@ jobs:
         env:
           GHR_COMPRESS: xz
           GHR_PATH: docs/html/
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPO_GHA_PAT }}
