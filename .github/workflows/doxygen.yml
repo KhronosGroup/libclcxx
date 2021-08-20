@@ -1,20 +1,20 @@
 on: push
-name: Build and release on push
+
+name: Upload Release Asset
+
 jobs:
-  release:
-    name: Release
+  build:
+    name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
       - name: Install doxygen
         run: sudo apt-get install -y doxygen
-      
-      - name: Build doxygen documentation
-        run: doxygen ${{github.workspace}}/docs/Doxyfile
         
-      - name: Release
-        uses: fnkr/github-action-ghr@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        env:
-          GHR_COMPRESS: xz
-          GHR_PATH: docs/html/
-          GITHUB_TOKEN: ${{ secrets.REPO_GHA_PAT }}
+      - name: Build doxygen documentation
+        run: doxygen
+        working-directory: docs
+    
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Documentation
+          path: docs/html/
