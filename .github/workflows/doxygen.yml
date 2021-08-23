@@ -12,7 +12,7 @@ jobs:
         
       - name: Build doxygen documentation
         working-directory: docs
-        run: doxygen
+        run: sleep 15 && doxygen
         
       - uses: actions/upload-artifact@v2
         with:
