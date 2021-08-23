@@ -7,12 +7,13 @@ jobs:
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+    
       - name: Install doxygen
         run: sudo apt-get install -y doxygen
         
       - name: Build doxygen documentation
-        working-directory: docs
-        run: sleep 15 && doxygen
+        run: sleep 15 && cd docs && doxygen
         
       - uses: actions/upload-artifact@v2
         with:
