@@ -1,10 +1,10 @@
 on: push
 
-name: Upload Release Asset
+name: Upload Documentation Asset
 
 jobs:
   build:
-    name: Upload Release Asset
+    name: Upload Documentation Asset
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
