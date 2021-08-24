@@ -1,0 +1,42 @@
+name: CMake
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: make build directory
+      run: cd ${{github.workspace}} && mkdir build
+    
+    - name: Install ninja-build tool
+      uses: seanmiddleditch/gha-setup-ninja@v3
+    
+    - name: Install gcc-7
+      run: sudo apt install gcc-7
+    
+    - name: Install g++-7
+      run: sudo apt install g++-7
+      
+    - name: Update gcc alternatives
+      run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 100
+      
+    - name: Update g++ alternatives
+      run: sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 100
+    
+    - name: Install Doxygen
+      run: sudo apt-get install -y doxygen
+
+    - name: Configure CMake
+      run: cmake -G Ninja -B ${{github.workspace}}/build -DLLVM_PARALLEL_LINK_JOBS=2 -DLLVM_USE_LINKER=gold
+
+    - name: Build all
+      run: cmake --build ${{github.workspace}}/build --target build-all
+      

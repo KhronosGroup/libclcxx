@@ -1,0 +1,21 @@
+on: push
+
+name: Upload Documentation Asset
+
+jobs:
+  build:
+    name: Upload Documentation Asset
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Install doxygen
+        run: sudo apt-get install -y doxygen
+        
+      - name: Build doxygen documentation
+        run: sleep 15 && cd docs && doxygen
+        
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Documentation
+          path: docs/html/
