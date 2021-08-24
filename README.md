@@ -7,9 +7,11 @@ This repository contains libraries for C++ for OpenCL Kernel Language published 
 
 This repository makes use of functionality from the [llvm-project](https://github.com/llvm/llvm-project) i.e. clang and libcxx.
 
-List of available libraries:
-- type traits
-- placement new/delete
+List of currently supported libraries
+1. **Type traits**
+    * standard C++ type traits, for more information refer to https://en.cppreference.com/w/cpp/header/type_traits.
+    * OpenCL specific type traits, for more information refer to https://github.khronos.org/libclcxx/opencl__type__traits.html.
+2. **Placement new** from standard C++, for more information refer to https://en.cppreference.com/w/cpp/language/new.
 
 ### Getting the source code and building libclcxx
 
