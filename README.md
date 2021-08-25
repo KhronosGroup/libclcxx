@@ -20,7 +20,13 @@ using sint_type = std::make_signed<unsigned int>::type;
 using sint4_type = std::make_signed<uint4>::type;
 
 
-__kernel void foo() {
+template<typename T>
+void foo(T *par){
+  __remove_address_space<T> var;
+}
+
+__kernel void bar(__global int* ptr) {
+  foo(ptr);
   static_assert(!std::is_same<sint_type, unsigned int>::value);
   static_assert(!std::is_same<sint4_type, uint4>::value);
 }
@@ -54,7 +60,7 @@ This library is implamented fully in header file therefore only include file pat
 
 * ``include`` folder contains library headers.
 * ``docs`` folder contains doxygen files.
-* ``test`` contains tests for the libraries.
+* ``test`` folder contains tests for the libraries.
 
 ### Getting the source code and building libclcxx
 
