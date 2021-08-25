@@ -3,15 +3,58 @@ Copyright (c) 2021 The Khronos Group Inc.
 SPDX-License-Identifier: Apache-2.0
 -->
  
-This repository contains libraries for C++ for OpenCL Kernel Language published in releases of [OpenCL-Docs](https://github.com/KhronosGroup/OpenCL-Docs/releases/tag/cxxforopencl-v1.0-r2).
+This repository contains libraries for C++ for OpenCL Kernel Language published in releases of [OpenCL-Docs](https://github.com/KhronosGroup/OpenCL-Docs/releases/tag/cxxforopencl-v1.0-r2). The libraries can be used with kernels written in C++ for OpenCL and compiled by clang 12 onwards, refer to [clang manual](https://clang.llvm.org/docs/UsersManual.html#c-for-opencl) for more details.
 
 This repository makes use of functionality from the [llvm-project](https://github.com/llvm/llvm-project) i.e. clang and libcxx.
 
 List of currently supported libraries
 1. **Type traits**
     * standard C++ type traits, for more information refer to https://en.cppreference.com/w/cpp/header/type_traits.
-    * OpenCL specific type traits, for more information refer to https://github.khronos.org/libclcxx/opencl__type__traits.html.
+    * OpenCL specific type traits for vector types, address spaces, images, etc, for more information refer to https://github.khronos.org/libclcxx/opencl__type__traits.html.
+
+Example usage:
+```
+#include <opencl_type_traits>
+
+using sint_type = std::make_signed<unsigned int>::type;
+using sint4_type = std::make_signed<uint4>::type;
+
+
+__kernel void foo() {
+  static_assert(!std::is_same<sint_type, unsigned int>::value);
+  static_assert(!std::is_same<sint4_type, uint4>::value);
+}
+
+```
+This library is implamented fully in header file therefore only include file path need to be added during compilation.
+
 2. **Placement new** from standard C++, for more information refer to https://en.cppreference.com/w/cpp/language/new.
+
+
+Example usage:
+```
+#include <opencl_new>
+
+class B{
+public:
+	B(int num = 24)
+	: x(num) {}
+private:
+	int x;
+};
+
+void foo(B **b){
+	*b = new (buffer) B;
+}
+```
+This library is implamented fully in header file therefore only include file path need to be added during compilation.
+
+
+### Repository structure
+
+* ``include`` folder contains library headers.
+* ``docs`` folder contains doxygen files.
+* ``test`` contains tests for the libraries.
 
 ### Getting the source code and building libclcxx
 
