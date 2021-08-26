@@ -11,7 +11,7 @@ This repository makes use of functionality from the [llvm-project](https://githu
 
 1. **Type traits**
     * standard C++ type traits, for more information refer to https://en.cppreference.com/w/cpp/header/type_traits.
-    * OpenCL specific type traits for vector types, address spaces, images, etc, for more information refer to https://github.khronos.org/libclcxx/opencl__type__traits.html.
+    * OpenCL specific type traits for vector types, address spaces, images, etc, for more information refer to http://github.khronos.org/libclcxx/opencl__type__traits.html.
 
 Example usage:
 ```
