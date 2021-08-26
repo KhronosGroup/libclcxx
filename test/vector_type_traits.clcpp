@@ -3,7 +3,8 @@
 
 #include <opencl_type_traits>
 
-template <typename T, typename Other, typename OtherN> void traits_test() {
+template <typename T, typename Other, typename OtherN, int N>
+void traits_test() {
   static_assert(!std::is_void<T>::value);
   static_assert(!std::is_null_pointer<T>::value);
   static_assert(!std::is_integral<T>::value);
@@ -160,68 +161,75 @@ template <typename T, typename Other, typename OtherN> void traits_test() {
   static_assert(std::is_same<typename std::remove_extent<T>::type, T>::value);
   static_assert(
       std::is_same<typename std::remove_all_extents<T>::type, T>::value);
+
+  // Custom vector type traits
+  static_assert(std::is_vector_type<T>::value);
+  static_assert(!std::is_vector_type<Other>::value);
+  static_assert(std::vector_size<T>::value == N);
+  static_assert(std::is_same<typename std::scalar_type<T>::type, Other>::value);
+  static_assert(std::is_same<typename std::vector_n<Other, N>::type, T>::value);
 }
 
 void instantiate_traits_tests() {
-  traits_test<char2, char, char3>();
-  traits_test<char3, char, char2>();
-  traits_test<char4, char, char3>();
-  traits_test<char8, char, char3>();
-  traits_test<char16, char, char3>();
+  traits_test<char2, char, char3, 2>();
+  traits_test<char3, char, char2, 3>();
+  traits_test<char4, char, char3, 4>();
+  traits_test<char8, char, char3, 8>();
+  traits_test<char16, char, char3, 16>();
 
-  traits_test<uchar2, uchar, uchar3>();
-  traits_test<uchar3, uchar, uchar2>();
-  traits_test<uchar4, uchar, uchar3>();
-  traits_test<uchar8, uchar, uchar3>();
-  traits_test<uchar16, uchar, uchar3>();
+  traits_test<uchar2, uchar, uchar3, 2>();
+  traits_test<uchar3, uchar, uchar2, 3>();
+  traits_test<uchar4, uchar, uchar3, 4>();
+  traits_test<uchar8, uchar, uchar3, 8>();
+  traits_test<uchar16, uchar, uchar3, 16>();
 
-  traits_test<short2, short, short3>();
-  traits_test<short3, short, short2>();
-  traits_test<short4, short, short3>();
-  traits_test<short8, short, short3>();
-  traits_test<short16, short, short3>();
+  traits_test<short2, short, short3, 2>();
+  traits_test<short3, short, short2, 3>();
+  traits_test<short4, short, short3, 4>();
+  traits_test<short8, short, short3, 8>();
+  traits_test<short16, short, short3, 16>();
 
-  traits_test<ushort2, ushort, ushort3>();
-  traits_test<ushort3, ushort, ushort2>();
-  traits_test<ushort4, ushort, ushort3>();
-  traits_test<ushort8, ushort, ushort3>();
-  traits_test<ushort16, ushort, ushort3>();
+  traits_test<ushort2, ushort, ushort3, 2>();
+  traits_test<ushort3, ushort, ushort2, 3>();
+  traits_test<ushort4, ushort, ushort3, 4>();
+  traits_test<ushort8, ushort, ushort3, 8>();
+  traits_test<ushort16, ushort, ushort3, 16>();
 
-  traits_test<int2, int, int3>();
-  traits_test<int3, int, int2>();
-  traits_test<int4, int, int3>();
-  traits_test<int8, int, int3>();
-  traits_test<int16, int, int3>();
+  traits_test<int2, int, int3, 2>();
+  traits_test<int3, int, int2, 3>();
+  traits_test<int4, int, int3, 4>();
+  traits_test<int8, int, int3, 8>();
+  traits_test<int16, int, int3, 16>();
 
-  traits_test<uint2, uint, uint3>();
-  traits_test<uint3, uint, uint2>();
-  traits_test<uint4, uint, uint3>();
-  traits_test<uint8, uint, uint3>();
-  traits_test<uint16, uint, uint3>();
+  traits_test<uint2, uint, uint3, 2>();
+  traits_test<uint3, uint, uint2, 3>();
+  traits_test<uint4, uint, uint3, 4>();
+  traits_test<uint8, uint, uint3, 8>();
+  traits_test<uint16, uint, uint3, 16>();
 
-  traits_test<long2, long, long3>();
-  traits_test<long3, long, long2>();
-  traits_test<long4, long, long3>();
-  traits_test<long8, long, long3>();
-  traits_test<long16, long, long3>();
+  traits_test<long2, long, long3, 2>();
+  traits_test<long3, long, long2, 3>();
+  traits_test<long4, long, long3, 4>();
+  traits_test<long8, long, long3, 8>();
+  traits_test<long16, long, long3, 16>();
 
-  traits_test<ulong2, ulong, ulong3>();
-  traits_test<ulong3, ulong, ulong2>();
-  traits_test<ulong4, ulong, ulong3>();
-  traits_test<ulong8, ulong, ulong3>();
-  traits_test<ulong16, ulong, ulong3>();
+  traits_test<ulong2, ulong, ulong3, 2>();
+  traits_test<ulong3, ulong, ulong2, 3>();
+  traits_test<ulong4, ulong, ulong3, 4>();
+  traits_test<ulong8, ulong, ulong3, 8>();
+  traits_test<ulong16, ulong, ulong3, 16>();
 
-  traits_test<float2, float, float3>();
-  traits_test<float3, float, float2>();
-  traits_test<float4, float, float3>();
-  traits_test<float8, float, float3>();
-  traits_test<float16, float, float3>();
+  traits_test<float2, float, float3, 2>();
+  traits_test<float3, float, float2, 3>();
+  traits_test<float4, float, float3, 4>();
+  traits_test<float8, float, float3, 8>();
+  traits_test<float16, float, float3, 16>();
 
-  traits_test<double2, double, double3>();
-  traits_test<double3, double, double2>();
-  traits_test<double4, double, double3>();
-  traits_test<double8, double, double3>();
-  traits_test<double16, double, double3>();
+  traits_test<double2, double, double3, 2>();
+  traits_test<double3, double, double2, 3>();
+  traits_test<double4, double, double3, 4>();
+  traits_test<double8, double, double3, 8>();
+  traits_test<double16, double, double3, 16>();
 }
 
 template <typename T> void unsigned_traits_test() {

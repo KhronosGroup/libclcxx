@@ -31,6 +31,19 @@ namespace std {
 
 // is_signed
 
+/**
+ * If T is an arithmetic type, provides the member constant value
+ * equal to `true` if T(-1) < T(0): this results in true for the
+ * floating-point types and the signed integer types, and in `false`
+ * for the unsigned integer types and the type bool.
+ *
+ * @tparam T - a type to check.
+ *
+ * @see <a
+ * href="https://en.cppreference.com/w/cpp/types/is_signed">is_signed</a>
+ *
+ */
+
 template <> struct is_signed<int2> : public true_type {};
 template <> struct is_signed<int3> : public true_type {};
 template <> struct is_signed<int4> : public true_type {};
@@ -57,6 +70,19 @@ template <> struct is_signed<long16> : public true_type {};
 
 // is_unsigned
 
+/**
+ * If T is an arithmetic type, provides the member constant value
+ * equal to `true` if T(0) < T(-1): this results in true for the
+ * unsigned integer types and the type bool, and in `false` for the
+ * signed integer types and the floating-point types.
+ *
+ * @tparam T - a type to check.
+ *
+ * @see <a
+ * href="https://en.cppreference.com/w/cpp/types/is_unsigned">is_unsigned</a>
+ *
+ */
+
 template <> struct is_unsigned<uint2> : public true_type {};
 template <> struct is_unsigned<uint3> : public true_type {};
 template <> struct is_unsigned<uint4> : public true_type {};
@@ -82,6 +108,18 @@ template <> struct is_unsigned<ulong8> : public true_type {};
 template <> struct is_unsigned<ulong16> : public true_type {};
 
 // make_signed
+
+/**
+ * If T is an integral type (except `bool`) or enumeration type,
+ * provides the member typedef type which is the signed integer
+ * type corresponding to T, with the same cv-qualifiers.
+ *
+ * @tparam T - a type to make signed.
+ *
+ * @see <a
+ * href="https://en.cppreference.com/w/cpp/types/make_signed">make_signed</a>
+ *
+ */
 
 template <> struct make_signed<int2> { using type = int2; };
 template <> struct make_signed<int3> { using type = int3; };
@@ -133,6 +171,18 @@ template <> struct make_signed<ulong16> { using type = long16; };
 
 // make_unsigned
 
+/**
+ * If T is an integral type (except `bool`) or enumeration type,
+ * provides the member typedef type which is the unsigned integer
+ * type corresponding to T, with the same cv-qualifiers.
+ *
+ * @tparam T - a type to make unsigned.
+ *
+ * @see <a
+ * href="https://en.cppreference.com/w/cpp/types/make_unsigned">make_unsigned</a>
+ *
+ */
+
 template <> struct make_unsigned<int2> { using type = uint2; };
 template <> struct make_unsigned<int3> { using type = uint3; };
 template <> struct make_unsigned<int4> { using type = uint4; };
@@ -182,6 +232,19 @@ template <> struct make_unsigned<ulong8> { using type = ulong8; };
 template <> struct make_unsigned<ulong16> { using type = ulong16; };
 
 // is_arithmetic
+
+/**
+ * If T is an arithmetic type (that is, an integral type or a
+ * floating-point type) or a vc-qualified version thereof, provides
+ * the member constant value equal to `true`. For any other type,
+ * value is `false`.
+ *
+ * @tparam T - a type to check.
+ *
+ * @see <a
+ * href="https://en.cppreference.com/w/cpp/types/is_arithmetic">is_arithmetic</a>
+ *
+ */
 
 template <> struct is_arithmetic<int2> : public true_type {};
 template <> struct is_arithmetic<int3> : public true_type {};
@@ -245,6 +308,18 @@ template <> struct is_arithmetic<ulong16> : public true_type {};
 
 // is_fundamental
 
+/**
+ * If T is a fundamental type (that is, arithmetic type, void, or
+ * nullptr_t), provides the member constant value equal to `true`.
+ * For any other type, value is `false`.
+ *
+ * @tparam T - a type to check.
+ *
+ * @see <a
+ * href="https://en.cppreference.com/w/cpp/types/is_fundamental">is_fundamental</a>
+ *
+ */
+
 template <> struct is_fundamental<int2> : public true_type {};
 template <> struct is_fundamental<int3> : public true_type {};
 template <> struct is_fundamental<int4> : public true_type {};
@@ -305,6 +380,333 @@ template <> struct is_fundamental<ulong4> : public true_type {};
 template <> struct is_fundamental<ulong8> : public true_type {};
 template <> struct is_fundamental<ulong16> : public true_type {};
 
+// is_vector_type
+
+/**
+ * Provides the member constant value which is equal to `true` if
+ * T is a vector type. Otherwise, value is equal to `false`.
+ *
+ * @tparam T - a type to check.
+ *
+ */
+
+template <typename T> struct is_vector_type : public false_type {};
+
+template <> struct is_vector_type<int2> : public true_type {};
+template <> struct is_vector_type<int3> : public true_type {};
+template <> struct is_vector_type<int4> : public true_type {};
+template <> struct is_vector_type<int8> : public true_type {};
+template <> struct is_vector_type<int16> : public true_type {};
+
+template <> struct is_vector_type<uint2> : public true_type {};
+template <> struct is_vector_type<uint3> : public true_type {};
+template <> struct is_vector_type<uint4> : public true_type {};
+template <> struct is_vector_type<uint8> : public true_type {};
+template <> struct is_vector_type<uint16> : public true_type {};
+
+template <> struct is_vector_type<char2> : public true_type {};
+template <> struct is_vector_type<char3> : public true_type {};
+template <> struct is_vector_type<char4> : public true_type {};
+template <> struct is_vector_type<char8> : public true_type {};
+template <> struct is_vector_type<char16> : public true_type {};
+
+template <> struct is_vector_type<uchar2> : public true_type {};
+template <> struct is_vector_type<uchar3> : public true_type {};
+template <> struct is_vector_type<uchar4> : public true_type {};
+template <> struct is_vector_type<uchar8> : public true_type {};
+template <> struct is_vector_type<uchar16> : public true_type {};
+
+template <> struct is_vector_type<short2> : public true_type {};
+template <> struct is_vector_type<short3> : public true_type {};
+template <> struct is_vector_type<short4> : public true_type {};
+template <> struct is_vector_type<short8> : public true_type {};
+template <> struct is_vector_type<short16> : public true_type {};
+
+template <> struct is_vector_type<ushort2> : public true_type {};
+template <> struct is_vector_type<ushort3> : public true_type {};
+template <> struct is_vector_type<ushort4> : public true_type {};
+template <> struct is_vector_type<ushort8> : public true_type {};
+template <> struct is_vector_type<ushort16> : public true_type {};
+
+template <> struct is_vector_type<long2> : public true_type {};
+template <> struct is_vector_type<long3> : public true_type {};
+template <> struct is_vector_type<long4> : public true_type {};
+template <> struct is_vector_type<long8> : public true_type {};
+template <> struct is_vector_type<long16> : public true_type {};
+
+template <> struct is_vector_type<ulong2> : public true_type {};
+template <> struct is_vector_type<ulong3> : public true_type {};
+template <> struct is_vector_type<ulong4> : public true_type {};
+template <> struct is_vector_type<ulong8> : public true_type {};
+template <> struct is_vector_type<ulong16> : public true_type {};
+
+template <> struct is_vector_type<float2> : public true_type {};
+template <> struct is_vector_type<float3> : public true_type {};
+template <> struct is_vector_type<float4> : public true_type {};
+template <> struct is_vector_type<float8> : public true_type {};
+template <> struct is_vector_type<float16> : public true_type {};
+
+template <> struct is_vector_type<double2> : public true_type {};
+template <> struct is_vector_type<double3> : public true_type {};
+template <> struct is_vector_type<double4> : public true_type {};
+template <> struct is_vector_type<double8> : public true_type {};
+template <> struct is_vector_type<double16> : public true_type {};
+
+// vector_size
+
+/**
+ * Provides the constant member variable value equal to the
+ * the number of elements of a vector T.
+ *
+ * @tparam T - a vector type.
+ *
+ * Example:
+ * \code{.cpp}
+ * // This will provide the size of float8 which is the integer constant 8.
+ * std::vector_size<float8>::value
+ * \endcode
+ *
+ */
+
+template <typename T>
+struct vector_size : public integral_constant<size_t, 0> {
+}; // Set size member variable to 0 for non-vector types
+
+template <> struct vector_size<int2> : public integral_constant<size_t, 2> {};
+template <> struct vector_size<int3> : public integral_constant<size_t, 3> {};
+template <> struct vector_size<int4> : public integral_constant<size_t, 4> {};
+template <> struct vector_size<int8> : public integral_constant<size_t, 8> {};
+template <> struct vector_size<int16> : public integral_constant<size_t, 16> {};
+
+template <> struct vector_size<uint2> : public integral_constant<size_t, 2> {};
+template <> struct vector_size<uint3> : public integral_constant<size_t, 3> {};
+template <> struct vector_size<uint4> : public integral_constant<size_t, 4> {};
+template <> struct vector_size<uint8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<uint16> : public integral_constant<size_t, 16> {};
+
+template <> struct vector_size<char2> : public integral_constant<size_t, 2> {};
+template <> struct vector_size<char3> : public integral_constant<size_t, 3> {};
+template <> struct vector_size<char4> : public integral_constant<size_t, 4> {};
+template <> struct vector_size<char8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<char16> : public integral_constant<size_t, 16> {};
+
+template <> struct vector_size<uchar2> : public integral_constant<size_t, 2> {};
+template <> struct vector_size<uchar3> : public integral_constant<size_t, 3> {};
+template <> struct vector_size<uchar4> : public integral_constant<size_t, 4> {};
+template <> struct vector_size<uchar8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<uchar16> : public integral_constant<size_t, 16> {};
+
+template <> struct vector_size<short2> : public integral_constant<size_t, 2> {};
+template <> struct vector_size<short3> : public integral_constant<size_t, 3> {};
+template <> struct vector_size<short4> : public integral_constant<size_t, 4> {};
+template <> struct vector_size<short8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<short16> : public integral_constant<size_t, 16> {};
+
+template <>
+struct vector_size<ushort2> : public integral_constant<size_t, 2> {};
+template <>
+struct vector_size<ushort3> : public integral_constant<size_t, 3> {};
+template <>
+struct vector_size<ushort4> : public integral_constant<size_t, 4> {};
+template <>
+struct vector_size<ushort8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<ushort16> : public integral_constant<size_t, 16> {};
+
+template <> struct vector_size<long2> : public integral_constant<size_t, 2> {};
+template <> struct vector_size<long3> : public integral_constant<size_t, 3> {};
+template <> struct vector_size<long4> : public integral_constant<size_t, 4> {};
+template <> struct vector_size<long8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<long16> : public integral_constant<size_t, 16> {};
+
+template <> struct vector_size<ulong2> : public integral_constant<size_t, 2> {};
+template <> struct vector_size<ulong3> : public integral_constant<size_t, 3> {};
+template <> struct vector_size<ulong4> : public integral_constant<size_t, 4> {};
+template <> struct vector_size<ulong8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<ulong16> : public integral_constant<size_t, 16> {};
+
+template <> struct vector_size<float2> : public integral_constant<size_t, 2> {};
+template <> struct vector_size<float3> : public integral_constant<size_t, 3> {};
+template <> struct vector_size<float4> : public integral_constant<size_t, 4> {};
+template <> struct vector_size<float8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<float16> : public integral_constant<size_t, 16> {};
+
+template <>
+struct vector_size<double2> : public integral_constant<size_t, 2> {};
+template <>
+struct vector_size<double3> : public integral_constant<size_t, 3> {};
+template <>
+struct vector_size<double4> : public integral_constant<size_t, 4> {};
+template <>
+struct vector_size<double8> : public integral_constant<size_t, 8> {};
+template <>
+struct vector_size<double16> : public integral_constant<size_t, 16> {};
+
+// scalar_type
+
+/**
+ * Provides the member variable type equal to the scalar type of
+ * a vector T.
+ *
+ * @tparam T - a vector type to provide a scalar of.
+ *
+ * Example:
+ * \code{.cpp}
+ * // This will create a scalar type of the vector ulong16, which is ulong
+ * std::scalar_type<ulong16>::type
+ * \endcode
+ *
+ */
+
+template <typename T> struct scalar_type { using type = T; };
+
+template <> struct scalar_type<int2> { using type = int; };
+template <> struct scalar_type<int3> { using type = int; };
+template <> struct scalar_type<int4> { using type = int; };
+template <> struct scalar_type<int8> { using type = int; };
+template <> struct scalar_type<int16> { using type = int; };
+
+template <> struct scalar_type<uint2> { using type = uint; };
+template <> struct scalar_type<uint3> { using type = uint; };
+template <> struct scalar_type<uint4> { using type = uint; };
+template <> struct scalar_type<uint8> { using type = uint; };
+template <> struct scalar_type<uint16> { using type = uint; };
+
+template <> struct scalar_type<char2> { using type = char; };
+template <> struct scalar_type<char3> { using type = char; };
+template <> struct scalar_type<char4> { using type = char; };
+template <> struct scalar_type<char8> { using type = char; };
+template <> struct scalar_type<char16> { using type = char; };
+
+template <> struct scalar_type<uchar2> { using type = uchar; };
+template <> struct scalar_type<uchar3> { using type = uchar; };
+template <> struct scalar_type<uchar4> { using type = uchar; };
+template <> struct scalar_type<uchar8> { using type = uchar; };
+template <> struct scalar_type<uchar16> { using type = uchar; };
+
+template <> struct scalar_type<short2> { using type = short; };
+template <> struct scalar_type<short3> { using type = short; };
+template <> struct scalar_type<short4> { using type = short; };
+template <> struct scalar_type<short8> { using type = short; };
+template <> struct scalar_type<short16> { using type = short; };
+
+template <> struct scalar_type<ushort2> { using type = ushort; };
+template <> struct scalar_type<ushort3> { using type = ushort; };
+template <> struct scalar_type<ushort4> { using type = ushort; };
+template <> struct scalar_type<ushort8> { using type = ushort; };
+template <> struct scalar_type<ushort16> { using type = ushort; };
+
+template <> struct scalar_type<long2> { using type = long; };
+template <> struct scalar_type<long3> { using type = long; };
+template <> struct scalar_type<long4> { using type = long; };
+template <> struct scalar_type<long8> { using type = long; };
+template <> struct scalar_type<long16> { using type = long; };
+
+template <> struct scalar_type<ulong2> { using type = ulong; };
+template <> struct scalar_type<ulong3> { using type = ulong; };
+template <> struct scalar_type<ulong4> { using type = ulong; };
+template <> struct scalar_type<ulong8> { using type = ulong; };
+template <> struct scalar_type<ulong16> { using type = ulong; };
+
+template <> struct scalar_type<float2> { using type = float; };
+template <> struct scalar_type<float3> { using type = float; };
+template <> struct scalar_type<float4> { using type = float; };
+template <> struct scalar_type<float8> { using type = float; };
+template <> struct scalar_type<float16> { using type = float; };
+
+template <> struct scalar_type<double2> { using type = double; };
+template <> struct scalar_type<double3> { using type = double; };
+template <> struct scalar_type<double4> { using type = double; };
+template <> struct scalar_type<double8> { using type = double; };
+template <> struct scalar_type<double16> { using type = double; };
+
+// vector_n
+
+/**
+ * Takes an integral or floating type T and an unsigned integer value
+ * N and provides the member variable type which is a vector type T
+ * with N elements.
+ *
+ * @tparam T - an integral or floating type designating the vector type.
+ * @tparam N - an unsigned integer designating the number of elements.
+ *
+ * Example:
+ * \code{.cpp}
+ * // This will create a vector of type char with 3 elements
+ * std::vector_n<char, 3>::type
+ * \endcode
+ *
+ */
+
+template <typename T, unsigned int N> struct vector_n { using type = void; };
+
+template <> struct vector_n<int, 2> { using type = int2; };
+template <> struct vector_n<int, 3> { using type = int3; };
+template <> struct vector_n<int, 4> { using type = int4; };
+template <> struct vector_n<int, 8> { using type = int8; };
+template <> struct vector_n<int, 16> { using type = int16; };
+
+template <> struct vector_n<uint, 2> { using type = uint2; };
+template <> struct vector_n<uint, 3> { using type = uint3; };
+template <> struct vector_n<uint, 4> { using type = uint4; };
+template <> struct vector_n<uint, 8> { using type = uint8; };
+template <> struct vector_n<uint, 16> { using type = uint16; };
+
+template <> struct vector_n<char, 2> { using type = char2; };
+template <> struct vector_n<char, 3> { using type = char3; };
+template <> struct vector_n<char, 4> { using type = char4; };
+template <> struct vector_n<char, 8> { using type = char8; };
+template <> struct vector_n<char, 16> { using type = char16; };
+
+template <> struct vector_n<uchar, 2> { using type = uchar2; };
+template <> struct vector_n<uchar, 3> { using type = uchar3; };
+template <> struct vector_n<uchar, 4> { using type = uchar4; };
+template <> struct vector_n<uchar, 8> { using type = uchar8; };
+template <> struct vector_n<uchar, 16> { using type = uchar16; };
+
+template <> struct vector_n<short, 2> { using type = short2; };
+template <> struct vector_n<short, 3> { using type = short3; };
+template <> struct vector_n<short, 4> { using type = short4; };
+template <> struct vector_n<short, 8> { using type = short8; };
+template <> struct vector_n<short, 16> { using type = short16; };
+
+template <> struct vector_n<ushort, 2> { using type = ushort2; };
+template <> struct vector_n<ushort, 3> { using type = ushort3; };
+template <> struct vector_n<ushort, 4> { using type = ushort4; };
+template <> struct vector_n<ushort, 8> { using type = ushort8; };
+template <> struct vector_n<ushort, 16> { using type = ushort16; };
+
+template <> struct vector_n<long, 2> { using type = long2; };
+template <> struct vector_n<long, 3> { using type = long3; };
+template <> struct vector_n<long, 4> { using type = long4; };
+template <> struct vector_n<long, 8> { using type = long8; };
+template <> struct vector_n<long, 16> { using type = long16; };
+
+template <> struct vector_n<ulong, 2> { using type = ulong2; };
+template <> struct vector_n<ulong, 3> { using type = ulong3; };
+template <> struct vector_n<ulong, 4> { using type = ulong4; };
+template <> struct vector_n<ulong, 8> { using type = ulong8; };
+template <> struct vector_n<ulong, 16> { using type = ulong16; };
+
+template <> struct vector_n<float, 2> { using type = float2; };
+template <> struct vector_n<float, 3> { using type = float3; };
+template <> struct vector_n<float, 4> { using type = float4; };
+template <> struct vector_n<float, 8> { using type = float8; };
+template <> struct vector_n<float, 16> { using type = float16; };
+
+template <> struct vector_n<double, 2> { using type = double2; };
+template <> struct vector_n<double, 3> { using type = double3; };
+template <> struct vector_n<double, 4> { using type = double4; };
+template <> struct vector_n<double, 8> { using type = double8; };
+template <> struct vector_n<double, 16> { using type = double16; };
+
 // is_image
 
 /**
@@ -312,9 +714,10 @@ template <> struct is_fundamental<ulong16> : public true_type {};
  *
  * Provides the member constant value which is equal to `true`, if T is
  * an image type. Otherwise the value is equal to `false`.
- * 
+ *
  * @tparam T - a type to check.
  */
+
 template <typename T> struct is_image : public false_type {};
 
 template <> struct is_image<image1d_t> : public true_type {};
@@ -334,8 +737,8 @@ template <typename T> inline constexpr bool is_image_v = is_image<T>::value;
  * If T is an image type, provides the member constant value equal to the
  * number of dimensions of the array.
  * For any other type value is 0.
- * 
- * 
+ *
+ *
  * @tparam T a type to check.
  */
 
@@ -372,8 +775,8 @@ inline constexpr size_t image_dimension_v = image_dimension<T>::value;
 /**
  * Provides the member typedef type which is the same as T except it has
  * a __generic address space qualifier.
- * 
- * 
+ *
+ *
  * @tparam T a type to add __generic to.
  */
 
@@ -383,8 +786,8 @@ template <typename T> using add_generic_t = typename add_generic<T>::type;
 /**
  * Provides the member typedef type which is the same as T except it has
  * a __global address space qualifier.
- * 
- * 
+ *
+ *
  * @tparam T a type to add __global to.
  */
 
@@ -394,8 +797,8 @@ template <typename T> using add_global_t = typename add_global<T>::type;
 /**
  * Provides the member typedef type which is the same as T except it has
  * a __private address space qualifier.
- * 
- * 
+ *
+ *
  * @tparam T a type to add __private to.
  */
 
@@ -405,8 +808,8 @@ template <typename T> using add_private_t = typename add_private<T>::type;
 /**
  * Provides the member typedef type which is the same as T except it has
  * a __local address space qualifier.
- * 
- * 
+ *
+ *
  * @tparam T a type to add __local to.
  */
 
@@ -416,8 +819,8 @@ template <typename T> using add_local_t = typename add_local<T>::type;
 /**
  * Provides the member typedef type which is the same as T except it has
  * a __constant address space qualifier.
- * 
- * 
+ *
+ *
  * @tparam T a type to add __constant to.
  */
 
@@ -427,10 +830,10 @@ template <typename T> using add_constant_t = typename add_constant<T>::type;
 // has_address_space
 
 /**
- * If T has any adress space qualifier, provides the member constant value equal to `true`.
- * Otherwise, value is `false`.
- * 
- * 
+ * If T has any adress space qualifier, provides the member constant value equal
+ * to `true`. Otherwise, value is `false`.
+ *
+ *
  * @tparam T a type to check.
  */
 
@@ -456,7 +859,7 @@ inline constexpr bool has_address_space_v = has_address_space<T>::value;
  *
  * Provides the member constant value which is equal to `true`, if T has
  * __constant address space qualifier. Otherwise the value is equal to `false`.
- * 
+ *
  * @tparam T - a type to check.
  */
 
@@ -471,7 +874,7 @@ template <typename T> inline constexpr bool is_generic_v = is_generic<T>::value;
  *
  * Provides the member constant value which is equal to `true`, if T has
  * __global address space qualifier. Otherwise the value is equal to `false`.
- * 
+ *
  * @tparam T - a type to check.
  */
 
@@ -486,7 +889,7 @@ template <typename T> inline constexpr bool is_global_v = is_global<T>::value;
  *
  * Provides the member constant value which is equal to `true`, if T has
  * __private address space qualifier. Otherwise the value is equal to `false`.
- * 
+ *
  * @tparam T - a type to check.
  */
 
@@ -501,7 +904,7 @@ template <typename T> inline constexpr bool is_private_v = is_private<T>::value;
  *
  * Provides the member constant value which is equal to `true`, if T has
  * __local address space qualifier. Otherwise the value is equal to `false`.
- * 
+ *
  * @tparam T - a type to check.
  */
 
@@ -516,7 +919,7 @@ template <typename T> inline constexpr bool is_local_v = is_local<T>::value;
  *
  * Provides the member constant value which is equal to `true`, if T has
  * __constant address space qualifier. Otherwise the value is equal to `false`.
- * 
+ *
  * @tparam T - a type to check.
  */
 
@@ -528,10 +931,11 @@ inline constexpr bool is_constant_v = is_constant<T>::value;
 // remove_address_space
 
 /**
- * Provides the member typedef type which is the same as T, except that its address space
- * qualifier is removed.
+ * Provides the member typedef type which is the same as T, except that its
+ * address space qualifier is removed.
  *
- * If T has no address space qualifier, the member typedef type provides T unchanged.  
+ * If T has no address space qualifier, the member typedef type provides T
+ * unchanged.
  *
  * @tparam T - a type to remove an address space qualifier from.
  */
@@ -561,21 +965,22 @@ using remove_address_space_t = typename remove_address_space<T>::type;
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of the type pointed to by a pointer T is replaced with 
- * the address space of the type pointed to by a pointer U. 
+ * the address space of the type pointed to by a pointer T is replaced with
+ * the address space of the type pointed to by a pointer U.
  *
- * If T or U are not pointer types or either have no address space qualifier, then 
- * type is the same as the T provided.
+ * If T or U are not pointer types or either have no address space qualifier,
+ * then type is the same as the T provided.
  *
- * @tparam T - a pointer type that points to the type whose address space qualifer
- * is to be replaced.
+ * @tparam T - a pointer type that points to the type whose address space
+ * qualifer is to be replaced.
  * @tparam U - a pointer type where the address space for T is taken from.
  *
  * Example:
  * \code{.cpp}
- * // This will replace the address space of the first template argument with __constant from the second template argument.
- * std::replace_pointer_address_space<__local double *, __constant double *>::type
- * \endcode
+ * // This will replace the address space of the first template argument with
+ * __constant from the second template argument.
+ * std::replace_pointer_address_space<__local double *, __constant double
+ * *>::type \endcode
  *
  */
 
@@ -677,9 +1082,9 @@ using replace_pointer_address_space_t =
 /**
  * Provides the member typedef type which is the same as T, except that
  * the address space of the type pointed to by a pointer T is replaced
- * with __generic. 
+ * with __generic.
  *
- * If T is not a pointer type, then 
+ * If T is not a pointer type, then
  * type is the same as the T provided.
  *
  * @tparam T - a pointer type with the address space it points to being
@@ -699,9 +1104,9 @@ using add_generic_pointer_address_space_t =
 /**
  * Provides the member typedef type which is the same as T, except that
  * the address space of the type pointed to by a pointer T is replaced
- * with __global. 
+ * with __global.
  *
- * If T is not a pointer type, then 
+ * If T is not a pointer type, then
  * type is the same as the T provided.
  *
  * @tparam T - a pointer type with the address space it points to being
@@ -721,9 +1126,9 @@ using add_global_pointer_address_space_t =
 /**
  * Provides the member typedef type which is the same as T, except that
  * the address space of the type pointed to by a pointer T is replaced
- * with __private. 
+ * with __private.
  *
- * If T is not a pointer type, then 
+ * If T is not a pointer type, then
  * type is the same as the T provided.
  *
  * @tparam T - a pointer type with the address space it points to being
@@ -743,9 +1148,9 @@ using add_private_pointer_address_space_t =
 /**
  * Provides the member typedef type which is the same as T, except that
  * the address space of the type pointed to by a pointer T is replaced
- * with __local. 
+ * with __local.
  *
- * If T is not a pointer type, then 
+ * If T is not a pointer type, then
  * type is the same as the T provided.
  *
  * @tparam T - a pointer type with the address space it points to being
@@ -765,9 +1170,9 @@ using add_local_pointer_address_space_t =
 /**
  * Provides the member typedef type which is the same as T, except that
  * the address space of the type pointed to by a pointer T is replaced
- * with __constant. 
+ * with __constant.
  *
- * If T is not a pointer type, then 
+ * If T is not a pointer type, then
  * type is the same as the T provided.
  *
  * @tparam T - a pointer type with the address space it points to being
@@ -789,18 +1194,19 @@ using add_constant_pointer_address_space_t =
 /**
  * Provides the member typedef type which is the same as T, except that
  * the address space of the type reference T refers to is replaced with the
- * address space taken from the type reference U refers to. 
+ * address space taken from the type reference U refers to.
  *
- * If T or U are not reference types or either have no address space qualifier, then 
- * type is the same as the T provided.
+ * If T or U are not reference types or either have no address space qualifier,
+ * then type is the same as the T provided.
  *
  * @tparam T - a reference type with address space it refers to being replaced.
- * @tparam U - a reference type from which address space is taken from to replace
- * the address space of T.
+ * @tparam U - a reference type from which address space is taken from to
+ * replace the address space of T.
  *
  * Example:
  * \code{.cpp}
- * // This will replace the address space of the first template argument with __global from the second template argument.
+ * // This will replace the address space of the first template argument with
+ * __global from the second template argument.
  * std::replace_reference_address_space<__private int &, __global int &>::type
  * \endcode
  */
@@ -902,9 +1308,10 @@ using replace_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of the type reference T refers to is replaced with __generic. 
+ * the address space of the type reference T refers to is replaced with
+ * __generic.
  *
- * If T is not a reference type, then 
+ * If T is not a reference type, then
  * type is the same as the T provided.
  *
  * @tparam T - a reference type with the address space it refers to being
@@ -923,9 +1330,10 @@ using add_generic_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of the type reference T refers to is replaced with __global. 
+ * the address space of the type reference T refers to is replaced with
+ * __global.
  *
- * If T is not a reference type, then 
+ * If T is not a reference type, then
  * type is the same as the T provided.
  *
  * @tparam T - a reference type with the address space it refers to being
@@ -944,9 +1352,10 @@ using add_global_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of the type reference T refers to is replaced with __private. 
+ * the address space of the type reference T refers to is replaced with
+ * __private.
  *
- * If T is not a reference type, then 
+ * If T is not a reference type, then
  * type is the same as the T provided.
  *
  * @tparam T - a reference type with the address space it refers to being
@@ -965,12 +1374,12 @@ using add_private_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of the type reference T refers to is replaced with __local. 
+ * the address space of the type reference T refers to is replaced with __local.
  *
- * If T is not a reference type, then 
+ * If T is not a reference type, then
  * type is the same as the T provided.
  *
- * @tparam T - a reference type with the address space it referes to being 
+ * @tparam T - a reference type with the address space it referes to being
  * replaced by __local.
  */
 
@@ -986,9 +1395,10 @@ using add_local_reference_address_space_t =
 
 /**
  * Provides the member typedef type which is the same as T, except that
- * the address space of the type reference T refers to is replaced with __constant. 
+ * the address space of the type reference T refers to is replaced with
+ * __constant.
  *
- * If T is not a reference type, then 
+ * If T is not a reference type, then
  * type is the same as the T provided.
  *
  * @tparam T - a reference type with the address space it refers to being
