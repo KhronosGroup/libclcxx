@@ -1,5 +1,15 @@
 var opencl__type__traits =
 [
+    [ "is_signed< int2 >", "structstd_1_1is__signed_3_01int2_01_4.html", null ],
+    [ "is_unsigned< uint2 >", "structstd_1_1is__unsigned_3_01uint2_01_4.html", null ],
+    [ "make_signed< int2 >", "structstd_1_1make__signed_3_01int2_01_4.html", null ],
+    [ "make_unsigned< int2 >", "structstd_1_1make__unsigned_3_01int2_01_4.html", null ],
+    [ "is_arithmetic< int2 >", "structstd_1_1is__arithmetic_3_01int2_01_4.html", null ],
+    [ "is_fundamental< int2 >", "structstd_1_1is__fundamental_3_01int2_01_4.html", null ],
+    [ "is_vector_type", "structstd_1_1is__vector__type.html", null ],
+    [ "vector_size", "structstd_1_1vector__size.html", null ],
+    [ "scalar_type", "structstd_1_1scalar__type.html", null ],
+    [ "vector_n", "structstd_1_1vector__n.html", null ],
     [ "is_image", "structstd_1_1is__image.html", null ],
     [ "image_dimension", "structstd_1_1image__dimension.html", null ],
     [ "add_generic", "structstd_1_1add__generic.html", null ],

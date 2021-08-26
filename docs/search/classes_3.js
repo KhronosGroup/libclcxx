@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['remove_5faddress_5fspace_50',['remove_address_space',['../structstd_1_1remove__address__space.html',1,'std']]],
-  ['replace_5fpointer_5faddress_5fspace_51',['replace_pointer_address_space',['../structstd_1_1replace__pointer__address__space.html',1,'std']]],
-  ['replace_5freference_5faddress_5fspace_52',['replace_reference_address_space',['../structstd_1_1replace__reference__address__space.html',1,'std']]]
+  ['make_5fsigned_3c_20int2_20_3e_65',['make_signed&lt; int2 &gt;',['../structstd_1_1make__signed_3_01int2_01_4.html',1,'std']]],
+  ['make_5funsigned_3c_20int2_20_3e_66',['make_unsigned&lt; int2 &gt;',['../structstd_1_1make__unsigned_3_01int2_01_4.html',1,'std']]]
 ];

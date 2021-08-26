@@ -111,8 +111,10 @@ struct std::replace_pointer_address_space&lt; T, U &gt;</h3>
   </table>
   </dd>
 </dl>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// This will replace the address space of the first template argument with __constant from the second template argument.</span></div>
-<div class="line">std::replace_pointer_address_space&lt;__local double *, __constant double *&gt;::type</div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// This will replace the address space of the first template argument with</span></div>
+<div class="line">__constant from the second <span class="keyword">template</span> argument.</div>
+<div class="line">std::replace_pointer_address_space&lt;__local <span class="keywordtype">double</span> *, __constant <span class="keywordtype">double</span></div>
+<div class="line">*&gt;::type </div>
 </div><!-- fragment --> </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/libclcxx/libclcxx/include/<a class="el" href="opencl__type__traits.html">opencl_type_traits</a></li>
 </ul>

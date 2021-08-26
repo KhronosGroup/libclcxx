@@ -111,8 +111,9 @@ struct std::replace_reference_address_space&lt; T, U &gt;</h3>
   </table>
   </dd>
 </dl>
-<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// This will replace the address space of the first template argument with __global from the second template argument.</span></div>
-<div class="line">std::replace_reference_address_space&lt;__private int &amp;, __global int &amp;&gt;::type</div>
+<p>Example: </p><div class="fragment"><div class="line"><span class="comment">// This will replace the address space of the first template argument with</span></div>
+<div class="line">__global from the second <span class="keyword">template</span> argument.</div>
+<div class="line">std::replace_reference_address_space&lt;__private <span class="keywordtype">int</span> &amp;, __global <span class="keywordtype">int</span> &amp;&gt;::type</div>
 </div><!-- fragment --> </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/libclcxx/libclcxx/include/<a class="el" href="opencl__type__traits.html">opencl_type_traits</a></li>
 </ul>
