@@ -23,7 +23,7 @@ using sint4_type = std::make_signed<uint4>::type;
 
 template<typename T>
 void foo(T *par){
-  std::remove_address_space<T>::type var;
+  typename std::remove_address_space<T>::type var;
 }
 
 __kernel void bar(__global int * ptr) {
@@ -31,12 +31,11 @@ __kernel void bar(__global int * ptr) {
   static_assert(!std::is_same<sint_type, unsigned int>::value);
   static_assert(!std::is_same<sint4_type, uint4>::value);
 }
-
 ```
 This library is implamented fully in header file therefore only include file path need to be added during compilation.
 
 ```
-$ clang -I<path to libclcxx location>/include test.clcpp
+$ clang -I<path to libclcxx build or install location>/include test.clcpp
 ```
 
 2. **Placement new** from standard C++, for more information refer to https://en.cppreference.com/w/cpp/language/new.
@@ -61,7 +60,7 @@ void foo(B **b){
 This library is implamented fully in header file therefore only include file path need to be added during compilation.
 
 ```
-$ clang -I<path to libclcxx location>/include test.clcpp
+$ clang -I<path to libclcxx build or install location>/include test.clcpp
 ```
 
 ### Repository structure
