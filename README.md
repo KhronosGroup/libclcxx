@@ -3,7 +3,7 @@ Copyright (c) 2021 The Khronos Group Inc.
 SPDX-License-Identifier: Apache-2.0
 -->
  
-This repository contains libraries for C++ for OpenCL Kernel Language published in releases of [OpenCL-Docs](https://github.com/KhronosGroup/OpenCL-Docs/releases/tag/cxxforopencl-v1.0-r2). The libraries can be used with kernels written in C++ for OpenCL and compiled by clang 12 onwards, refer to [clang manual](https://clang.llvm.org/docs/UsersManual.html#c-for-opencl) for more details.
+This repository contains libraries for C++ for OpenCL Kernel Language published in releases of [OpenCL-Docs](https://github.com/KhronosGroup/OpenCL-Docs/releases/tag/cxxforopencl-docrev2021.12). The libraries can be used with kernels written in C++ for OpenCL and compiled by clang 12 onwards, refer to [clang manual](https://clang.llvm.org/docs/UsersManual.html#c-for-opencl) for more details.
 
 This repository makes use of functionality from the [llvm-project](https://github.com/llvm/llvm-project) i.e. clang and libcxx.
 
