@@ -1,0 +1,65 @@
+#include<opencl_type_traits>
+
+void test_vector_traits(){
+
+	static_assert(std::vector_size_v<int2> == 2);
+        static_assert(std::vector_size_v<int3> == 3);
+        static_assert(std::vector_size_v<int4> == 4);
+        static_assert(std::vector_size_v<int8> == 8);
+        static_assert(std::vector_size_v<int16> == 16);
+
+	static_assert(std::vector_size_v<uint2> == 2);
+        static_assert(std::vector_size_v<uint3> == 3);
+        static_assert(std::vector_size_v<uint4> == 4);
+        static_assert(std::vector_size_v<uint8> == 8);
+        static_assert(std::vector_size_v<uint16> == 16);
+
+	static_assert(std::vector_size_v<char2> == 2);
+        static_assert(std::vector_size_v<char3> == 3);
+        static_assert(std::vector_size_v<char4> == 4);
+        static_assert(std::vector_size_v<char8> == 8);
+        static_assert(std::vector_size_v<char16> == 16);
+
+	static_assert(std::vector_size_v<uchar2> == 2);
+        static_assert(std::vector_size_v<uchar3> == 3);
+        static_assert(std::vector_size_v<uchar4> == 4);
+        static_assert(std::vector_size_v<uchar8> == 8);
+        static_assert(std::vector_size_v<uchar16> == 16);
+
+	static_assert(std::vector_size_v<short2> == 2);
+        static_assert(std::vector_size_v<short3> == 3);
+        static_assert(std::vector_size_v<short4> == 4);
+        static_assert(std::vector_size_v<short8> == 8);
+        static_assert(std::vector_size_v<short16> == 16);
+
+        static_assert(std::vector_size_v<ushort2> == 2);
+        static_assert(std::vector_size_v<ushort3> == 3);
+        static_assert(std::vector_size_v<ushort4> == 4);
+        static_assert(std::vector_size_v<ushort8> == 8);
+        static_assert(std::vector_size_v<ushort16> == 16);
+
+        static_assert(std::vector_size_v<long2> == 2);
+        static_assert(std::vector_size_v<long3> == 3);
+        static_assert(std::vector_size_v<long4> == 4);
+        static_assert(std::vector_size_v<long8> == 8);
+        static_assert(std::vector_size_v<long16> == 16);        
+
+	static_assert(std::vector_size_v<ulong2> == 2);
+        static_assert(std::vector_size_v<ulong3> == 3);
+        static_assert(std::vector_size_v<ulong4> == 4);
+        static_assert(std::vector_size_v<ulong8> == 8);
+        static_assert(std::vector_size_v<ulong16> == 16);
+
+	static_assert(std::vector_size_v<float2> == 2);
+        static_assert(std::vector_size_v<float3> == 3);
+        static_assert(std::vector_size_v<float4> == 4);
+        static_assert(std::vector_size_v<float8> == 8);
+        static_assert(std::vector_size_v<float16> == 16);
+
+        static_assert(std::vector_size_v<double2> == 2);
+        static_assert(std::vector_size_v<double3> == 3);
+        static_assert(std::vector_size_v<double4> == 4);
+        static_assert(std::vector_size_v<double8> == 8);
+        static_assert(std::vector_size_v<double16> == 16);
+
+}
