@@ -1,4 +1,9 @@
-# Contribution Guidelines
+<!--
+Copyright (c) 2021-2026 The Khronos Group Inc.
+SPDX-License-Identifier: Apache-2.0
+-->
+
+ # Contribution Guidelines
 
 Contributions to the libraries hosted in this repository are welcome.
 
@@ -22,5 +27,16 @@ Changes can be reviewed by any experienced contributor. Please, use `git blame`/
 
 ## Contributor License Agreement
 
-When you propose a pull request on libclcxx you must execute the Khronos Mixed Repository Contributor License Agreement, to confirm you own your work and are granting Khronos the necessary permissions to redistribute it under our licenses.
+When you propose a pull request on libclcxx you must execute the Apache-2.0 WITH LLVM Contributor License Agreement, to confirm you own your work and are granting Khronos the necessary permissions to redistribute it under our licenses.
 A bot will automatically request that you complete this when you open your first PR on the repository.
+
+## AI-Assisted Contributions
+
+By submitting a Contribution to this repository, you additionally represent
+that, to the extent any of Your Contributions were developed with the
+assistance of artificial intelligence tools or AI-generated code, You have
+exercised sufficient review, judgment, and creative direction over such tools
+and resulting material to reasonably consider it Your original creation, and
+You are not aware of any third-party license, intellectual property claim, or
+other restriction arising from such use that is associated with any part of
+Your Contribution or use thereof.
