@@ -27,7 +27,8 @@ Changes can be reviewed by any experienced contributor. Please, use `git blame`/
 
 ## Contributor License Agreement
 
-When you propose a pull request on libclcxx you must execute the Apache-2.0 WITH LLVM Contributor License Agreement, to confirm you own your work and are granting Khronos the necessary permissions to redistribute it under our licenses.
+When you propose a pull request on libclcxx you must execute the [Open Source Contributor License Agreement](https://cla-assistant.io/KhronosGroup/libclcxx), to confirm you own your work and are granting Khronos the necessary permissions to redistribute it under our licenses.
+
 A bot will automatically request that you complete this when you open your first PR on the repository.
 
 ## AI-Assisted Contributions
