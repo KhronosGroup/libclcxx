@@ -1,0 +1,39 @@
+version = 1
+SPDX-PackageName = "libclcxx"
+SPDX-PackageSupplier = "Anastasia Stulova <anastasia.stulova@arm.com>"
+SPDX-PackageDownloadLocation = "https://github.com/KhronosGroup/libclcxx"
+
+[[annotations]]
+path = [
+  "docs/**",
+  "test/**",
+  "CMakeLists.txt",
+  ".gitignore",
+  ".github/**",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2021-2026 The Khronos Group, Inc."
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = [
+    "llvm-project/**",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "The LLVM Project"
+SPDX-License-Identifier = "Apache-2.0 WITH LLVM-exception"
+
+[[annotations]]
+path = [
+    "llvm-project/clang/utils/TableGen/MveEmitter.cpp",
+    "llvm-project/clang/utils/TableGen/NeonEmitter.cpp",
+    "llvm-project/clang/utils/TableGen/RISCVVEmitter.cpp",
+    "llvm-project/clang/utils/TableGen/SveEmitter.cpp",
+    "llvm-project/compiler-rt/utils/generate_netbsd_ioctls.awk",
+    "llvm-project/compiler-rt/utils/generate_netbsd_syscalls.awk",
+    "llvm-project/lldb/source/Plugins/TraceExporter/common/TraceHTR.h",
+    "llvm-project/lldb/source/Plugins/TraceExporter/common/TraceHTR.h",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "The LLVM Project"
+SPDX-License-Identifier = "Apache-2.0 WITH LLVM-exception"
