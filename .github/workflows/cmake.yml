@@ -1,36 +1,21 @@
 name: CMake
-
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v2
-    
+    - uses: actions/checkout@v4
+
     - name: make build directory
       run: cd ${{github.workspace}} && mkdir build
-    
+
     - name: Install ninja-build tool
-      uses: seanmiddleditch/gha-setup-ninja@v3
-    
-    - name: Install gcc-7
-      run: sudo apt install gcc-7
-    
-    - name: Install g++-7
-      run: sudo apt install g++-7
-      
-    - name: Update gcc alternatives
-      run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 100
-      
-    - name: Update g++ alternatives
-      run: sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 100
-    
+      run: sudo apt-get update && sudo apt-get install -y ninja-build
+
     - name: Install Doxygen
       run: sudo apt-get install -y doxygen
 
@@ -39,4 +24,3 @@ jobs:
 
     - name: Build all
       run: cmake --build ${{github.workspace}}/build --target build-all
-      
