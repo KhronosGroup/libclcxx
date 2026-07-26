@@ -452,6 +452,9 @@ template <> struct is_vector_type<double4> : public true_type {};
 template <> struct is_vector_type<double8> : public true_type {};
 template <> struct is_vector_type<double16> : public true_type {};
 
+template<typename T>
+inline constexpr bool is_vector_type_v = is_vector_type<T>::value;
+
 // vector_size
 
 /**
@@ -549,6 +552,9 @@ struct vector_size<double8> : public integral_constant<size_t, 8> {};
 template <>
 struct vector_size<double16> : public integral_constant<size_t, 16> {};
 
+template<class T>
+inline constexpr size_t vector_size_v = vector_size<T>::value;
+
 // scalar_type
 
 /**
@@ -626,6 +632,9 @@ template <> struct scalar_type<double3> { using type = double; };
 template <> struct scalar_type<double4> { using type = double; };
 template <> struct scalar_type<double8> { using type = double; };
 template <> struct scalar_type<double16> { using type = double; };
+
+template<class T> 
+using scalar_type_t = typename scalar_type<T>::type;
 
 // vector_n
 
@@ -706,6 +715,9 @@ template <> struct vector_n<double, 3> { using type = double3; };
 template <> struct vector_n<double, 4> { using type = double4; };
 template <> struct vector_n<double, 8> { using type = double8; };
 template <> struct vector_n<double, 16> { using type = double16; };
+
+template<class T, unsigned int N>
+using vector_n_t =  typename vector_n<T,N>::type;
 
 // is_image
 

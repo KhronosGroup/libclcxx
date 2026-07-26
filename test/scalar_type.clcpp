@@ -1,0 +1,66 @@
+#include<opencl_type_traits>
+
+void test_scalar_type(){
+
+        static_assert(std::is_same<int,std::scalar_type_t<int2>>::value);
+        static_assert(std::is_same<int,std::scalar_type_t<int3>>::value);
+        static_assert(std::is_same<int,std::scalar_type_t<int4>>::value);
+        static_assert(std::is_same<int,std::scalar_type_t<int8>>::value);
+        static_assert(std::is_same<int,std::scalar_type_t<int16>>::value);
+
+        static_assert(std::is_same<uint,std::scalar_type_t<uint2>>::value);
+        static_assert(std::is_same<uint,std::scalar_type_t<uint3>>::value);
+        static_assert(std::is_same<uint,std::scalar_type_t<uint4>>::value);
+        static_assert(std::is_same<uint,std::scalar_type_t<uint8>>::value);
+        static_assert(std::is_same<uint,std::scalar_type_t<uint16>>::value);
+
+        static_assert(std::is_same<char,std::scalar_type_t<char2>>::value);
+        static_assert(std::is_same<char,std::scalar_type_t<char3>>::value);
+        static_assert(std::is_same<char,std::scalar_type_t<char4>>::value);
+        static_assert(std::is_same<char,std::scalar_type_t<char8>>::value);
+        static_assert(std::is_same<char,std::scalar_type_t<char16>>::value);
+
+        static_assert(std::is_same<uchar,std::scalar_type_t<uchar2>>::value);
+        static_assert(std::is_same<uchar,std::scalar_type_t<uchar3>>::value);
+        static_assert(std::is_same<uchar,std::scalar_type_t<uchar4>>::value);
+        static_assert(std::is_same<uchar,std::scalar_type_t<uchar8>>::value);
+        static_assert(std::is_same<uchar,std::scalar_type_t<uchar16>>::value);
+
+        static_assert(std::is_same<short,std::scalar_type_t<short2>>::value);
+        static_assert(std::is_same<short,std::scalar_type_t<short3>>::value);
+        static_assert(std::is_same<short,std::scalar_type_t<short4>>::value);
+        static_assert(std::is_same<short,std::scalar_type_t<short8>>::value);
+        static_assert(std::is_same<short,std::scalar_type_t<short16>>::value);
+
+        static_assert(std::is_same<ushort,std::scalar_type_t<ushort2>>::value);
+        static_assert(std::is_same<ushort,std::scalar_type_t<ushort3>>::value);
+        static_assert(std::is_same<ushort,std::scalar_type_t<ushort4>>::value);
+        static_assert(std::is_same<ushort,std::scalar_type_t<ushort8>>::value);
+        static_assert(std::is_same<ushort,std::scalar_type_t<ushort16>>::value);
+
+        static_assert(std::is_same<long,std::scalar_type_t<long2>>::value);
+        static_assert(std::is_same<long,std::scalar_type_t<long3>>::value);
+        static_assert(std::is_same<long,std::scalar_type_t<long4>>::value);
+        static_assert(std::is_same<long,std::scalar_type_t<long8>>::value);
+        static_assert(std::is_same<long,std::scalar_type_t<long16>>::value);
+
+        static_assert(std::is_same<ulong,std::scalar_type_t<ulong2>>::value);
+        static_assert(std::is_same<ulong,std::scalar_type_t<ulong3>>::value);
+        static_assert(std::is_same<ulong,std::scalar_type_t<ulong4>>::value);
+        static_assert(std::is_same<ulong,std::scalar_type_t<ulong8>>::value);
+        static_assert(std::is_same<ulong,std::scalar_type_t<ulong16>>::value);
+
+        static_assert(std::is_same<float,std::scalar_type_t<float2>>::value);
+        static_assert(std::is_same<float,std::scalar_type_t<float3>>::value);
+        static_assert(std::is_same<float,std::scalar_type_t<float4>>::value);
+        static_assert(std::is_same<float,std::scalar_type_t<float8>>::value);
+        static_assert(std::is_same<float,std::scalar_type_t<float16>>::value);
+
+        static_assert(std::is_same<double,std::scalar_type_t<double2>>::value);
+        static_assert(std::is_same<double,std::scalar_type_t<double3>>::value);
+        static_assert(std::is_same<double,std::scalar_type_t<double4>>::value);
+        static_assert(std::is_same<double,std::scalar_type_t<double8>>::value);
+        static_assert(std::is_same<double,std::scalar_type_t<double16>>::value);
+
+}
+

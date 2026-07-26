@@ -1,0 +1,64 @@
+#include<opencl_type_traits>
+
+void vector_n(){
+
+        static_assert(std::is_same_v<int2,std::vector_n_t<int,2>>);
+        static_assert(std::is_same_v<int3,std::vector_n_t<int,3>>);
+        static_assert(std::is_same_v<int4,std::vector_n_t<int,4>>);
+        static_assert(std::is_same_v<int8,std::vector_n_t<int,8>>);
+        static_assert(std::is_same_v<int16,std::vector_n_t<int,16>>);
+
+        static_assert(std::is_same_v<uint2,std::vector_n_t<uint,2>>);
+        static_assert(std::is_same_v<uint3,std::vector_n_t<uint,3>>);
+        static_assert(std::is_same_v<uint4,std::vector_n_t<uint,4>>);
+        static_assert(std::is_same_v<uint8,std::vector_n_t<uint,8>>);
+        static_assert(std::is_same_v<uint16,std::vector_n_t<uint,16>>);
+
+        static_assert(std::is_same_v<char2,std::vector_n_t<char,2>>);
+        static_assert(std::is_same_v<char3,std::vector_n_t<char,3>>);
+        static_assert(std::is_same_v<char4,std::vector_n_t<char,4>>);
+        static_assert(std::is_same_v<char8,std::vector_n_t<char,8>>);
+        static_assert(std::is_same_v<char16,std::vector_n_t<char,16>>);
+
+        static_assert(std::is_same_v<uchar2,std::vector_n_t<uchar,2>>);
+        static_assert(std::is_same_v<uchar3,std::vector_n_t<uchar,3>>);
+        static_assert(std::is_same_v<uchar4,std::vector_n_t<uchar,4>>);
+        static_assert(std::is_same_v<uchar8,std::vector_n_t<uchar,8>>);
+        static_assert(std::is_same_v<uchar16,std::vector_n_t<uchar,16>>);
+
+        static_assert(std::is_same_v<short2,std::vector_n_t<short,2>>);
+        static_assert(std::is_same_v<short3,std::vector_n_t<short,3>>);
+        static_assert(std::is_same_v<short4,std::vector_n_t<short,4>>);
+        static_assert(std::is_same_v<short8,std::vector_n_t<short,8>>);
+        static_assert(std::is_same_v<short16,std::vector_n_t<short,16>>);
+
+        static_assert(std::is_same_v<ushort2,std::vector_n_t<ushort,2>>);
+        static_assert(std::is_same_v<ushort3,std::vector_n_t<ushort,3>>);
+        static_assert(std::is_same_v<ushort4,std::vector_n_t<ushort,4>>);
+        static_assert(std::is_same_v<ushort8,std::vector_n_t<ushort,8>>);
+        static_assert(std::is_same_v<ushort16,std::vector_n_t<ushort,16>>);
+
+        static_assert(std::is_same_v<long2,std::vector_n_t<long,2>>);
+        static_assert(std::is_same_v<long3,std::vector_n_t<long,3>>);
+        static_assert(std::is_same_v<long4,std::vector_n_t<long,4>>);
+        static_assert(std::is_same_v<long8,std::vector_n_t<long,8>>);
+        static_assert(std::is_same_v<long16,std::vector_n_t<long,16>>);
+
+        static_assert(std::is_same_v<ulong2,std::vector_n_t<ulong,2>>);
+        static_assert(std::is_same_v<ulong3,std::vector_n_t<ulong,3>>);
+        static_assert(std::is_same_v<ulong4,std::vector_n_t<ulong,4>>);
+        static_assert(std::is_same_v<ulong8,std::vector_n_t<ulong,8>>);
+        static_assert(std::is_same_v<ulong16,std::vector_n_t<ulong,16>>);
+
+        static_assert(std::is_same_v<float2,std::vector_n_t<float,2>>);
+        static_assert(std::is_same_v<float3,std::vector_n_t<float,3>>);
+        static_assert(std::is_same_v<float4,std::vector_n_t<float,4>>);
+        static_assert(std::is_same_v<float8,std::vector_n_t<float,8>>);
+        static_assert(std::is_same_v<float16,std::vector_n_t<float,16>>);
+
+        static_assert(std::is_same_v<double2,std::vector_n_t<double,2>>);
+        static_assert(std::is_same_v<double3,std::vector_n_t<double,3>>);
+        static_assert(std::is_same_v<double4,std::vector_n_t<double,4>>);
+        static_assert(std::is_same_v<double8,std::vector_n_t<double,8>>);
+        static_assert(std::is_same_v<double16,std::vector_n_t<double,16>>);
+}

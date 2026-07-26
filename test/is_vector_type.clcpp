@@ -1,0 +1,65 @@
+#include<opencl_type_traits>
+
+void is_vector_type(){
+
+        static_assert(std::is_vector_type_v<int2>);
+        static_assert(std::is_vector_type_v<int3>);
+        static_assert(std::is_vector_type_v<int4>);
+        static_assert(std::is_vector_type_v<int8>);
+        static_assert(std::is_vector_type_v<int16>);
+
+        static_assert(std::is_vector_type_v<uint2>);
+        static_assert(std::is_vector_type_v<uint3>);
+        static_assert(std::is_vector_type_v<uint4>);
+        static_assert(std::is_vector_type_v<uint8>);
+        static_assert(std::is_vector_type_v<uint16>);
+
+        static_assert(std::is_vector_type_v<char2>);
+        static_assert(std::is_vector_type_v<char3>);
+        static_assert(std::is_vector_type_v<char4>);
+        static_assert(std::is_vector_type_v<char8>);
+        static_assert(std::is_vector_type_v<char16>);
+
+        static_assert(std::is_vector_type_v<uchar2>);
+        static_assert(std::is_vector_type_v<uchar3>);
+        static_assert(std::is_vector_type_v<uchar4>);
+        static_assert(std::is_vector_type_v<uchar8>);
+        static_assert(std::is_vector_type_v<uchar16>);
+
+        static_assert(std::is_vector_type_v<short2>);
+        static_assert(std::is_vector_type_v<short3>);
+        static_assert(std::is_vector_type_v<short4>);
+        static_assert(std::is_vector_type_v<short8>);
+        static_assert(std::is_vector_type_v<short16>);
+
+        static_assert(std::is_vector_type_v<ushort2>);
+        static_assert(std::is_vector_type_v<ushort3>);
+        static_assert(std::is_vector_type_v<ushort4>);
+        static_assert(std::is_vector_type_v<ushort8>);
+        static_assert(std::is_vector_type_v<ushort16>);
+
+        static_assert(std::is_vector_type_v<long2>);
+        static_assert(std::is_vector_type_v<long3>);
+        static_assert(std::is_vector_type_v<long4>);
+        static_assert(std::is_vector_type_v<long8>);
+        static_assert(std::is_vector_type_v<long16>);
+
+        static_assert(std::is_vector_type_v<ulong2>);
+        static_assert(std::is_vector_type_v<ulong3>);
+        static_assert(std::is_vector_type_v<ulong4>);
+        static_assert(std::is_vector_type_v<ulong8>);
+        static_assert(std::is_vector_type_v<ulong16>);
+	
+	static_assert(std::is_vector_type_v<float2>);
+        static_assert(std::is_vector_type_v<float3>);
+        static_assert(std::is_vector_type_v<float4>);
+        static_assert(std::is_vector_type_v<float8>);
+        static_assert(std::is_vector_type_v<float16>);
+
+        static_assert(std::is_vector_type_v<double2>);
+        static_assert(std::is_vector_type_v<double3>);
+        static_assert(std::is_vector_type_v<double4>);
+        static_assert(std::is_vector_type_v<double8>);
+        static_assert(std::is_vector_type_v<double16>);
+}
+
